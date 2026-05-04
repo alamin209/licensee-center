@@ -3,157 +3,261 @@
     <h1>Operator console</h1>
   </div>
 
-  <mat-card class="form-card app-outlined-form" appearance="outlined">
-  <mat-card-header class="custom-card-header">
-    <mat-card-title>Edit My Profile</mat-card-title>
-  </mat-card-header>
+  @switch (viewMode()) {
+    @case ('edit') {
+      <mat-card class="form-card app-outlined-form" appearance="outlined">
+        <mat-card-header class="custom-card-header">
+          <mat-card-title>Edit My Profile</mat-card-title>
+          <mat-card-subtitle class="demo-hint">
+            Frontend demo: edits stay in this browser tab until reload. Submit to update View all Profiles.
+          </mat-card-subtitle>
+        </mat-card-header>
 
-  <mat-card-content class="profile-form">
-    <div class="section-title">1. Personal info</div>
+        <mat-card-content class="profile-form">
+          <div class="section-title">1. Personal info</div>
 
-    <div class="form-grid form-grid--cols-2">
-      <mat-form-field appearance="outline">
-        <mat-label>Surname Given Name</mat-label>
-        <input matInput name="givenName" value="Melinda" />
-      </mat-form-field>
+          <div class="form-grid form-grid--cols-2">
+            <mat-form-field appearance="outline">
+              <mat-label>Surname Given Name</mat-label>
+              <input matInput name="givenName" [(ngModel)]="profile.givenName" />
+            </mat-form-field>
 
-      <mat-form-field appearance="outline">
-        <mat-label>Last Name</mat-label>
-        <input matInput name="lastName" value="Tankard" />
-      </mat-form-field>
-    </div>
+            <mat-form-field appearance="outline">
+              <mat-label>Last Name</mat-label>
+              <input matInput name="lastName" [(ngModel)]="profile.lastName" />
+            </mat-form-field>
+          </div>
 
-    <!-- Row: 50% Preferred | 50% (Title ~75% + User ID ~25%) -->
-    <div class="form-grid form-grid--row-preferred">
-      <mat-form-field appearance="outline">
-        <mat-label>Preferred</mat-label>
-        <input matInput name="preferred" value="Mel" />
-      </mat-form-field>
+          <div class="form-grid form-grid--row-preferred">
+            <mat-form-field appearance="outline">
+              <mat-label>Preferred</mat-label>
+              <input matInput name="preferred" [(ngModel)]="profile.preferred" />
+            </mat-form-field>
 
-      <div class="form-grid form-grid--cols-title-user">
-        <mat-form-field appearance="outline">
-          <mat-label>Title</mat-label>
-          <input matInput name="title" value="Associate Representative" />
-        </mat-form-field>
+            <div class="form-grid form-grid--cols-title-user">
+              <mat-form-field appearance="outline">
+                <mat-label>Title</mat-label>
+                <input matInput name="title" [(ngModel)]="profile.title" />
+              </mat-form-field>
 
-        <mat-form-field appearance="outline">
-          <mat-label>User ID</mat-label>
-          <input matInput name="userId" value="36574" />
-        </mat-form-field>
-      </div>
-    </div>
+              <mat-form-field appearance="outline">
+                <mat-label>User ID</mat-label>
+                <input matInput name="userId" [(ngModel)]="profile.userId" />
+              </mat-form-field>
+            </div>
+          </div>
 
-    <div class="form-grid form-grid--cols-2">
-      <mat-form-field appearance="outline">
-        <mat-label>Personal Email</mat-label>
-        <input matInput name="personalEmail" value="melindaT347@gmail.com" />
-      </mat-form-field>
+          <div class="form-grid form-grid--cols-2">
+            <mat-form-field appearance="outline">
+              <mat-label>Personal Email</mat-label>
+              <input matInput name="personalEmail" type="email" [(ngModel)]="profile.personalEmail" />
+            </mat-form-field>
 
-      <mat-form-field appearance="outline">
-        <mat-label>Cell &amp; Text</mat-label>
-        <input matInput name="cell" value="+658934527812" />
-      </mat-form-field>
-    </div>
-    <hr class="form-divider">
+            <mat-form-field appearance="outline">
+              <mat-label>Cell &amp; Text</mat-label>
+              <input matInput name="cell" [(ngModel)]="profile.cell" />
+            </mat-form-field>
+          </div>
+          <hr class="form-divider" />
 
-    <div class="section-title section-title--spaced">2. Contact info</div>
+          <div class="section-title section-title--spaced">2. Contact info</div>
 
-    <div class="form-grid form-grid--cols-2">
-      <mat-form-field appearance="outline">
-        <mat-label>Contact Email</mat-label>
-        <input matInput name="contactEmail" value="LicensingM01@gbxm.com" />
-      </mat-form-field>
+          <div class="form-grid form-grid--cols-2">
+            <mat-form-field appearance="outline">
+              <mat-label>Contact Email</mat-label>
+              <input matInput name="contactEmail" type="email" [(ngModel)]="profile.contactEmail" />
+            </mat-form-field>
 
-      <mat-form-field appearance="outline">
-        <mat-label>Company Email</mat-label>
-        <input matInput name="companyEmail" value="MelindaT@gbxm.com" />
-      </mat-form-field>
-    </div>
+            <mat-form-field appearance="outline">
+              <mat-label>Company Email</mat-label>
+              <input matInput name="companyEmail" type="email" [(ngModel)]="profile.companyEmail" />
+            </mat-form-field>
+          </div>
 
-    <div class="form-grid form-grid--cols-2">
-      <mat-form-field appearance="outline">
-        <mat-label>LinkedIn</mat-label>
-        <input matInput name="linkedin" value="linkedin.com/in/meltankard" />
-      </mat-form-field>
+          <div class="form-grid form-grid--cols-2">
+            <mat-form-field appearance="outline">
+              <mat-label>LinkedIn</mat-label>
+              <input matInput name="linkedin" [(ngModel)]="profile.linkedin" />
+            </mat-form-field>
 
-      <mat-form-field appearance="outline">
-        <mat-label>Teams ID</mat-label>
-        <input matInput name="teamsId" value="melinda25" />
-      </mat-form-field>
-    </div>
+            <mat-form-field appearance="outline">
+              <mat-label>Teams ID</mat-label>
+              <input matInput name="teamsId" [(ngModel)]="profile.teamsId" />
+            </mat-form-field>
+          </div>
 
-    <div class="form-grid form-grid--cols-1">
-      <mat-form-field appearance="outline" class="form-field--textarea">
-        <mat-label>A Little About Me ..</mat-label>
-        <textarea matInput rows="3" name="about"></textarea>
-      </mat-form-field>
-    </div>
-    <hr class="form-divider">
+          <div class="form-grid form-grid--cols-1">
+            <mat-form-field appearance="outline" class="form-field--textarea">
+              <mat-label>A Little About Me ..</mat-label>
+              <textarea matInput rows="3" name="about" [(ngModel)]="profile.about"></textarea>
+            </mat-form-field>
+          </div>
+          <hr class="form-divider" />
 
-    <div class="section-title section-title--spaced">3. Personal info</div>
+          <div class="section-title section-title--spaced">3. Personal info</div>
 
-    <div class="form-grid form-grid--cols-2">
-      <app-file-drop-upload
-        mode="image"
-        label="Profile photo"
-        hint="JPEG, PNG, or WebP — drag and drop or browse"
-        accept="image/*"
-        dropTitle="Drop your photo here"
-        dropSub="or use the button below to choose a file from your device"
-        (fileChange)="profilePhoto = $event"
-      />
+          <div class="form-grid form-grid--cols-2 profile-form__uploads">
+            <app-file-drop-upload
+              #photoUpload
+              mode="image"
+              label="Profile photo"
+              hint="JPEG, PNG, or WebP — drag and drop or browse"
+              accept="image/*"
+              dropTitle="Drop your photo here"
+              dropSub="or use the button below to choose a file from your device"
+              (fileChange)="profilePhoto = $event"
+            />
 
-      <app-file-drop-upload
-        mode="document"
-        label="Résumé / CV"
-        hint="PDF or Word — drag and drop or browse"
-        accept=".pdf,.doc,.docx,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document"
-        dropTitle="Drop your CV here"
-        dropSub="or use the button below to choose a PDF or Word file"
-        (fileChange)="cvFile = $event"
-      />
-    </div>
+            <app-file-drop-upload
+              #cvUpload
+              mode="document"
+              label="Résumé / CV"
+              hint="PDF or Word — drag and drop or browse"
+              accept=".pdf,.doc,.docx,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+              dropTitle="Drop your CV here"
+              dropSub="or use the button below to choose a PDF or Word file"
+              (fileChange)="cvFile = $event"
+            />
+          </div>
 
-    <div class="form-grid form-grid--cols-2">
-      <mat-form-field appearance="outline">
-        <mat-label>Trading Entity</mat-label>
-        <input matInput name="tradingEntity" />
-      </mat-form-field>
+          <div class="form-grid form-grid--cols-2">
+            <mat-form-field appearance="outline">
+              <mat-label>Trading Entity</mat-label>
+              <input matInput name="tradingEntity" [(ngModel)]="profile.tradingEntity" />
+            </mat-form-field>
 
-      <mat-form-field appearance="outline">
-        <mat-label>Registration Number</mat-label>
-        <input matInput name="registration" />
-      </mat-form-field>
-    </div>
+            <mat-form-field appearance="outline">
+              <mat-label>Registration Number</mat-label>
+              <input matInput name="registration" [(ngModel)]="profile.registration" />
+            </mat-form-field>
+          </div>
 
-    <div class="form-grid form-grid--cols-2">
-      <mat-form-field appearance="outline">
-        <mat-label>Digital Presence #1</mat-label>
-        <input matInput name="dp1" />
-      </mat-form-field>
+          <div class="form-grid form-grid--cols-2">
+            <mat-form-field appearance="outline">
+              <mat-label>Digital Presence #1</mat-label>
+              <input matInput name="dp1" [(ngModel)]="profile.digitalPresence1" />
+            </mat-form-field>
 
-      <mat-form-field appearance="outline">
-        <mat-label>Digital Presence #2</mat-label>
-        <input matInput name="dp2" />
-      </mat-form-field>
-    </div>
+            <mat-form-field appearance="outline">
+              <mat-label>Digital Presence #2</mat-label>
+              <input matInput name="dp2" [(ngModel)]="profile.digitalPresence2" />
+            </mat-form-field>
+          </div>
 
-    <div class="form-grid form-grid--cols-2">
-      <mat-form-field appearance="outline">
-        <mat-label>Digital Presence #3</mat-label>
-        <input matInput name="dp3" />
-      </mat-form-field>
+          <div class="form-grid form-grid--cols-2">
+            <mat-form-field appearance="outline">
+              <mat-label>Digital Presence #3</mat-label>
+              <input matInput name="dp3" [(ngModel)]="profile.digitalPresence3" />
+            </mat-form-field>
 
-      <mat-form-field appearance="outline">
-        <mat-label>Digital Presence #4</mat-label>
-        <input matInput name="dp4" />
-      </mat-form-field>
-    </div>
+            <mat-form-field appearance="outline">
+              <mat-label>Digital Presence #4</mat-label>
+              <input matInput name="dp4" [(ngModel)]="profile.digitalPresence4" />
+            </mat-form-field>
+          </div>
 
-    <div class="form-actions">
-      <button mat-flat-button class="btn-primary" type="button">Save</button>
-      <button mat-flat-button class="btn-primary" type="button">Submit</button>
-    </div>
-  </mat-card-content>
-  </mat-card>
+          <div class="form-actions profile-form__actions">
+            <button mat-flat-button type="button" class="btn-cancel" (click)="onCancel()">Cancel</button>
+            <button mat-flat-button type="button" class="btn-primary" (click)="onSubmit()">Submit</button>
+          </div>
+        </mat-card-content>
+      </mat-card>
+    }
+
+    @case ('profiles') {
+      <mat-card class="form-card app-outlined-form profile-readonly-card" appearance="outlined">
+        <mat-card-header class="custom-card-header">
+          <mat-card-title>View all Profiles</mat-card-title>
+          <mat-card-subtitle class="demo-hint">
+            Shows the last submitted profile (demo, in memory). Use
+            <a routerLink="/profile/all">Edit My Profile</a>
+            to change it, then Submit.
+          </mat-card-subtitle>
+        </mat-card-header>
+
+        <mat-card-content class="profile-form">
+          <div class="section-title">Submitted operator</div>
+
+          <dl class="profile-readonly">
+            <dt>Surname Given Name</dt>
+            <dd>{{ store.submitted.givenName }}</dd>
+            <dt>Last Name</dt>
+            <dd>{{ store.submitted.lastName }}</dd>
+            <dt>Preferred</dt>
+            <dd>{{ store.submitted.preferred }}</dd>
+            <dt>Title</dt>
+            <dd>{{ store.submitted.title }}</dd>
+            <dt>User ID</dt>
+            <dd>{{ store.submitted.userId }}</dd>
+            <dt>Personal Email</dt>
+            <dd>{{ store.submitted.personalEmail }}</dd>
+            <dt>Cell &amp; Text</dt>
+            <dd>{{ store.submitted.cell }}</dd>
+            <dt>Contact Email</dt>
+            <dd>{{ store.submitted.contactEmail }}</dd>
+            <dt>Company Email</dt>
+            <dd>{{ store.submitted.companyEmail }}</dd>
+            <dt>LinkedIn</dt>
+            <dd>{{ store.submitted.linkedin }}</dd>
+            <dt>Teams ID</dt>
+            <dd>{{ store.submitted.teamsId }}</dd>
+            <dt>A Little About Me</dt>
+            <dd>{{ store.submitted.about || '—' }}</dd>
+            <dt>Trading Entity</dt>
+            <dd>{{ store.submitted.tradingEntity || '—' }}</dd>
+            <dt>Registration Number</dt>
+            <dd>{{ store.submitted.registration || '—' }}</dd>
+            <dt>Digital Presence #1–#4</dt>
+            <dd>
+              {{ store.submitted.digitalPresence1 || '—' }} · {{ store.submitted.digitalPresence2 || '—' }} ·
+              {{ store.submitted.digitalPresence3 || '—' }} · {{ store.submitted.digitalPresence4 || '—' }}
+            </dd>
+            @if (store.submittedPhotoName || store.submittedCvName) {
+              <dt>Attachments (last submit)</dt>
+              <dd>
+                @if (store.submittedPhotoName) {
+                  <span>Photo: {{ store.submittedPhotoName }}</span>
+                }
+                @if (store.submittedPhotoName && store.submittedCvName) {
+                  <span> · </span>
+                }
+                @if (store.submittedCvName) {
+                  <span>CV: {{ store.submittedCvName }}</span>
+                }
+              </dd>
+            }
+          </dl>
+
+          <div class="form-actions profile-form__actions">
+            <a mat-flat-button class="btn-primary" routerLink="/profile/all">Edit My Profile</a>
+          </div>
+        </mat-card-content>
+      </mat-card>
+    }
+
+    @case ('verify') {
+      <mat-card class="form-card app-outlined-form" appearance="outlined">
+        <mat-card-header class="custom-card-header">
+          <mat-card-title>Verify Operator</mat-card-title>
+          <mat-card-subtitle class="demo-hint">
+            Demo screen for this route. Profile data is managed under Edit My Profile and View all Profiles.
+          </mat-card-subtitle>
+        </mat-card-header>
+
+        <mat-card-content class="profile-form">
+          <p class="verify-body">
+            Operator verification would run here (e.g. ID checks). For the static demo, use
+            <a routerLink="/profile/all">Edit My Profile</a>
+            or
+            <a routerLink="/profile/profiles">View all Profiles</a>.
+          </p>
+
+          <div class="form-actions profile-form__actions">
+            <a mat-flat-button class="btn-primary" routerLink="/profile/all">Edit My Profile</a>
+            <a mat-stroked-button routerLink="/profile/profiles">View all Profiles</a>
+          </div>
+        </mat-card-content>
+      </mat-card>
+    }
+  }
 </div>

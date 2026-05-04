@@ -1,4 +1,14 @@
-import { Component, EventEmitter, Input, OnChanges, OnDestroy, Output, SimpleChanges } from '@angular/core';
+import {
+  Component,
+  ElementRef,
+  EventEmitter,
+  Input,
+  OnChanges,
+  OnDestroy,
+  Output,
+  SimpleChanges,
+  ViewChild
+} from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { assignFileToInput, isImageFile, isPdfOrWordFile } from '../../utils/file-helpers';
@@ -13,6 +23,8 @@ export type FileDropUploadMode = 'image' | 'document';
   styleUrl: './file-drop-upload.component.scss'
 })
 export class FileDropUploadComponent implements OnChanges, OnDestroy {
+  @ViewChild('fileInput') private readonly fileInputRef?: ElementRef<HTMLInputElement>;
+
   @Input({ required: true }) label!: string;
   @Input() hint = '';
   @Input({ required: true }) accept!: string;
@@ -85,6 +97,19 @@ export class FileDropUploadComponent implements OnChanges, OnDestroy {
     fileInput.value = '';
     this.syncHasFile();
     this.fileChange.emit(null);
+  }
+
+  /** Clears selection and preview (e.g. parent form reset). */
+  reset(): void {
+    const input = this.fileInputRef?.nativeElement;
+    if (input) {
+      this.clear(input);
+    } else {
+      this.revokePreview();
+      this.displayName = '';
+      this.syncHasFile();
+      this.fileChange.emit(null);
+    }
   }
 
   private apply(file: File | undefined, input: HTMLInputElement): void {
