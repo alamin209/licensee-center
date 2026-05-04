@@ -1,2 +1,58 @@
-// Form layout lives globally in `app-page-layout.scss` (`.form-grid`).
-// Outlined fields + stack gap: `app-outlined-forms.scss` + `--app-form-field-stack-gap` in `styles.scss`.
+// Mirrors profile-edit “View all Profiles” read-only layout (same class names as profile-edit).
+
+.demo-hint {
+  margin-top: 0.25rem;
+  font-size: 0.875rem;
+  line-height: 1.35;
+  color: var(--mat-sys-on-surface-variant, rgba(0, 0, 0, 0.6));
+}
+
+.demo-hint a {
+  color: #1565c0;
+  font-weight: 500;
+  text-decoration: none;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
+.profile-form__actions {
+  justify-content: flex-end;
+  flex-wrap: wrap;
+}
+
+.profile-readonly {
+  display: grid;
+  grid-template-columns: minmax(140px, 220px) 1fr;
+  gap: 0.5rem 1.25rem;
+  margin: 0;
+
+  dt {
+    margin: 0;
+    font-size: 0.8125rem;
+    font-weight: 500;
+    color: var(--mat-sys-on-surface-variant, rgba(0, 0, 0, 0.6));
+  }
+
+  dd {
+    margin: 0;
+    font-size: 0.9375rem;
+    line-height: 1.45;
+    color: var(--mat-sys-on-surface, rgba(0, 0, 0, 0.87));
+  }
+}
+
+.profile-readonly__photo-cell {
+  padding-top: 4px;
+}
+
+.profile-readonly__thumb {
+  display: block;
+  width: 96px;
+  height: 96px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid #e4e7ea;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+}
