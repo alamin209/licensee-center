@@ -52,11 +52,14 @@ export class OperatorProfileStore {
 
   submittedPhotoName: string | null = null;
   submittedCvName: string | null = null;
+  /** Data URL of last submitted profile photo (for Verify / read-only views). */
+  submittedPhotoDataUrl: string | null = null;
 
-  commitSubmit(photo: File | null, cv: File | null): void {
+  commitSubmit(photo: File | null, cv: File | null, photoDataUrl: string | null): void {
     Object.assign(this.submitted, this.draft);
     this.submittedPhotoName = photo?.name ?? null;
     this.submittedCvName = cv?.name ?? null;
+    this.submittedPhotoDataUrl = photoDataUrl;
   }
 
   resetDraftToInitial(): void {

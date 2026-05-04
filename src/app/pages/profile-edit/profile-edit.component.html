@@ -38,13 +38,30 @@
 
             <div class="form-grid form-grid--cols-title-user">
               <mat-form-field appearance="outline">
-                <mat-label>Title</mat-label>
-                <input matInput type="text" name="title" [(ngModel)]="profile.title" />
+                <mat-label>Operator</mat-label>
+                <input
+                  matInput
+                  type="text"
+                  name="title"
+                  [(ngModel)]="profile.title"
+                  readonly
+                  class="field-readonly"
+                  title="Assigned by the system — not editable"
+                />
               </mat-form-field>
 
               <mat-form-field appearance="outline">
                 <mat-label>User ID</mat-label>
-                <input matInput type="text" name="userId" inputmode="numeric" [(ngModel)]="profile.userId" />
+                <input
+                  matInput
+                  type="text"
+                  name="userId"
+                  inputmode="numeric"
+                  [(ngModel)]="profile.userId"
+                  readonly
+                  class="field-readonly"
+                  title="Assigned by the system — not editable"
+                />
               </mat-form-field>
             </div>
           </div>
@@ -214,10 +231,16 @@
             <dd>{{ store.submitted.lastName }}</dd>
             <dt>Preferred</dt>
             <dd>{{ store.submitted.preferred }}</dd>
-            <dt>Title</dt>
+            <dt>Operator</dt>
             <dd>{{ store.submitted.title }}</dd>
             <dt>User ID</dt>
             <dd>{{ store.submitted.userId }}</dd>
+            @if (store.submittedPhotoDataUrl) {
+              <dt>Profile photo</dt>
+              <dd class="profile-readonly__photo-cell">
+                <img [src]="store.submittedPhotoDataUrl" alt="Submitted profile photo" class="profile-readonly__thumb" />
+              </dd>
+            }
             <dt>Personal Email</dt>
             <dd>{{ store.submitted.personalEmail }}</dd>
             <dt>Cell &amp; Text</dt>
@@ -265,26 +288,157 @@
     }
 
     @case ('verify') {
-      <mat-card class="form-card app-outlined-form" appearance="outlined">
+      <mat-card class="form-card app-outlined-form verify-console" appearance="outlined">
         <mat-card-header class="custom-card-header">
-          <mat-card-title>Verify Operator</mat-card-title>
+          <mat-card-title>Verify &amp; Approve Operators</mat-card-title>
           <mat-card-subtitle class="demo-hint">
-            Demo screen for this route. Profile data is managed under Edit My Profile and View all Profiles.
+            Read-only view of the last submitted profile. HR verifies the operator here (demo). Operator and User ID
+            cannot be changed. Photo comes from Edit My Profile after Submit.
           </mat-card-subtitle>
         </mat-card-header>
 
         <mat-card-content class="profile-form">
-          <p class="verify-body">
-            Operator verification would run here (e.g. ID checks). For the static demo, use
-            <a routerLink="/profile/all">Edit My Profile</a>
-            or
-            <a routerLink="/profile/profiles">View all Profiles</a>.
-          </p>
+          <mat-form-field appearance="outline" class="verify-select-field">
+            <mat-label>Operators by Name</mat-label>
+            <mat-select [(ngModel)]="verifySelectedOperatorId" name="verifyOperatorPick">
+              <mat-option value="current">{{ operatorSelectLabel }}</mat-option>
+            </mat-select>
+          </mat-form-field>
 
-          <div class="form-actions profile-form__actions">
-            <a mat-flat-button class="btn-primary" routerLink="/profile/all">Edit My Profile</a>
-            <a mat-stroked-button routerLink="/profile/profiles">View all Profiles</a>
+          <div class="section-title">General operator information</div>
+
+          <div class="verify-readonly-grid">
+            <div class="verify-readonly-row verify-readonly-row--2">
+              <div class="verify-readonly-cell">
+                <span class="verify-readonly-label">Surname Given Name</span>
+                <span class="verify-readonly-value">{{ store.submitted.givenName }}</span>
+              </div>
+              <div class="verify-readonly-cell">
+                <span class="verify-readonly-label">Last Name</span>
+                <span class="verify-readonly-value">{{ store.submitted.lastName }}</span>
+              </div>
+            </div>
+            <div class="verify-readonly-row verify-readonly-row--2">
+              <div class="verify-readonly-cell">
+                <span class="verify-readonly-label">Preferred</span>
+                <span class="verify-readonly-value">{{ store.submitted.preferred }}</span>
+              </div>
+              <div class="verify-readonly-cell verify-readonly-cell--locked">
+                <span class="verify-readonly-label">Operator</span>
+                <span class="verify-readonly-value verify-readonly-value--locked">{{ store.submitted.title }}</span>
+              </div>
+            </div>
+            <div class="verify-readonly-row verify-readonly-row--2">
+              <div class="verify-readonly-cell verify-readonly-cell--locked">
+                <span class="verify-readonly-label">User ID</span>
+                <span class="verify-readonly-value verify-readonly-value--locked">{{ store.submitted.userId }}</span>
+              </div>
+              <div class="verify-readonly-cell">
+                <span class="verify-readonly-label">Personal Email</span>
+                <span class="verify-readonly-value">{{ store.submitted.personalEmail }}</span>
+              </div>
+            </div>
+            <div class="verify-readonly-row verify-readonly-row--2">
+              <div class="verify-readonly-cell">
+                <span class="verify-readonly-label">Cell &amp; Text</span>
+                <span class="verify-readonly-value">{{ store.submitted.cell }}</span>
+              </div>
+              <div class="verify-readonly-cell">
+                <span class="verify-readonly-label">Contact Email</span>
+                <span class="verify-readonly-value">{{ store.submitted.contactEmail }}</span>
+              </div>
+            </div>
+            <div class="verify-readonly-row verify-readonly-row--2">
+              <div class="verify-readonly-cell">
+                <span class="verify-readonly-label">Company Email</span>
+                <span class="verify-readonly-value">{{ store.submitted.companyEmail }}</span>
+              </div>
+              <div class="verify-readonly-cell">
+                <span class="verify-readonly-label">LinkedIn</span>
+                <span class="verify-readonly-value">{{ store.submitted.linkedin }}</span>
+              </div>
+            </div>
+            <div class="verify-readonly-row verify-readonly-row--2">
+              <div class="verify-readonly-cell">
+                <span class="verify-readonly-label">Teams ID</span>
+                <span class="verify-readonly-value">{{ store.submitted.teamsId }}</span>
+              </div>
+            </div>
+            <div class="verify-readonly-row">
+              <div class="verify-readonly-cell verify-readonly-cell--full">
+                <span class="verify-readonly-label">A Little About Me ..</span>
+                <span class="verify-readonly-value verify-readonly-value--multiline">{{ store.submitted.about || '—' }}</span>
+              </div>
+            </div>
           </div>
+
+          <hr class="form-divider" />
+
+          <div class="section-title section-title--spaced">3. Personal info</div>
+
+          <div class="verify-media-row">
+            <div class="verify-media-card">
+              <span class="verify-readonly-label">Profile photo</span>
+              @if (store.submittedPhotoDataUrl) {
+                <div class="verify-photo-frame">
+                  <img [src]="store.submittedPhotoDataUrl" alt="Profile photo from last submit" class="verify-photo-img" />
+                </div>
+              } @else {
+                <div class="verify-photo-placeholder">No photo on file — submit a photo from Edit My Profile</div>
+              }
+            </div>
+            <div class="verify-media-card">
+              <span class="verify-readonly-label">Résumé / CV</span>
+              <span class="verify-readonly-value verify-readonly-value--block">{{
+                store.submittedCvName || '—'
+              }}</span>
+            </div>
+          </div>
+
+          <div class="verify-readonly-grid verify-readonly-grid--tight">
+            <div class="verify-readonly-row verify-readonly-row--2">
+              <div class="verify-readonly-cell">
+                <span class="verify-readonly-label">Trading Entity</span>
+                <span class="verify-readonly-value">{{ store.submitted.tradingEntity || '—' }}</span>
+              </div>
+              <div class="verify-readonly-cell">
+                <span class="verify-readonly-label">Registration Number</span>
+                <span class="verify-readonly-value">{{ store.submitted.registration || '—' }}</span>
+              </div>
+            </div>
+            <div class="verify-readonly-row verify-readonly-row--2">
+              <div class="verify-readonly-cell">
+                <span class="verify-readonly-label">Digital Presence #1</span>
+                <span class="verify-readonly-value">{{ store.submitted.digitalPresence1 || '—' }}</span>
+              </div>
+              <div class="verify-readonly-cell">
+                <span class="verify-readonly-label">Digital Presence #2</span>
+                <span class="verify-readonly-value">{{ store.submitted.digitalPresence2 || '—' }}</span>
+              </div>
+            </div>
+            <div class="verify-readonly-row verify-readonly-row--2">
+              <div class="verify-readonly-cell">
+                <span class="verify-readonly-label">Digital Presence #3</span>
+                <span class="verify-readonly-value">{{ store.submitted.digitalPresence3 || '—' }}</span>
+              </div>
+              <div class="verify-readonly-cell">
+                <span class="verify-readonly-label">Digital Presence #4</span>
+                <span class="verify-readonly-value">{{ store.submitted.digitalPresence4 || '—' }}</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-actions profile-form__actions profile-form__actions--verify">
+            <button mat-flat-button type="button" class="btn-cancel" (click)="onVerifySave()">Save</button>
+            <button mat-flat-button type="button" class="btn-primary" (click)="onVerifySubmit()">Submit</button>
+            <button mat-flat-button type="button" class="btn-verify" (click)="onVerifyApprove()">Verify</button>
+          </div>
+
+          <p class="verify-footer-links">
+            <a routerLink="/profile/all">Edit My Profile</a>
+            ·
+            <a routerLink="/profile/profiles">View all Profiles</a>
+          </p>
         </mat-card-content>
       </mat-card>
     }

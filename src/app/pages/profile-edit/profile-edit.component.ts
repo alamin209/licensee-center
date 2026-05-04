@@ -5,6 +5,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
+import { MatSelectModule } from '@angular/material/select';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { NavigationEnd, Router, RouterLink } from '@angular/router';
 import { filter } from 'rxjs/operators';
@@ -13,6 +14,7 @@ import {
   OperatorProfileDemo,
   OperatorProfileStore
 } from '../../services/operator-profile-store.service';
+import { isImageFile } from '../../utils/file-helpers';
 
 export type ProfileViewMode = 'edit' | 'profiles' | 'verify';
 
@@ -25,6 +27,7 @@ export type ProfileViewMode = 'edit' | 'profiles' | 'verify';
     MatCardModule,
     MatFormFieldModule,
     MatInputModule,
+    MatSelectModule,
     MatButtonModule,
     MatSnackBarModule,
     FileDropUploadComponent
@@ -49,6 +52,9 @@ export class ProfileEditComponent {
   profilePhoto: File | null = null;
   cvFile: File | null = null;
 
+  /** Verify screen: single demo operator in the picker (submitted profile). */
+  verifySelectedOperatorId = 'current';
+
   constructor() {
     this.refreshViewMode();
     this.router.events
@@ -57,6 +63,14 @@ export class ProfileEditComponent {
         takeUntilDestroyed(this.destroyRef)
       )
       .subscribe(() => this.refreshViewMode());
+  }
+
+  get operatorSelectLabel(): string {
+    const s = this.store.submitted;
+    const last = (s.lastName || '').trim().toUpperCase();
+    const first = (s.givenName || '').trim();
+    const label = `${last} ${first}`.trim();
+    return label || '—';
   }
 
   private refreshViewMode(): void {
@@ -70,6 +84,18 @@ export class ProfileEditComponent {
     }
   }
 
+  private readPhotoAsDataUrl(file: File | null): Promise<string | null> {
+    if (!file || !isImageFile(file)) {
+      return Promise.resolve(null);
+    }
+    return new Promise((resolve) => {
+      const reader = new FileReader();
+      reader.onload = () => resolve(typeof reader.result === 'string' ? reader.result : null);
+      reader.onerror = () => resolve(null);
+      reader.readAsDataURL(file);
+    });
+  }
+
   onCancel(): void {
     this.store.resetDraftToInitial();
     this.profilePhoto = null;
@@ -79,8 +105,9 @@ export class ProfileEditComponent {
     this.snackBar.open('Form reset to demo defaults.', 'OK', { duration: 4000 });
   }
 
-  onSubmit(): void {
-    this.store.commitSubmit(this.profilePhoto, this.cvFile);
+  async onSubmit(): Promise<void> {
+    const photoDataUrl = await this.readPhotoAsDataUrl(this.profilePhoto);
+    this.store.commitSubmit(this.profilePhoto, this.cvFile, photoDataUrl);
     const extras: string[] = [];
     if (this.profilePhoto) {
       extras.push(`Photo: ${this.profilePhoto.name}`);
@@ -93,5 +120,17 @@ export class ProfileEditComponent {
       duration: 6500
     });
     void this.router.navigate(['/profile/profiles']);
+  }
+
+  onVerifySave(): void {
+    this.snackBar.open('Verification progress saved locally (demo).', 'OK', { duration: 4500 });
+  }
+
+  onVerifySubmit(): void {
+    this.snackBar.open('Verification submitted for review (demo).', 'OK', { duration: 5000 });
+  }
+
+  onVerifyApprove(): void {
+    this.snackBar.open('Operator marked verified (demo — no backend).', 'OK', { duration: 5500 });
   }
 }
