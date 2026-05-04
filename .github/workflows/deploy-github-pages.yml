@@ -6,16 +6,14 @@ on:
   workflow_dispatch:
 
 permissions:
-  contents: read
-  pages: write
-  id-token: write
+  contents: write
 
 concurrency:
   group: pages
-  cancel-in-progress: false
+  cancel-in-progress: true
 
 jobs:
-  build:
+  build-and-publish:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -32,19 +30,12 @@ jobs:
       - name: SPA fallback for GitHub Pages
         run: cp dist/app/browser/index.html dist/app/browser/404.html
 
-      - name: Disable Jekyll (serve all static files)
+      - name: Disable Jekyll (serve Angular assets as-is)
         run: touch dist/app/browser/.nojekyll
 
-      - uses: actions/upload-pages-artifact@v3
+      - name: Push built site to gh-pages branch
+        uses: peaceiris/actions-gh-pages@v4
         with:
-          path: dist/app/browser
-
-  deploy:
-    needs: build
-    runs-on: ubuntu-latest
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
-    steps:
-      - id: deployment
-        uses: actions/deploy-pages@v4
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./dist/app/browser
+          force_orphan: true
