@@ -1,0 +1,15 @@
+<div class="upload-modal-container">
+  <h2 class="modal-title">Add Pick Lists to {{ data.campaignName }}</h2>
+  
+  <div class="modal-content app-outlined-form">
+    <mat-form-field appearance="outline" floatLabel="always" class="filename-field">
+      <input matInput [(ngModel)]="filename" name="filename">
+    </mat-form-field>
+  </div>
+
+  <div class="modal-actions">
+    <button mat-flat-button type="button" class="btn-save" (click)="onCancel()">Save</button>
+    <button mat-flat-button type="button" class="btn-run" (click)="onRun()">Run</button>
+    <button mat-flat-button type="button" class="btn-primary" (click)="onUpload()">Upload</button>
+  </div>
+</div>

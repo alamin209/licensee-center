@@ -1,3 +1,51 @@
 :host {
   display: block;
 }
+
+.all-campaigns-card {
+  .custom-card-header {
+    margin-bottom: 24px;
+  }
+
+  mat-card-content {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+}
+
+.all-campaigns-toolbar {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-bottom: 8px;
+
+  .operator-select {
+    max-width: 300px;
+  }
+
+  .toolbar-filters {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 24px;
+
+    .app-data-table-toolbar__radios {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+  }
+}
+
+@media (max-width: 600px) {
+  .all-campaigns-toolbar {
+    .toolbar-filters {
+      gap: 12px;
+      
+      .app-data-table-toolbar__radios {
+        gap: 8px;
+      }
+    }
+  }
+}

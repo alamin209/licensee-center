@@ -4,12 +4,13 @@ import { FormsModule } from '@angular/forms';
 import { MatRadioModule } from '@angular/material/radio';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
+import { MatCardModule } from '@angular/material/card';
 import { CampaignTableRow } from '../campaign-table-row.model';
 
 @Component({
   selector: 'app-my-campaigns',
   standalone: true,
-  imports: [FormsModule, MatRadioModule, MatIconModule, MatButtonModule],
+  imports: [FormsModule, MatRadioModule, MatIconModule, MatButtonModule, MatCardModule],
   templateUrl: './my-campaigns.component.html',
   styleUrl: './my-campaigns.component.scss'
 })
@@ -42,6 +43,6 @@ export class MyCampaignsComponent {
   ];
 
   openEdit(row: CampaignTableRow): void {
-    void this.router.navigate(['/campaigns/my/campaign', row.id]);
+    void this.router.navigate(['/campaigns/campaign-property', row.id]);
   }
 }

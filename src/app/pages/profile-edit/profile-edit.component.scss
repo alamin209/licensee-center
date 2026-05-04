@@ -8,13 +8,6 @@
   color: var(--mat-sys-on-surface-variant, rgba(0, 0, 0, 0.6));
 }
 
-.field-section-hint {
-  margin: 0 0 0.75rem;
-  font-size: 0.8125rem;
-  line-height: 1.4;
-  color: var(--mat-sys-on-surface-variant, rgba(0, 0, 0, 0.6));
-}
-
 .profile-edit-form {
   display: block;
 }
@@ -74,15 +67,6 @@
       text-decoration: underline;
     }
   }
-}
-
-:host ::ng-deep .field-readonly.mat-mdc-input-element {
-  cursor: default;
-  caret-color: transparent;
-}
-
-:host ::ng-deep .mat-mdc-text-field-wrapper:has(.field-readonly) .mat-mdc-text-field-input {
-  background-color: #f1f3f5 !important;
 }
 
 .profile-readonly__photo-cell {

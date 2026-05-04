@@ -1,0 +1,57 @@
+.upload-modal-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 24px;
+}
+
+.modal-title {
+  margin: 0;
+  font-family: Roboto, 'Helvetica Neue', sans-serif;
+  font-weight: 500;
+  font-size: 20px;
+  line-height: 28px;
+  color: #404c54;
+  text-align: center;
+}
+
+.modal-content {
+  width: 100%;
+  
+  .filename-field {
+    width: 100%;
+    margin-bottom: 0;
+  }
+}
+
+.modal-actions {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  gap: 12px;
+  width: 100%;
+
+  button {
+    min-width: 80px;
+    height: 36px;
+    border-radius: 4px;
+    font-size: 14px;
+    font-weight: 500;
+    text-transform: none;
+  }
+
+  .btn-save {
+    background-color: #f1f3f4;
+    color: #404c54;
+  }
+
+  .btn-run {
+    background-color: #1c6ce4;
+    color: white;
+  }
+
+  .btn-primary {
+    background-color: #1c6ce4;
+    color: white;
+  }
+}

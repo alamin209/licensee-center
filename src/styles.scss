@@ -13,6 +13,17 @@ html {
   --app-form-field-stack-gap: 28px;
   // All `*-dialog-shell` / modal panels: inset on `.mdc-dialog__surface` (single knob).
   --app-dialog-shell-padding: 24px;
+
+  // Branded colors for interactive elements (Radio, Checkbox, etc.)
+  --mat-sys-primary: #1c6ce4;
+  --mdc-radio-selected-icon-color: #1c6ce4;
+  --mdc-radio-selected-hover-icon-color: #1565c0;
+  --mdc-radio-selected-pressed-icon-color: #1565c0;
+  --mdc-radio-selected-focus-icon-color: #1c6ce4;
+  --mdc-checkbox-selected-icon-color: #1c6ce4;
+  --mdc-checkbox-selected-hover-icon-color: #1565c0;
+  --mdc-checkbox-selected-pressed-icon-color: #1565c0;
+  --mdc-checkbox-selected-focus-icon-color: #1c6ce4;
 }
 
 body {
@@ -93,42 +104,4 @@ app-root {
   flex-shrink: 0;
   max-height: none !important;
   overflow: visible !important;
-}
-
-// ---------------------------------------------------------------------------
-// Global toast (MatSnackBar) — high contrast, top-center, easy to read.
-// `panelClass: 'app-snackbar-panel'` is set via MAT_SNACK_BAR_DEFAULT_OPTIONS.
-// ---------------------------------------------------------------------------
-.cdk-overlay-container .mat-mdc-snack-bar-container.app-snackbar-panel {
-  margin-top: 16px !important;
-}
-
-.app-snackbar-panel .mat-mdc-snack-bar-surface {
-  background-color: #0f172a !important;
-  color: #f1f5f9 !important;
-  border-radius: 10px !important;
-  box-shadow:
-    0 0 0 1px rgba(255, 255, 255, 0.08),
-    0 12px 40px rgba(0, 0, 0, 0.35) !important;
-  min-width: min(440px, calc(100vw - 32px)) !important;
-  max-width: min(560px, calc(100vw - 24px)) !important;
-  padding: 14px 12px 14px 18px !important;
-}
-
-.app-snackbar-panel .mat-mdc-snack-bar-label {
-  font-size: 15px !important;
-  line-height: 1.45 !important;
-  font-weight: 500 !important;
-  letter-spacing: 0.01em;
-}
-
-.app-snackbar-panel .mat-mdc-button.mat-mdc-snack-bar-action:not(:disabled) {
-  color: #7dd3fc !important;
-  font-weight: 600 !important;
-  letter-spacing: 0.02em;
-}
-
-.app-snackbar-panel .mat-mdc-button.mat-mdc-snack-bar-action:not(:disabled):hover {
-  color: #bae6fd !important;
-  background-color: rgba(255, 255, 255, 0.06) !important;
 }
