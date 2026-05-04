@@ -1,0 +1,79 @@
+// Match spec; Material headline variables can override without higher specificity.
+.add-property-dialog__title.mat-mdc-dialog-title {
+  margin: 0 0 24px;
+  padding: 0 2px;
+  font-family: Roboto, 'Helvetica Neue', sans-serif !important;
+  font-weight: 500 !important;
+  font-size: 20px !important;
+  line-height: 32px !important;
+  letter-spacing: 0 !important;
+  color: #333 !important;
+  vertical-align: middle;
+}
+
+.add-property-dialog__body {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  padding-top: 0;
+  min-width: min(400px, 85vw);
+
+  mat-form-field {
+    width: 100%;
+  }
+}
+
+// Rely on flex `gap` for vertical rhythm; avoid double spacing with global outlined stack.
+.add-property-dialog__body.app-outlined-form mat-form-field {
+  margin-bottom: 0;
+}
+
+.add-property-dialog__radios {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  column-gap: 20px;
+  row-gap: 12px;
+  padding: 8px 0 4px;
+
+  --mat-sys-primary: #1c6ce4;
+  --mdc-radio-selected-icon-color: #1c6ce4;
+  --mdc-radio-selected-hover-icon-color: #1565c0;
+  --mdc-radio-selected-pressed-icon-color: #1565c0;
+  --mdc-radio-selected-focus-icon-color: #1c6ce4;
+}
+
+.add-property-dialog__radio-label {
+  flex: 0 0 auto;
+  font-family: Roboto, 'Helvetica Neue', sans-serif;
+  font-size: 16px;
+  line-height: 24px;
+  letter-spacing: 0.15px;
+  color: #404c54;
+}
+
+.add-property-dialog__radio-group {
+  display: inline-flex;
+  flex-wrap: wrap;
+  align-items: center;
+  column-gap: 16px;
+}
+
+.add-property-dialog__radio-group .mat-mdc-radio-button .mdc-form-field {
+  align-items: center;
+}
+
+.add-property-dialog__radio-group .mat-mdc-radio-button .mdc-label {
+  padding-left: 4px;
+  font-size: 14px;
+  line-height: 24px;
+}
+
+.add-property-dialog__actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 12px;
+  padding-top: 20px;
+  margin-top: 4px;
+}

@@ -1,0 +1,152 @@
+:host {
+  display: block;
+}
+
+.browse-picklists-card {
+  .custom-card-header {
+    margin-bottom: 0;
+  }
+}
+
+.browse-picklists-filters {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  column-gap: 24px;
+  row-gap: 0;
+  align-items: start;
+  margin-bottom: 24px;
+
+  mat-form-field {
+    width: 100%;
+    min-width: 0;
+  }
+}
+
+.browse-picklists-type-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px 24px;
+  margin-bottom: 24px;
+
+  --mat-sys-primary: #1c6ce4;
+  --mdc-radio-selected-icon-color: #1c6ce4;
+  --mdc-radio-selected-hover-icon-color: #1565c0;
+  --mdc-radio-selected-pressed-icon-color: #1565c0;
+  --mdc-radio-selected-focus-icon-color: #1c6ce4;
+}
+
+.browse-picklists-type-radios {
+  display: inline-flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px 16px;
+}
+
+.browse-picklists-type-radios .mat-mdc-radio-button .mdc-form-field,
+.browse-picklists-type-row .mat-mdc-checkbox .mdc-form-field {
+  align-items: center;
+}
+
+// Outlined gray checkbox + gray checkmark on white (not filled primary).
+:host ::ng-deep .browse-picklists-checkbox.mat-mdc-checkbox {
+  --mat-checkbox-checked-state-layer-color: transparent;
+  --mat-checkbox-hover-state-layer-opacity: 0;
+  --mat-checkbox-pressed-state-layer-opacity: 0;
+  --mdc-checkbox-unselected-focus-state-layer-opacity: 0;
+  --mdc-checkbox-selected-focus-state-layer-opacity: 0;
+  --mdc-checkbox-unselected-hover-state-layer-opacity: 0;
+  --mdc-checkbox-selected-hover-state-layer-opacity: 0;
+  --mat-sys-focus-state-layer-opacity: 0;
+  --mat-sys-hover-state-layer-opacity: 0;
+
+  .mdc-form-field {
+    color: #404c54;
+  }
+
+  .mdc-label {
+    color: #404c54 !important;
+    font-size: 14px;
+    line-height: 24px;
+    letter-spacing: 0.15px;
+  }
+
+  .mdc-checkbox__background {
+    border-color: #5c6670 !important;
+    border-width: 1.5px !important;
+    border-radius: 3px !important;
+    background-color: #ffffff !important;
+  }
+
+  .mdc-checkbox__native-control:enabled:checked ~ .mdc-checkbox__background,
+  .mdc-checkbox__native-control:enabled:indeterminate ~ .mdc-checkbox__background {
+    background-color: #ffffff !important;
+    border-color: #5c6670 !important;
+  }
+
+  .mdc-checkbox:hover > .mdc-checkbox__native-control ~ .mdc-checkbox__background {
+    background-color: #ffffff !important;
+    border-color: #5c6670 !important;
+  }
+
+  .mdc-checkbox__native-control:focus:focus:checked ~ .mdc-checkbox__background,
+  .mdc-checkbox__native-control:focus:focus:indeterminate ~ .mdc-checkbox__background {
+    background-color: #ffffff !important;
+    border-color: #5c6670 !important;
+  }
+
+  .mdc-checkbox__checkmark {
+    color: #404c54 !important;
+  }
+
+  .mdc-checkbox__checkmark-path {
+    stroke: #404c54 !important;
+  }
+
+  // No hover halo / ripple.
+  .mdc-checkbox:hover > .mdc-checkbox__ripple,
+  .mdc-checkbox:hover > .mat-mdc-checkbox-ripple > .mat-ripple-element {
+    opacity: 0 !important;
+    background-color: transparent !important;
+  }
+
+  // No focus halo / ripple / strong-focus ring on keyboard focus.
+  .mdc-checkbox .mdc-checkbox__native-control:focus + .mdc-checkbox__ripple,
+  .mdc-checkbox .mdc-checkbox__native-control:focus:checked + .mdc-checkbox__ripple {
+    opacity: 0 !important;
+    background-color: transparent !important;
+  }
+
+  .mdc-checkbox .mdc-checkbox__native-control:focus ~ .mat-mdc-checkbox-ripple .mat-ripple-element,
+  .mdc-checkbox .mdc-checkbox__native-control:focus:checked ~ .mat-mdc-checkbox-ripple .mat-ripple-element {
+    opacity: 0 !important;
+    background-color: transparent !important;
+  }
+
+  .mdc-checkbox__native-control:focus ~ .mat-mdc-checkbox-ripple.mat-focus-indicator::before {
+    content: none !important;
+    display: none !important;
+  }
+}
+
+.browse-picklists-table-scroll {
+  overflow-x: auto;
+  margin: 0 -20px;
+  padding: 0 20px;
+}
+
+.browse-picklists-table {
+  min-width: 640px;
+
+  thead th {
+    background-color: #f4f6f8;
+    border-bottom-color: #e8ecef;
+  }
+}
+
+@media (max-width: 960px) {
+  .browse-picklists-filters {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}

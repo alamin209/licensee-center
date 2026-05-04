@@ -1,0 +1,96 @@
+/* You can add global styles to this file, and also import other style files */
+@use './app-page-layout';
+@use './app-outlined-forms';
+@use './app-data-table';
+
+html {
+  height: 100%;
+  // Notch width math in mat-form-field; without 1, MDC still draws labels at scale(0.75) from embedded CSS.
+  --mat-mdc-form-field-floating-label-scale: 1;
+  // Unset without a full Material theme; without it, outline radius and horizontal padding desync.
+  --mdc-outlined-text-field-container-shape: 4px;
+  // Vertical space under each outlined field (profile, campaigns, any `.app-outlined-form` / `.form-card`).
+  --app-form-field-stack-gap: 28px;
+  // All `*-dialog-shell` / modal panels: inset on `.mdc-dialog__surface` (single knob).
+  --app-dialog-shell-padding: 24px;
+}
+
+body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+  background-color: #f5f6f8;
+}
+
+app-root {
+  display: block;
+  min-height: 100%;
+}
+
+// ---------------------------------------------------------------------------
+// Global Material overlays (no full color theme loaded).
+// mat-select panels / datepicker are portaled to body; keep solid surfaces.
+// mat-select triggers use the same transparent outlined wrapper as text inputs
+// (see app-outlined-forms); do not override here or selects look different.
+// ---------------------------------------------------------------------------
+.mat-mdc-select-panel.mdc-menu-surface,
+.mat-mdc-select-panel-above.mdc-menu-surface {
+  background-color: #ffffff !important;
+}
+
+.mat-mdc-select-panel .mat-mdc-option,
+.mat-mdc-select-panel-above .mat-mdc-option {
+  background-color: #ffffff;
+}
+
+.mat-datepicker-content,
+.mat-datepicker-content-container {
+  background-color: #ffffff;
+}
+
+// MDC dialog starts inner container at opacity:0 until enter animation; if animations
+// do not complete, the modal looks blank. Force visible for this panel.
+// Do not stack Material title/content/actions padding (surface padding carries the inset).
+.country-locale-dialog-shell,
+.add-property-dialog-shell,
+.browse-picklists-modal-shell {
+  --mat-dialog-headline-padding: 0;
+  --mat-dialog-content-padding: 0;
+  --mat-dialog-with-actions-content-padding: 0;
+  --mat-dialog-actions-padding: 0;
+}
+
+.country-locale-dialog-shell .mat-mdc-dialog-inner-container,
+.add-property-dialog-shell .mat-mdc-dialog-inner-container,
+.browse-picklists-modal-shell .mat-mdc-dialog-inner-container {
+  opacity: 1 !important;
+  transition: none !important;
+}
+
+.country-locale-dialog-shell .mat-mdc-dialog-surface.mdc-dialog__surface,
+.add-property-dialog-shell .mat-mdc-dialog-surface.mdc-dialog__surface,
+.browse-picklists-modal-shell .mat-mdc-dialog-surface.mdc-dialog__surface {
+  border-radius: 8px;
+  background-color: #ffffff;
+  // Default surface is height:100% + scroll; as a flex child the content region can shrink
+  // and clip outlined labels. Short dialogs: size to content instead.
+  height: auto !important;
+  max-height: min(90vh, 640px);
+  overflow-y: visible;
+}
+
+.country-locale-dialog-shell .mat-mdc-dialog-surface.mdc-dialog__surface,
+.add-property-dialog-shell .mat-mdc-dialog-surface.mdc-dialog__surface,
+.browse-picklists-modal-shell .mat-mdc-dialog-surface.mdc-dialog__surface {
+  padding: var(--app-dialog-shell-padding);
+}
+
+.country-locale-dialog-shell .mat-mdc-dialog-content.mdc-dialog__content,
+.add-property-dialog-shell .mat-mdc-dialog-content.mdc-dialog__content,
+.browse-picklists-modal-shell .mat-mdc-dialog-content.mdc-dialog__content {
+  flex-grow: 0;
+  flex-shrink: 0;
+  max-height: none !important;
+  overflow: visible !important;
+}

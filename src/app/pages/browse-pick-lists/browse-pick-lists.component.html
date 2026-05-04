@@ -1,0 +1,90 @@
+<div class="app-page">
+  <div class="page-header">
+    <h1>Campaigns</h1>
+  </div>
+
+  <mat-card class="form-card app-outlined-form browse-picklists-card" appearance="outlined">
+    <mat-card-header class="custom-card-header card-header-split">
+      <mat-card-title>Browse Pick Lists</mat-card-title>
+      <button mat-flat-button type="button" class="btn-primary" (click)="openBrowseModal()">Browse File</button>
+    </mat-card-header>
+
+    <mat-card-content class="profile-form">
+      <div class="browse-picklists-filters">
+        <mat-form-field appearance="outline" floatLabel="always">
+          <mat-label>Select Campaign Name</mat-label>
+          <mat-select [(ngModel)]="campaignNameKey" name="browseCampaignName">
+            <mat-option value="chicago-il">Chicago, Illinois</mat-option>
+            <mat-option value="san-diego">San Diego, CA</mat-option>
+            <mat-option value="bali">Bali</mat-option>
+          </mat-select>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" floatLabel="always">
+          <mat-label>Select Campaign Number</mat-label>
+          <mat-select [(ngModel)]="campaignNumberKey" name="browseCampaignNumber">
+            <mat-option value="00001">00001</mat-option>
+            <mat-option value="00005">00005</mat-option>
+            <mat-option value="00002">00002</mat-option>
+          </mat-select>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" floatLabel="always">
+          <mat-label>Select Operator</mat-label>
+          <mat-select [(ngModel)]="operatorKey" name="browseOperator">
+            <mat-option value="all">All</mat-option>
+            <mat-option value="self">Self</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+
+      <div class="browse-picklists-type-row">
+        <mat-radio-group [(ngModel)]="typeFilter" name="browseTypeFilter" class="browse-picklists-type-radios">
+          <mat-radio-button value="all" color="primary">All</mat-radio-button>
+          <mat-radio-button value="agent" color="primary">Agent</mat-radio-button>
+          <mat-radio-button value="brandSyndicate" color="primary">Brand/syndicate</mat-radio-button>
+          <mat-radio-button value="geographic" color="primary">Geographic</mat-radio-button>
+          <mat-radio-button value="thematic" color="primary">Thematic</mat-radio-button>
+        </mat-radio-group>
+        <mat-checkbox
+          class="browse-picklists-checkbox"
+          [(ngModel)]="viewNoPickLists"
+          name="viewNoPickLists"
+        >
+          View No Pick Lists
+        </mat-checkbox>
+      </div>
+
+      <div class="browse-picklists-table-scroll">
+        <table class="app-data-table browse-picklists-table">
+          <thead>
+            <tr>
+              <th scope="col">ID</th>
+              <th scope="col">Name</th>
+              <th scope="col">Type</th>
+              <th scope="col">Pick List Date</th>
+              <th scope="col">No</th>
+              <th scope="col" class="app-data-table__col--actions" aria-label="Actions"></th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (row of rows; track row.id) {
+              <tr>
+                <td>{{ row.id }}</td>
+                <td>{{ row.name }}</td>
+                <td>{{ row.type }}</td>
+                <td>{{ row.pickListDate }}</td>
+                <td>{{ row.count }}</td>
+                <td class="app-data-table__col--actions">
+                  <button mat-icon-button type="button" class="app-data-table__icon-btn" [attr.aria-label]="'View ' + row.name">
+                    <mat-icon>visibility</mat-icon>
+                  </button>
+                </td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    </mat-card-content>
+  </mat-card>
+</div>

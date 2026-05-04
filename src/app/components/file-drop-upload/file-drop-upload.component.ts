@@ -1,0 +1,146 @@
+import { Component, EventEmitter, Input, OnChanges, OnDestroy, Output, SimpleChanges } from '@angular/core';
+import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
+import { assignFileToInput, isImageFile, isPdfOrWordFile } from '../../utils/file-helpers';
+
+export type FileDropUploadMode = 'image' | 'document';
+
+@Component({
+  selector: 'app-file-drop-upload',
+  standalone: true,
+  imports: [MatButtonModule, MatIconModule],
+  templateUrl: './file-drop-upload.component.html',
+  styleUrl: './file-drop-upload.component.scss'
+})
+export class FileDropUploadComponent implements OnChanges, OnDestroy {
+  @Input({ required: true }) label!: string;
+  @Input() hint = '';
+  @Input({ required: true }) accept!: string;
+  @Input({ required: true }) dropTitle!: string;
+  @Input() dropSub = '';
+  @Input() mode: FileDropUploadMode = 'image';
+
+  @Output() fileChange = new EventEmitter<File | null>();
+
+  dropActive = false;
+  displayName = '';
+  previewUrl: string | null = null;
+  /** Updated when file state or mode changes; avoids getter work each change detection. */
+  hasFile = false;
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['mode']) {
+      this.syncHasFile();
+    }
+  }
+
+  ngOnDestroy(): void {
+    this.revokePreview();
+  }
+
+  private syncHasFile(): void {
+    this.hasFile = this.mode === 'image' ? !!this.previewUrl : !!this.displayName;
+  }
+
+  onNativeChange(event: Event): void {
+    this.apply((event.target as HTMLInputElement).files?.[0], event.target as HTMLInputElement);
+  }
+
+  onDragOver(event: DragEvent): void {
+    event.preventDefault();
+    event.stopPropagation();
+    if (event.dataTransfer) {
+      event.dataTransfer.dropEffect = 'copy';
+    }
+  }
+
+  onDragEnter(event: DragEvent): void {
+    event.preventDefault();
+    event.stopPropagation();
+    this.dropActive = true;
+  }
+
+  onDragLeave(event: DragEvent): void {
+    event.preventDefault();
+    const next = event.relatedTarget as Node | null;
+    const root = event.currentTarget as HTMLElement;
+    if (!next || !root.contains(next)) {
+      this.dropActive = false;
+    }
+  }
+
+  onDrop(event: DragEvent, fileInput: HTMLInputElement): void {
+    event.preventDefault();
+    event.stopPropagation();
+    this.dropActive = false;
+    const file = event.dataTransfer?.files?.[0];
+    if (file) {
+      this.apply(file, fileInput);
+    }
+  }
+
+  clear(fileInput: HTMLInputElement): void {
+    this.revokePreview();
+    this.displayName = '';
+    fileInput.value = '';
+    this.syncHasFile();
+    this.fileChange.emit(null);
+  }
+
+  private apply(file: File | undefined, input: HTMLInputElement): void {
+    if (this.mode === 'image') {
+      this.applyImage(file, input);
+    } else {
+      this.applyDocument(file, input);
+    }
+  }
+
+  private applyImage(file: File | undefined, input: HTMLInputElement): void {
+    this.revokePreview();
+    if (!file) {
+      this.displayName = '';
+      this.syncHasFile();
+      this.fileChange.emit(null);
+      return;
+    }
+    if (!isImageFile(file)) {
+      input.value = '';
+      this.displayName = '';
+      this.syncHasFile();
+      this.fileChange.emit(null);
+      return;
+    }
+    this.displayName = file.name;
+    this.previewUrl = URL.createObjectURL(file);
+    assignFileToInput(file, input);
+    this.syncHasFile();
+    this.fileChange.emit(file);
+  }
+
+  private applyDocument(file: File | undefined, input: HTMLInputElement): void {
+    if (!file) {
+      this.displayName = '';
+      this.syncHasFile();
+      this.fileChange.emit(null);
+      return;
+    }
+    if (!isPdfOrWordFile(file)) {
+      input.value = '';
+      this.displayName = '';
+      this.syncHasFile();
+      this.fileChange.emit(null);
+      return;
+    }
+    this.displayName = file.name;
+    assignFileToInput(file, input);
+    this.syncHasFile();
+    this.fileChange.emit(file);
+  }
+
+  private revokePreview(): void {
+    if (this.previewUrl) {
+      URL.revokeObjectURL(this.previewUrl);
+      this.previewUrl = null;
+    }
+  }
+}

@@ -1,0 +1,122 @@
+.campaign-card-header {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+
+  mat-card-title {
+    flex: 1;
+    min-width: 0;
+  }
+}
+
+// Row-pair grid: each row is one logical pair (left + right), so uneven
+// heights (e.g. Self Licensing vs Select License) do not desync later rows.
+// Vertical spacing under fields: `html { --app-form-field-stack-gap }` + `app-outlined-forms.scss`.
+.campaigns-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  column-gap: 24px;
+  row-gap: 0;
+  align-items: start;
+
+  mat-form-field,
+  .upload-field,
+  .radio-field {
+    width: 100%;
+    min-width: 0;
+  }
+}
+
+.campaign-name-field {
+  cursor: pointer;
+
+  input[readonly] {
+    cursor: pointer;
+  }
+}
+
+.campaigns-grid-span {
+  grid-column: 1 / -1;
+}
+
+.campaigns-locale-strip {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+  margin-bottom: var(--app-form-field-stack-gap, 28px);
+}
+
+.campaigns-locale-summary {
+  font-family: Roboto, 'Helvetica Neue', sans-serif;
+  font-size: 14px;
+  line-height: 24px;
+  letter-spacing: 0.15px;
+  color: #404c54;
+}
+
+.radio-field {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  column-gap: 12px;
+  row-gap: 4px;
+  box-sizing: border-box;
+  border: none;
+  padding: 0;
+  // Align with mat-radio / theme (no global Material color theme).
+  --mat-sys-primary: #1c6ce4;
+  --mdc-radio-selected-icon-color: #1c6ce4;
+  --mdc-radio-selected-hover-icon-color: #1565c0;
+  --mdc-radio-selected-pressed-icon-color: #1565c0;
+  --mdc-radio-selected-focus-icon-color: #1c6ce4;
+
+  &__label {
+    flex: 0 0 auto;
+    font-family: Roboto, 'Helvetica Neue', sans-serif;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 150%;
+    letter-spacing: 0.15px;
+    // Design: leading-trim: none — not widely supported in browsers yet; line-height 150% matches spec.
+    color: #404c54;
+  }
+
+  &__group {
+    display: inline-flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: center;
+    column-gap: 12px;
+    row-gap: 0;
+    line-height: 24px;
+  }
+}
+
+:host ::ng-deep .radio-field {
+  .mat-mdc-radio-button .mdc-form-field {
+    align-items: center;
+  }
+
+  .mat-mdc-radio-button .mdc-label {
+    padding-left: 4px;
+    font-size: 14px;
+    line-height: 24px;
+  }
+}
+
+@media (max-width: 900px) {
+  .campaigns-grid {
+    column-gap: 16px;
+  }
+}
+
+@media (max-width: 720px) {
+  .campaigns-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}

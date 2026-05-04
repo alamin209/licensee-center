@@ -1,0 +1,326 @@
+<div class="app-page">
+  <div class="page-header">
+    <h1>My Campaigns</h1>
+  </div>
+
+  <mat-card class="form-card app-outlined-form campaign-edit-card" appearance="outlined">
+    <mat-card-header class="custom-card-header card-header-split campaign-edit-card__header">
+      <mat-card-title>{{ vm.propertyTitle }}</mat-card-title>
+      <button mat-flat-button type="button" class="btn-primary" (click)="saveMain()">Save</button>
+    </mat-card-header>
+
+    <mat-card-content class="profile-form">
+      <div class="campaign-edit-grid">
+        <mat-form-field appearance="outline">
+          <mat-label>Name of Campaign</mat-label>
+          <input matInput name="nameOfCampaign" [(ngModel)]="vm.nameOfCampaign" />
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+          <mat-label>Campaign ID</mat-label>
+          <input matInput name="campaignId" [(ngModel)]="vm.campaignId" />
+        </mat-form-field>
+      </div>
+
+      <div class="campaign-edit-grid">
+        <mat-form-field appearance="outline">
+          <mat-label>Full Name</mat-label>
+          <input matInput name="fullName" [(ngModel)]="vm.fullName" />
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+          <mat-label>Short Name</mat-label>
+          <input matInput name="shortName" [(ngModel)]="vm.shortName" />
+        </mat-form-field>
+      </div>
+
+      <div class="campaign-edit-grid">
+        <mat-form-field appearance="outline">
+          <mat-label>Street Address</mat-label>
+          <input matInput name="streetAddress" [(ngModel)]="vm.streetAddress" />
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+          <mat-label>Address (2)</mat-label>
+          <input matInput name="address2" [(ngModel)]="vm.address2" />
+        </mat-form-field>
+      </div>
+
+      <div class="campaign-edit-grid campaign-edit-grid--city">
+        <mat-form-field appearance="outline">
+          <mat-label>City</mat-label>
+          <input matInput name="city" [(ngModel)]="vm.city" />
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+          <mat-label>State</mat-label>
+          <input matInput name="state" [(ngModel)]="vm.state" />
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+          <mat-label>Zip</mat-label>
+          <input matInput name="zip" [(ngModel)]="vm.zip" />
+        </mat-form-field>
+      </div>
+
+      <div class="campaign-edit-grid">
+        <mat-form-field appearance="outline">
+          <mat-label>Country</mat-label>
+          <input matInput name="country" [(ngModel)]="vm.country" />
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+          <mat-label>Region</mat-label>
+          <input matInput name="region" [(ngModel)]="vm.region" />
+        </mat-form-field>
+      </div>
+
+      <div class="campaign-edit-grid">
+        <mat-form-field appearance="outline">
+          <mat-label>Website</mat-label>
+          <input matInput name="website" [(ngModel)]="vm.website" />
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+          <mat-label>Phone</mat-label>
+          <input matInput name="phone" [(ngModel)]="vm.phone" />
+        </mat-form-field>
+      </div>
+
+      <div class="campaign-edit-grid">
+        <mat-form-field appearance="outline">
+          <mat-label>Brand</mat-label>
+          <input matInput name="brand" [(ngModel)]="vm.brand" />
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+          <mat-label>Chain/Group</mat-label>
+          <input matInput name="chainGroup" [(ngModel)]="vm.chainGroup" />
+        </mat-form-field>
+      </div>
+
+      <div class="campaign-edit-grid">
+        <mat-form-field appearance="outline">
+          <mat-label>Syndicate</mat-label>
+          <input matInput name="syndicate" [(ngModel)]="vm.syndicate" />
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+          <mat-label>Stars</mat-label>
+          <input matInput name="stars" [(ngModel)]="vm.stars" />
+        </mat-form-field>
+      </div>
+
+      <div class="campaign-edit-grid campaign-edit-grid--metrics">
+        <mat-form-field appearance="outline">
+          <mat-label>Room</mat-label>
+          <input matInput name="room" [(ngModel)]="vm.room" />
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+          <mat-label>Suites</mat-label>
+          <input matInput name="suites" [(ngModel)]="vm.suites" />
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+          <mat-label>Total</mat-label>
+          <input matInput name="total" [(ngModel)]="vm.total" />
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+          <mat-label>Product Price Vary %</mat-label>
+          <input matInput name="productPriceVary" [(ngModel)]="vm.productPriceVary" />
+        </mat-form-field>
+      </div>
+
+      <div class="campaign-edit-grid campaign-edit-grid--trip-date">
+        <mat-form-field appearance="outline">
+          <mat-label>Trip Advisor Ranking</mat-label>
+          <input matInput name="tripAdvisorRanking" [(ngModel)]="vm.tripAdvisorRanking" />
+        </mat-form-field>
+        <div class="campaign-edit-grid__spacer" aria-hidden="true"></div>
+        <mat-form-field appearance="outline">
+          <mat-label>Date</mat-label>
+          <input matInput name="dateField" [(ngModel)]="vm.dateField" />
+        </mat-form-field>
+      </div>
+
+      <div class="campaign-edit-grid campaign-edit-grid--ratings">
+        <mat-form-field appearance="outline">
+          <mat-label>Excellent</mat-label>
+          <input matInput name="excellent" [(ngModel)]="vm.excellent" />
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+          <mat-label>Very Good</mat-label>
+          <input matInput name="veryGood" [(ngModel)]="vm.veryGood" />
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+          <mat-label>Average</mat-label>
+          <input matInput name="average" [(ngModel)]="vm.average" />
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+          <mat-label>Poor</mat-label>
+          <input matInput name="poor" [(ngModel)]="vm.poor" />
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+          <mat-label>Terrible</mat-label>
+          <input matInput name="terrible" [(ngModel)]="vm.terrible" />
+        </mat-form-field>
+      </div>
+
+      <div class="campaign-edit-grid campaign-edit-grid--quad">
+        <div class="upload-field">
+          <mat-form-field appearance="outline" floatLabel="always" class="file-upload">
+            <mat-label>L1 Image</mat-label>
+            <span matTextPrefix class="file-upload__prefix">
+              <button type="button" mat-button class="file-upload__btn" (click)="l1Input.click()">Choose file</button>
+              <span class="file-upload__divider" aria-hidden="true"></span>
+            </span>
+            <input matInput readonly [value]="vm.l1Image" placeholder="File not selected" />
+          </mat-form-field>
+          <input #l1Input type="file" class="upload-field__native" accept="image/*" (change)="onFileSelected($event, 'l1')" />
+        </div>
+        <div class="upload-field">
+          <mat-form-field appearance="outline" floatLabel="always" class="file-upload">
+            <mat-label>R1 Image</mat-label>
+            <span matTextPrefix class="file-upload__prefix">
+              <button type="button" mat-button class="file-upload__btn" (click)="r1Input.click()">Choose file</button>
+              <span class="file-upload__divider" aria-hidden="true"></span>
+            </span>
+            <input matInput readonly [value]="vm.r1Image" placeholder="File not selected" />
+          </mat-form-field>
+          <input #r1Input type="file" class="upload-field__native" accept="image/*" (change)="onFileSelected($event, 'r1')" />
+        </div>
+        <div class="upload-field">
+          <mat-form-field appearance="outline" floatLabel="always" class="file-upload">
+            <mat-label>L2 Image</mat-label>
+            <span matTextPrefix class="file-upload__prefix">
+              <button type="button" mat-button class="file-upload__btn" (click)="l2Input.click()">Choose file</button>
+              <span class="file-upload__divider" aria-hidden="true"></span>
+            </span>
+            <input matInput readonly [value]="vm.l2Image" placeholder="File not selected" />
+          </mat-form-field>
+          <input #l2Input type="file" class="upload-field__native" accept="image/*" (change)="onFileSelected($event, 'l2')" />
+        </div>
+        <div class="upload-field">
+          <mat-form-field appearance="outline" floatLabel="always" class="file-upload">
+            <mat-label>R2 Image</mat-label>
+            <span matTextPrefix class="file-upload__prefix">
+              <button type="button" mat-button class="file-upload__btn" (click)="r2Input.click()">Choose file</button>
+              <span class="file-upload__divider" aria-hidden="true"></span>
+            </span>
+            <input matInput readonly [value]="vm.r2Image" placeholder="File not selected" />
+          </mat-form-field>
+          <input #r2Input type="file" class="upload-field__native" accept="image/*" (change)="onFileSelected($event, 'r2')" />
+        </div>
+      </div>
+
+      <section class="campaign-edit-traveller-block" aria-labelledby="traveller-rating-heading">
+        <div class="campaign-edit-traveller-shell">
+          <div class="campaign-edit-section-title" id="traveller-rating-heading">Traveller rating</div>
+          <div class="campaign-edit-traveller">
+            <div class="campaign-edit-traveller__row">
+              <span class="campaign-edit-traveller__label">Excellent</span>
+              <div class="campaign-edit-traveller__track" aria-hidden="true">
+                <div class="campaign-edit-traveller__fill" [style.width.%]="travellerBarPct(vm.excellent)"></div>
+              </div>
+              <span class="campaign-edit-traveller__value">{{ vm.excellent }}</span>
+            </div>
+            <div class="campaign-edit-traveller__row">
+              <span class="campaign-edit-traveller__label">Very Good</span>
+              <div class="campaign-edit-traveller__track" aria-hidden="true">
+                <div class="campaign-edit-traveller__fill" [style.width.%]="travellerBarPct(vm.veryGood)"></div>
+              </div>
+              <span class="campaign-edit-traveller__value">{{ vm.veryGood }}</span>
+            </div>
+            <div class="campaign-edit-traveller__row">
+              <span class="campaign-edit-traveller__label">Average</span>
+              <div class="campaign-edit-traveller__track" aria-hidden="true">
+                <div class="campaign-edit-traveller__fill" [style.width.%]="travellerBarPct(vm.average)"></div>
+              </div>
+              <span class="campaign-edit-traveller__value">{{ vm.average }}</span>
+            </div>
+            <div class="campaign-edit-traveller__row">
+              <span class="campaign-edit-traveller__label">Poor</span>
+              <div class="campaign-edit-traveller__track" aria-hidden="true">
+                <div class="campaign-edit-traveller__fill" [style.width.%]="travellerBarPct(vm.poor)"></div>
+              </div>
+              <span class="campaign-edit-traveller__value">{{ vm.poor }}</span>
+            </div>
+            <div class="campaign-edit-traveller__row">
+              <span class="campaign-edit-traveller__label">Terrible</span>
+              <div class="campaign-edit-traveller__track" aria-hidden="true">
+                <div class="campaign-edit-traveller__fill" [style.width.%]="travellerBarPct(vm.terrible)"></div>
+              </div>
+              <span class="campaign-edit-traveller__value">{{ vm.terrible }}</span>
+            </div>
+            <div class="campaign-edit-traveller__footer-row">
+              <span class="campaign-edit-traveller__total-label">Total =</span>
+              <span class="campaign-edit-traveller__total-value">{{
+                travellerTotal().toLocaleString('en-US')
+              }}</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <mat-form-field appearance="outline" floatLabel="always" class="campaign-edit-role-select">
+        <mat-label>Select Job Role</mat-label>
+        <mat-select [(ngModel)]="vm.jobRole" name="jobRole">
+          <mat-option value="general-manager">General Manager</mat-option>
+          <mat-option value="financial-controller">Financial Controller</mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <section class="campaign-edit-role" aria-labelledby="gm-heading">
+        <div class="campaign-edit-role__head">
+          <h2 id="gm-heading">General Manager</h2>
+          <button mat-flat-button type="button" class="btn-primary" (click)="saveGm()">Save</button>
+        </div>
+        <div class="campaign-edit-grid">
+          <mat-form-field appearance="outline">
+            <mat-label>Surname</mat-label>
+            <input matInput name="gmSurname" [(ngModel)]="vm.gmSurname" />
+          </mat-form-field>
+          <mat-form-field appearance="outline">
+            <mat-label>First</mat-label>
+            <input matInput name="gmFirst" [(ngModel)]="vm.gmFirst" />
+          </mat-form-field>
+        </div>
+        <div class="campaign-edit-grid campaign-edit-grid--contacts">
+          <mat-form-field appearance="outline">
+            <mat-label>Phone</mat-label>
+            <input matInput name="gmPhone" [(ngModel)]="vm.gmPhone" />
+          </mat-form-field>
+          <mat-form-field appearance="outline">
+            <mat-label>Email</mat-label>
+            <input matInput name="gmEmail" [(ngModel)]="vm.gmEmail" type="email" />
+          </mat-form-field>
+          <mat-form-field appearance="outline">
+            <mat-label>Linkedin</mat-label>
+            <input matInput name="gmLinkedin" [(ngModel)]="vm.gmLinkedin" />
+          </mat-form-field>
+        </div>
+      </section>
+
+      <section class="campaign-edit-role" aria-labelledby="fc-heading">
+        <div class="campaign-edit-role__head">
+          <h2 id="fc-heading">Financial Controller</h2>
+          <button mat-flat-button type="button" class="btn-primary" (click)="saveFc()">Save</button>
+        </div>
+        <div class="campaign-edit-grid">
+          <mat-form-field appearance="outline">
+            <mat-label>Surname</mat-label>
+            <input matInput name="fcSurname" [(ngModel)]="vm.fcSurname" />
+          </mat-form-field>
+          <mat-form-field appearance="outline">
+            <mat-label>First</mat-label>
+            <input matInput name="fcFirst" [(ngModel)]="vm.fcFirst" />
+          </mat-form-field>
+        </div>
+        <div class="campaign-edit-grid campaign-edit-grid--contacts">
+          <mat-form-field appearance="outline">
+            <mat-label>Phone</mat-label>
+            <input matInput name="fcPhone" [(ngModel)]="vm.fcPhone" />
+          </mat-form-field>
+          <mat-form-field appearance="outline">
+            <mat-label>Email</mat-label>
+            <input matInput name="fcEmail" [(ngModel)]="vm.fcEmail" type="email" />
+          </mat-form-field>
+          <mat-form-field appearance="outline">
+            <mat-label>Linkedin</mat-label>
+            <input matInput name="fcLinkedin" [(ngModel)]="vm.fcLinkedin" />
+          </mat-form-field>
+        </div>
+      </section>
+    </mat-card-content>
+  </mat-card>
+</div>

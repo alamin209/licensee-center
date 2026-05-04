@@ -1,0 +1,32 @@
+.browse-picklists-modal__title.mat-mdc-dialog-title {
+  margin: 0 0 24px;
+  padding: 0 2px;
+  font-family: Roboto, 'Helvetica Neue', sans-serif !important;
+  font-weight: 500 !important;
+  font-size: 20px !important;
+  line-height: 32px !important;
+  letter-spacing: 0 !important;
+  color: #333 !important;
+}
+
+.browse-picklists-modal__body {
+  padding-top: 0;
+  min-width: min(400px, 85vw);
+
+  mat-form-field {
+    width: 100%;
+  }
+}
+
+.browse-picklists-modal__body.app-outlined-form mat-form-field {
+  margin-bottom: 0;
+}
+
+.browse-picklists-modal__actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 12px;
+  padding-top: 20px;
+  margin-top: 4px;
+}

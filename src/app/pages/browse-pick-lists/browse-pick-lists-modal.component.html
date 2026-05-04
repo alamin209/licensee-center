@@ -1,0 +1,14 @@
+<h2 mat-dialog-title class="browse-picklists-modal__title">Add Pick Lists to {{ data.locationLabel }}</h2>
+
+<mat-dialog-content class="browse-picklists-modal__body app-outlined-form">
+  <mat-form-field appearance="outline" floatLabel="always">
+    <mat-label>Pick list code</mat-label>
+    <input matInput name="pickListCode" [(ngModel)]="code" autocomplete="off" />
+  </mat-form-field>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end" class="browse-picklists-modal__actions">
+  <button mat-flat-button type="button" class="btn-dialog-back" (click)="save()">Save</button>
+  <button mat-flat-button type="button" class="btn-primary" (click)="run()">Run</button>
+  <button mat-flat-button type="button" class="btn-primary" (click)="upload()">Upload</button>
+</mat-dialog-actions>

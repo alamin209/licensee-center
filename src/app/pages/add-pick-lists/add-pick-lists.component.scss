@@ -1,0 +1,77 @@
+:host {
+  display: block;
+}
+
+.pick-lists-card {
+  .custom-card-header {
+    margin-bottom: 0;
+  }
+}
+
+// Card body padding matches profile (`app-page-layout` `.form-card mat-card-content` = 20px).
+
+.pick-lists-body {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+// Search sits in the left half; right column intentionally empty.
+.pick-lists-search-row {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  column-gap: 24px;
+  align-items: start;
+}
+
+.pick-lists-search {
+  width: 100%;
+  min-width: 0;
+  grid-column: 1;
+
+  .pick-lists-search__icon {
+    color: #8b959d;
+  }
+}
+
+.pick-lists-filters {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  column-gap: 24px;
+  row-gap: 0;
+  align-items: start;
+
+  mat-form-field {
+    width: 100%;
+    min-width: 0;
+  }
+}
+
+.pick-lists-table-scroll {
+  overflow-x: auto;
+  margin: 0 -20px;
+  padding: 0 20px;
+}
+
+.pick-lists-table {
+  min-width: 720px;
+
+  thead th {
+    background-color: #f4f6f8;
+    border-bottom-color: #e8ecef;
+  }
+}
+
+@media (max-width: 720px) {
+  .pick-lists-search-row {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .pick-lists-search {
+    grid-column: auto;
+  }
+
+  .pick-lists-filters {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}

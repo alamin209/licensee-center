@@ -1,0 +1,161 @@
+// ---------------------------------------------------------------------------
+// Reusable data table + panel shell (campaign lists, operator tables, etc.).
+//
+// Usage:
+//   <div class="app-panel">
+//     <div class="app-data-table-toolbar">
+//       <mat-radio-group class="app-data-table-toolbar__radios">…</mat-radio-group>
+//     </div>
+//     <div class="app-data-table-scroll">
+//       <table class="app-data-table">…</table>
+//     </div>
+//   </div>
+//
+// Optional modifiers: `.app-data-table--compact`, `.app-data-table__col--actions`
+// Customize via CSS variables on `.app-data-table` or an ancestor (e.g. `--app-data-table-edge-x`).
+// Typography: thead `th` — Roboto 500 16px / 100% / 0, `#7B7B7B` (--app-data-table-header-color).
+// tbody `td` — Roboto 400 16px / 100% / 0, `#373F4A` (--app-data-table-cell-color). Padding: 12px × 16px (`--app-data-table-cell-py` × `--app-data-table-cell-px`).
+// ---------------------------------------------------------------------------
+
+.app-panel {
+  --app-panel-padding: 24px;
+
+  box-sizing: border-box;
+  min-width: 0;
+  background: #ffffff;
+  border-radius: 6px;
+  // Align with `mat-card.mat-mdc-card` in `app-page-layout.scss`.
+  border: 1px solid #eff1f2;
+  box-shadow: 0px 6px 7px -2px #00000014;
+  padding: var(--app-panel-padding);
+}
+
+.app-data-table-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px 16px;
+  margin-bottom: 16px;
+
+  // Match primary radio tint used elsewhere (no full Material theme).
+  --mat-sys-primary: #1c6ce4;
+  --mdc-radio-selected-icon-color: #1c6ce4;
+  --mdc-radio-selected-hover-icon-color: #1565c0;
+  --mdc-radio-selected-pressed-icon-color: #1565c0;
+  --mdc-radio-selected-focus-icon-color: #1c6ce4;
+}
+
+.app-data-table-toolbar__radios {
+  display: inline-flex;
+  flex-wrap: wrap;
+  align-items: center;
+  flex-shrink: 0;
+  column-gap: 16px;
+  row-gap: 8px;
+}
+
+.app-data-table-toolbar__radios .mat-mdc-radio-button .mdc-form-field {
+  align-items: center;
+}
+
+.app-data-table-toolbar__radios .mat-mdc-radio-button .mdc-label {
+  padding-left: 4px;
+  font-size: 14px;
+  line-height: 24px;
+  color: #404c54;
+}
+
+.app-data-table-scroll {
+  overflow-x: auto;
+  margin-inline: calc(-1 * var(--app-panel-padding, 24px));
+  padding-inline: var(--app-panel-padding, 24px);
+}
+
+.app-data-table {
+  --app-data-table-divider: #eff1f2;
+  --app-data-table-header-color: #7b7b7b;
+  --app-data-table-cell-color: #373f4a;
+  // Cell padding: 12px vertical × 16px horizontal (override with these vars if needed).
+  --app-data-table-cell-py: 12px;
+  --app-data-table-cell-px: 16px;
+  // Horizontal inset for first / last columns (Property … Excom).
+  --app-data-table-edge-x: 24px;
+
+  width: 100%;
+  min-width: 640px;
+  border-collapse: collapse;
+  font-family: Roboto, 'Helvetica Neue', sans-serif;
+  color: var(--app-data-table-cell-color);
+}
+
+.app-data-table thead th {
+  box-sizing: border-box;
+  text-align: left;
+  font-family: Roboto, 'Helvetica Neue', sans-serif;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 100%;
+  letter-spacing: 0;
+  color: var(--app-data-table-header-color);
+  padding: var(--app-data-table-cell-py) var(--app-data-table-cell-px);
+  border-bottom: 1px solid var(--app-data-table-divider);
+  vertical-align: bottom;
+  white-space: nowrap;
+}
+
+.app-data-table thead th:first-child,
+.app-data-table tbody td:first-child {
+  padding-left: var(--app-data-table-edge-x);
+}
+
+.app-data-table thead th:last-child,
+.app-data-table tbody td:last-child {
+  padding-right: var(--app-data-table-edge-x);
+}
+
+.app-data-table tbody td {
+  box-sizing: border-box;
+  text-align: left;
+  font-family: Roboto, 'Helvetica Neue', sans-serif;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 100%;
+  letter-spacing: 0;
+  color: var(--app-data-table-cell-color);
+  padding: var(--app-data-table-cell-py) var(--app-data-table-cell-px);
+  border-bottom: 1px solid var(--app-data-table-divider);
+  vertical-align: middle;
+}
+
+.app-data-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.app-data-table__col--actions {
+  width: 48px;
+  text-align: right;
+  white-space: nowrap;
+}
+
+.app-data-table__icon-btn.mat-mdc-icon-button {
+  --mdc-icon-button-state-layer-size: 40px;
+  padding: 0;
+  width: 40px;
+  height: 40px;
+  color: #66727a;
+
+  &:hover {
+    color: #373f4a;
+  }
+
+  .mat-icon {
+    font-size: 20px;
+    width: 20px;
+    height: 20px;
+  }
+}
+
+.app-data-table--compact {
+  --app-data-table-cell-py: 12px;
+}

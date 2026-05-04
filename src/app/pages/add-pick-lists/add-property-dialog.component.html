@@ -1,0 +1,33 @@
+<h2 mat-dialog-title class="add-property-dialog__title">{{ data.title }}</h2>
+
+<mat-dialog-content class="add-property-dialog__body app-outlined-form">
+  <mat-form-field appearance="outline" floatLabel="always">
+    <mat-label>Select Country</mat-label>
+    <mat-select [(ngModel)]="work.countryKey" name="dlgCountry">
+      <mat-option value="allerton">Allerton Chicago Wiltshire Hotels</mat-option>
+      <mat-option value="hilton-downtown">Hilton Downtown</mat-option>
+      <mat-option value="sheraton-52">Sheraton 52nd Street</mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <div class="add-property-dialog__radios">
+    <span class="add-property-dialog__radio-label">Self Licensing</span>
+    <mat-radio-group [(ngModel)]="work.selfLicensing" name="dlgSelfLicensing" class="add-property-dialog__radio-group">
+      <mat-radio-button value="yes" color="primary">Yes</mat-radio-button>
+      <mat-radio-button value="no" color="primary">No</mat-radio-button>
+    </mat-radio-group>
+  </div>
+
+  <mat-form-field appearance="outline" floatLabel="always">
+    <mat-label>Select License</mat-label>
+    <mat-select [(ngModel)]="work.licenseKey" name="dlgLicense">
+      <mat-option value="northwest">Northwest Hospitality</mat-option>
+      <mat-option value="self">Self Licensed</mat-option>
+    </mat-select>
+  </mat-form-field>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end" class="add-property-dialog__actions">
+  <button mat-flat-button type="button" class="btn-dialog-back" (click)="cancel()">Back</button>
+  <button mat-flat-button type="button" class="btn-primary" (click)="save()">Save</button>
+</mat-dialog-actions>

@@ -1,0 +1,217 @@
+// ---------------------------------------------------------------------------
+// Shared outlined mat-form-field + file-upload look (project-wide).
+//
+// Usage: wrap inputs in any template with a container that has the class
+// `app-outlined-form` (e.g. <mat-card class="app-outlined-form"> or
+// <div class="app-outlined-form"> … </div>).
+//
+// Legacy: `.form-card` on the profile page is also matched so existing screens
+// keep working without renaming.
+//
+// Upload shell (`.upload-field`) lives in `app-page-layout.scss`.
+// Inner `mat-form-field.file-upload` styling is below.
+// Stack gap: `html { --app-form-field-stack-gap }` in `styles.scss` (single global knob).
+// ---------------------------------------------------------------------------
+
+.app-outlined-form,
+.form-card {
+  --mat-form-field-container-height: 40px;
+  --mat-mdc-form-field-floating-label-scale: 1;
+
+  mat-form-field,
+  .radio-field {
+    margin-bottom: var(--app-form-field-stack-gap, 32px);
+  }
+
+  .mat-mdc-form-field-subscript-wrapper {
+    display: none;
+  }
+
+  // Resting label (in the field): readable size. Floated label on notch: Figma body-small.
+  .mat-mdc-floating-label {
+    font-family: Roboto, 'Helvetica Neue', sans-serif;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 24px;
+    letter-spacing: 0;
+    color: #7b7b7b !important;
+
+    &.mdc-floating-label--float-above {
+      font-weight: 400;
+      font-size: 12px;
+      line-height: 12px;
+      letter-spacing: 0.15px;
+      color: #7b7b7b !important;
+      vertical-align: middle;
+    }
+  }
+.form-divider{
+  border: 1px solid #EFF1F2;
+}
+  .mat-mdc-text-field-wrapper.mdc-text-field--outlined {
+    background-color: transparent !important;
+    box-sizing: border-box;
+    height: 40px !important;
+
+    .mat-mdc-form-field-infix {
+      padding-top: 10px !important;
+      padding-bottom: 10px !important;
+      min-height: 40px !important;
+      box-sizing: border-box;
+    }
+  }
+
+  .form-field--textarea.mat-mdc-form-field,
+  .form-field--textarea {
+    --mat-form-field-container-height: 56px;
+
+    .mat-mdc-text-field-wrapper.mdc-text-field--outlined {
+      height: auto !important;
+      min-height: 0;
+
+      .mat-mdc-form-field-infix {
+        min-height: 0 !important;
+        padding-top: 12px !important;
+        padding-bottom: 12px !important;
+      }
+    }
+
+    textarea.mat-mdc-input-element {
+      min-height: calc(3 * 24px);
+      resize: vertical;
+      overflow: auto;
+    }
+  }
+
+  .mat-mdc-floating-label:not(.mdc-floating-label--float-above) {
+    top: 19px !important;
+    visibility: visible !important;
+  }
+
+  // MDC bundles `scale(0.75)` after global CSS; keep scale(1) so Figma 12px is not shrunk again.
+  .mat-mdc-text-field-wrapper.mdc-text-field--outlined
+    .mdc-notched-outline--upgraded
+    .mat-mdc-floating-label.mdc-floating-label--float-above {
+    transform: translateY(
+        calc(-1 * (6.75px + var(--mat-form-field-container-height, 40px) / 2))
+      )
+      scale(1) !important;
+    font-family: Roboto, 'Helvetica Neue', sans-serif !important;
+    font-weight: 400 !important;
+    font-size: 12px !important;
+    line-height: 12px !important;
+    letter-spacing: 0.15px !important;
+    vertical-align: middle;
+    background-color: #ffffff;
+    padding: 0 4px;
+    box-decoration-break: clone;
+  }
+
+  .mdc-notched-outline__leading,
+  .mdc-notched-outline__trailing {
+    transition: border-color 1s ease;
+    border-color: #D0D4D7 !important;
+  }
+
+  .mdc-notched-outline__notch {
+    border-color: #d0d4d7 !important;
+    border-left-color: transparent !important;
+  }
+
+  .mat-mdc-form-field:hover .mdc-notched-outline__leading,
+  .mat-mdc-form-field:hover .mdc-notched-outline__trailing {
+    border-color: #b0b0b0 !important;
+  }
+
+  .mat-mdc-form-field:hover .mdc-notched-outline__notch {
+    border-color: #b0b0b0 !important;
+    border-left-color: transparent !important;
+  }
+
+  .mat-mdc-form-field.mat-focused .mdc-notched-outline__leading,
+  .mat-mdc-form-field.mat-focused .mdc-notched-outline__trailing {
+    border-color: #b0b0b0 !important;
+  }
+
+  .mat-mdc-form-field.mat-focused .mdc-notched-outline__notch {
+    border-color: #b0b0b0 !important;
+    border-left-color: transparent !important;
+  }
+
+  .file-upload {
+    .mat-mdc-form-field-infix {
+      display: flex;
+      align-items: center;
+    }
+
+    .file-upload__prefix {
+      display: inline-flex;
+      align-items: center;
+      margin-right: 2px;
+    }
+
+    .file-upload__divider {
+      align-self: stretch;
+      width: 1px;
+      margin: 0 10px 0 8px;
+      background: #d0d4d7;
+      flex-shrink: 0;
+      min-height: 22px;
+    }
+
+    .file-upload__btn.mat-mdc-button {
+      min-width: auto;
+      padding: 0 2px 0 0;
+      font-family: Roboto, 'Helvetica Neue', sans-serif;
+      font-size: 14px;
+      font-weight: 400;
+      line-height: 24px;
+      letter-spacing: 0.15px;
+      color: #404c54;
+    }
+
+    input.mat-mdc-input-element::placeholder {
+      color: #8b959d;
+      opacity: 1;
+    }
+  }
+
+  input.mat-mdc-input-element,
+  textarea.mat-mdc-input-element {
+    font-family: Roboto, 'Helvetica Neue', sans-serif;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 24px;
+    letter-spacing: 0.15px;
+    color: #404c54;
+    vertical-align: middle;
+  }
+
+  textarea.mat-mdc-input-element {
+    line-height: 24px;
+  }
+
+  .mat-mdc-select-value-text {
+    font-family: Roboto, 'Helvetica Neue', sans-serif;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 24px;
+    letter-spacing: 0.15px;
+    color: #404c54;
+    vertical-align: middle;
+  }
+}
+
+[dir='rtl'] .app-outlined-form,
+[dir='rtl'] .form-card {
+  .mdc-notched-outline__notch {
+    border-left-color: #d0d4d7 !important;
+    border-right-color: transparent !important;
+  }
+
+  .mat-mdc-form-field:hover .mdc-notched-outline__notch,
+  .mat-mdc-form-field.mat-focused .mdc-notched-outline__notch {
+    border-left-color: #b0b0b0 !important;
+    border-right-color: transparent !important;
+  }
+}

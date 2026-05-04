@@ -1,0 +1,228 @@
+:host {
+  display: block;
+}
+
+// Figma card header: property title (left) + Save (right) only.
+.campaign-edit-card .custom-card-header.card-header-split {
+  align-items: center;
+  text-align: left;
+
+  mat-card-title.mat-mdc-card-title {
+    flex: 1 !important;
+    min-width: 0;
+    margin: 0 !important;
+    text-align: left !important;
+    color: #333 !important;
+    font-weight: 500 !important;
+  }
+}
+
+:host ::ng-deep .campaign-edit-card .custom-card-header.card-header-split .mat-mdc-card-title {
+  text-align: left !important;
+}
+
+.campaign-edit-span-2 {
+  grid-column: 1 / -1;
+}
+
+.campaign-edit-card {
+  .custom-card-header {
+    margin-bottom: 0;
+  }
+}
+
+.campaign-edit-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  column-gap: 24px;
+  row-gap: 0;
+  align-items: start;
+
+  mat-form-field,
+  .upload-field {
+    width: 100%;
+    min-width: 0;
+  }
+}
+
+// Figma ~50% / 30% / 20%
+.campaign-edit-grid--city {
+  grid-template-columns: 5fr 3fr 2fr;
+}
+
+.campaign-edit-grid--metrics-left {
+  grid-template-columns: 1fr 1fr 1fr;
+}
+
+.campaign-edit-grid--trip-date-left {
+  grid-template-columns: 3fr 1fr;
+}
+
+.campaign-edit-grid--ratings-right {
+  grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+  column-gap: 8px;
+}
+
+.campaign-edit-col {
+  display: flex;
+  flex-direction: column;
+}
+
+.campaign-edit-grid__spacer {
+  min-height: 0;
+}
+
+.campaign-edit-traveller-block {
+  margin: 16px 0 32px;
+}
+
+// Figma: light gray outer box; header + footer are the same bar style; white band for rows.
+.campaign-edit-traveller-shell {
+  border: 1px solid #dde1e5;
+  border-radius: 6px;
+  overflow: hidden;
+  background: #f4f6f8;
+}
+
+// Shared strip style (header + total footer).
+%campaign-edit-traveller-strip {
+  margin: 0;
+  padding: 12px 16px;
+  font-family: Roboto, 'Helvetica Neue', sans-serif;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 100%;
+  letter-spacing: 0;
+  color: #373f4a;
+  background: #eceef0;
+  border: solid #dde1e5;
+  border-width: 0 0 1px;
+}
+
+.campaign-edit-section-title {
+  @extend %campaign-edit-traveller-strip;
+}
+
+.campaign-edit-traveller {
+  margin: 0;
+  padding: 12px 16px 24px;
+  background: #ffffff;
+}
+
+.campaign-edit-traveller__row {
+  display: grid;
+  grid-template-columns: 100px 140px 1fr;
+  align-items: center;
+  column-gap: 16px;
+  padding: 4px 0;
+}
+
+.campaign-edit-traveller__label {
+  font-family: Roboto, 'Helvetica Neue', sans-serif;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 24px;
+  color: #373f4a;
+}
+
+// Figma: pill track (no outline, light gray bg); dark fill.
+.campaign-edit-traveller__track {
+  display: flex;
+  align-items: center;
+  height: 8px;
+  box-sizing: border-box;
+  border-radius: 999px;
+  background: #eff1f2;
+  border: none;
+}
+
+.campaign-edit-traveller__fill {
+  height: 8px;
+  min-height: 8px;
+  border-radius: 999px;
+  background: #373f4a;
+  min-width: 0;
+  max-width: 100%;
+  transition: width 0.2s ease;
+}
+
+.campaign-edit-traveller__value {
+  font-family: Roboto, 'Helvetica Neue', sans-serif;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 24px;
+  text-align: left;
+  color: #373f4a;
+}
+
+.campaign-edit-traveller__footer-row {
+  display: grid;
+  grid-template-columns: 100px 140px 1fr;
+  align-items: center;
+  column-gap: 16px;
+  padding: 16px 0 0;
+  margin-top: 8px;
+}
+
+.campaign-edit-traveller__total-label,
+.campaign-edit-traveller__total-value {
+  font-family: Roboto, 'Helvetica Neue', sans-serif;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 24px;
+  color: #373f4a;
+}
+
+.campaign-edit-traveller__total-value {
+  text-align: left;
+}
+
+.campaign-edit-traveller__total-value {
+  text-align: right;
+}
+
+.campaign-edit-role {
+  margin-top: 28px;
+  padding-top: 8px;
+  border-top: 1px solid #eff1f2;
+}
+
+.campaign-edit-role__head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 16px;
+
+  h2 {
+    margin: 0;
+    font-size: 18px;
+    font-weight: 500;
+    line-height: 28px;
+    color: #333;
+  }
+}
+
+@media (max-width: 900px) {
+  .campaign-edit-grid,
+  .campaign-edit-grid--city,
+  .campaign-edit-grid--metrics,
+  .campaign-edit-grid--contacts,
+  .campaign-edit-grid--quad,
+  .campaign-edit-grid--ratings,
+  .campaign-edit-grid--product-price,
+  .campaign-edit-grid--trip-date {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .campaign-edit-grid--product-price .campaign-edit-grid__spacer {
+    display: none;
+  }
+
+  .campaign-edit-traveller__row,
+  .campaign-edit-traveller__footer--total {
+    grid-template-columns: minmax(0, max-content) minmax(0, 1fr) 44px;
+    column-gap: 10px;
+  }
+}

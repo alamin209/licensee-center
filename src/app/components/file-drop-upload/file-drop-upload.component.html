@@ -1,0 +1,56 @@
+<div
+  class="media-upload"
+  [class.media-upload--dropping]="dropActive"
+  (dragenter)="onDragEnter($event)"
+  (dragleave)="onDragLeave($event)"
+  (dragover)="onDragOver($event)"
+  (drop)="onDrop($event, fileInput)"
+>
+  <div class="media-upload__head">
+    <span class="media-upload__label">{{ label }}</span>
+    @if (hint) {
+      <span class="media-upload__hint">{{ hint }}</span>
+    }
+  </div>
+
+  <input #fileInput type="file" class="media-upload__native" [accept]="accept" (change)="onNativeChange($event)" />
+
+  @if (hasFile) {
+    <div class="media-upload__result" [class.media-upload__result--document]="mode === 'document'">
+      @if (mode === 'image' && previewUrl) {
+        <div class="picture-preview">
+          <img [src]="previewUrl" alt="Preview of selected upload" class="picture-preview__img" />
+        </div>
+      }
+      @if (mode === 'document') {
+        <div class="doc-chip">
+          <mat-icon class="doc-chip__icon" aria-hidden="true">description</mat-icon>
+        </div>
+      }
+      <div class="media-upload__meta">
+        <span class="media-upload__filename" [title]="displayName">{{ displayName }}</span>
+        <div class="media-upload__actions">
+          <button mat-button type="button" class="media-upload__linkish" (click)="fileInput.click()">Replace</button>
+          <button mat-button type="button" color="warn" (click)="clear(fileInput)">Remove</button>
+        </div>
+      </div>
+    </div>
+  } @else {
+    <div class="media-upload__zone" [class.media-upload__zone--document]="mode === 'document'">
+      @if (mode === 'image') {
+        <mat-icon class="media-upload__icon" aria-hidden="true">add_a_photo</mat-icon>
+      } @else {
+        <mat-icon class="media-upload__icon" aria-hidden="true">upload_file</mat-icon>
+      }
+      <span class="media-upload__zone-title">{{ dropTitle }}</span>
+      @if (dropSub) {
+        <span class="media-upload__zone-sub">{{ dropSub }}</span>
+      }
+      <span class="media-upload__zone-actions">
+        <button mat-flat-button type="button" class="btn-primary media-upload__browse" (click)="fileInput.click()">
+          Browse files
+        </button>
+      </span>
+    </div>
+  }
+</div>
