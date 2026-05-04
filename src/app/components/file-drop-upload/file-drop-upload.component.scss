@@ -132,6 +132,16 @@ $upload-muted: #6b7780;
 
 .media-upload__browse {
   cursor: pointer;
+  // No extra theme hover layer on top of `.btn-primary` fill (avoids blue/primary tint).
+  --mat-filled-button-hover-state-layer-opacity: 0;
+  --mat-filled-button-focus-state-layer-opacity: 0;
+  --mat-filled-button-pressed-state-layer-opacity: 0;
+}
+
+.media-upload__actions .mat-mdc-button {
+  --mat-text-button-hover-state-layer-opacity: 0;
+  --mat-text-button-focus-state-layer-opacity: 0;
+  --mat-text-button-pressed-state-layer-opacity: 0;
 }
 
 .media-upload__result {

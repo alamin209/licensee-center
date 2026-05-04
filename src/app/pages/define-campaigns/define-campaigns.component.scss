@@ -68,12 +68,7 @@
   box-sizing: border-box;
   border: none;
   padding: 0;
-  // Align with mat-radio / theme (no global Material color theme).
-  --mat-sys-primary: #1c6ce4;
-  --mdc-radio-selected-icon-color: #1c6ce4;
-  --mdc-radio-selected-hover-icon-color: #1565c0;
-  --mdc-radio-selected-pressed-icon-color: #1565c0;
-  --mdc-radio-selected-focus-icon-color: #1c6ce4;
+  // Align with mat-radio / theme (now handled globally in styles.scss).
 
   &__label {
     flex: 0 0 auto;

@@ -1,0 +1,70 @@
+<div class="app-page">
+  <div class="page-header">
+    <h1>{{ viewMode === 'property' ? 'My Campaigns' : 'Campaigns' }}</h1>
+  </div>
+
+  <mat-card class="form-card app-outlined-form campaign-property-card" appearance="outlined">
+    <mat-card-header class="custom-card-header card-header-split">
+      <mat-card-title>{{ vm.propertyTitle }}</mat-card-title>
+      <div class="header-actions">
+        <button *ngIf="viewMode === 'detail'" mat-flat-button type="button" class="btn-secondary" (click)="onBack()">Back</button>
+        <button *ngIf="viewMode === 'property'" mat-flat-button type="button" class="btn-primary" (click)="onAdd()">Add</button>
+      </div>
+    </mat-card-header>
+
+    <mat-card-content class="profile-form">
+      <!-- Property View Filters -->
+      <div *ngIf="viewMode === 'property'" class="property-view-filters">
+        <mat-form-field appearance="outline" floatLabel="always">
+          <mat-label>Select Campaign Name</mat-label>
+          <mat-select [(ngModel)]="campaignNameKey" name="campaignName">
+            <mat-option value="chicago">Chicago, Illinois</mat-option>
+            <mat-option value="bali">Bali</mat-option>
+          </mat-select>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" floatLabel="always">
+          <mat-label>Select Campaign Number</mat-label>
+          <mat-select [(ngModel)]="campaignNumberKey" name="campaignNumber">
+            <mat-option value="00001">00001</mat-option>
+            <mat-option value="00005">00005</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+
+      <!-- Table View (Shared by both modes) -->
+      <div class="app-data-table-scroll">
+        <table class="app-data-table">
+          <thead>
+            <tr>
+              <th scope="col">Property</th>
+              <th scope="col">GM</th>
+              <th scope="col">Email</th>
+              <th scope="col">Phone</th>
+              <th scope="col">Log On</th>
+              <th scope="col">Excom</th>
+              <th scope="col" class="app-data-table__col--actions"></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let row of vm.properties">
+              <td>{{ row.property }}</td>
+              <td>{{ row.gm }}</td>
+              <td>{{ row.email }}</td>
+              <td>{{ row.phone }}</td>
+              <td>{{ row.logOn }}</td>
+              <td>
+                <button *ngIf="row.excom" mat-icon-button type="button" class="app-data-table__icon-btn" (click)="viewDetail(row)">
+                  <mat-icon>visibility</mat-icon>
+                </button>
+              </td>
+              <td class="app-data-table__col--actions">
+                <!-- If there was another action, it would go here -->
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </mat-card-content>
+  </mat-card>
+</div>

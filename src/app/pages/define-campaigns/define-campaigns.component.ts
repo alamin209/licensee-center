@@ -102,13 +102,18 @@ export class DefineCampaignsComponent {
   }
 
   onFileSelected(event: Event, target: 'image' | 'pdf' | 'video'): void {
-    const name = (event.target as HTMLInputElement).files?.[0]?.name ?? '';
-    if (target === 'image') {
-      this.imageFileName = name;
-    } else if (target === 'pdf') {
-      this.pdfFileName = name;
-    } else {
-      this.videoFileName = name;
+    const input = event.target as HTMLInputElement;
+    const name = input.files?.[0]?.name ?? '';
+    switch (target) {
+      case 'image':
+        this.imageFileName = name;
+        break;
+      case 'pdf':
+        this.pdfFileName = name;
+        break;
+      case 'video':
+        this.videoFileName = name;
+        break;
     }
   }
 }

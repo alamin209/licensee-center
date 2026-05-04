@@ -8,10 +8,6 @@
       <mat-card class="form-card app-outlined-form" appearance="outlined">
         <mat-card-header class="custom-card-header">
           <mat-card-title>Edit My Profile</mat-card-title>
-          <mat-card-subtitle class="demo-hint">
-            Every field is editable: replace the sample values or type into empty boxes, then Submit. Data stays in this
-            browser tab until reload and appears on View all Profiles after Submit.
-          </mat-card-subtitle>
         </mat-card-header>
 
         <mat-card-content class="profile-form">
@@ -20,7 +16,7 @@
 
           <div class="form-grid form-grid--cols-2">
             <mat-form-field appearance="outline">
-              <mat-label>Surname Given Name</mat-label>
+              <mat-label>First Name</mat-label>
               <input matInput type="text" name="givenName" autocomplete="given-name" [(ngModel)]="profile.givenName" />
             </mat-form-field>
 
@@ -44,8 +40,7 @@
                   type="text"
                   name="title"
                   [(ngModel)]="profile.title"
-                  readonly
-                  class="field-readonly"
+                  [disabled]="true"
                   title="Assigned by the system — not editable"
                 />
               </mat-form-field>
@@ -58,8 +53,7 @@
                   name="userId"
                   inputmode="numeric"
                   [(ngModel)]="profile.userId"
-                  readonly
-                  class="field-readonly"
+                  [disabled]="true"
                   title="Assigned by the system — not editable"
                 />
               </mat-form-field>
@@ -139,7 +133,6 @@
           <hr class="form-divider" />
 
           <div class="section-title section-title--spaced">3. Personal info</div>
-          <p class="field-section-hint">Optional fields below accept any text you add — it is saved when you Submit.</p>
 
           <div class="form-grid form-grid--cols-2 profile-form__uploads">
             <app-file-drop-upload
@@ -225,7 +218,7 @@
           <div class="section-title">Submitted operator</div>
 
           <dl class="profile-readonly">
-            <dt>Surname Given Name</dt>
+            <dt>First Name</dt>
             <dd>{{ store.submitted.givenName }}</dd>
             <dt>Last Name</dt>
             <dd>{{ store.submitted.lastName }}</dd>
@@ -310,7 +303,7 @@
           <div class="verify-readonly-grid">
             <div class="verify-readonly-row verify-readonly-row--2">
               <div class="verify-readonly-cell">
-                <span class="verify-readonly-label">Surname Given Name</span>
+                <span class="verify-readonly-label">First Name</span>
                 <span class="verify-readonly-value">{{ store.submitted.givenName }}</span>
               </div>
               <div class="verify-readonly-cell">

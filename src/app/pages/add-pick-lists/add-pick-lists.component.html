@@ -5,25 +5,17 @@
 
   <mat-card class="form-card app-outlined-form pick-lists-card" appearance="outlined">
     <mat-card-header class="custom-card-header card-header-split">
-      <mat-card-title>Add / Edit Properties</mat-card-title>
-      <button mat-flat-button type="button" class="btn-primary" (click)="openAddPropertyDialog()">Add</button>
+      <mat-card-title>Add Pick Lists</mat-card-title>
+      <button mat-flat-button type="button" class="btn-primary" (click)="onBrowseFile()">Browse File</button>
     </mat-card-header>
 
     <mat-card-content class="profile-form">
       <div class="pick-lists-body">
-        <div class="pick-lists-search-row">
-          <mat-form-field appearance="outline" class="pick-lists-search">
-            <mat-label>Search</mat-label>
-            <input matInput name="propertySearch" [(ngModel)]="searchQuery" type="search" autocomplete="off" />
-            <mat-icon matIconSuffix class="pick-lists-search__icon">search</mat-icon>
-          </mat-form-field>
-        </div>
-
-        <div class="pick-lists-filters">
+        <div class="pick-lists-filters-grid">
           <mat-form-field appearance="outline" floatLabel="always">
             <mat-label>Select Campaign Name</mat-label>
             <mat-select [(ngModel)]="campaignNameKey" name="campaignName">
-              <mat-option value="chicago-il">Chicago Illinois</mat-option>
+              <mat-option value="chicago-il">Chicago, Illinois</mat-option>
               <mat-option value="san-diego">San Diego, CA</mat-option>
               <mat-option value="bali">Bali</mat-option>
             </mat-select>
@@ -37,32 +29,52 @@
               <mat-option value="00002">00002</mat-option>
             </mat-select>
           </mat-form-field>
+
+          <mat-form-field appearance="outline" floatLabel="always" class="operator-field">
+            <mat-label>Select Operator</mat-label>
+            <mat-select [(ngModel)]="operatorKey" name="operator">
+              <mat-option value="all">All</mat-option>
+              <mat-option value="agent">Agent</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+
+        <div class="pick-lists-type-filters">
+          <mat-radio-group [(ngModel)]="filterType" name="filterType" class="type-radio-group">
+            <mat-radio-button value="all" color="primary">All</mat-radio-button>
+            <mat-radio-button value="agent" color="primary">Agent</mat-radio-button>
+            <mat-radio-button value="brand" color="primary">Brand/syndicate</mat-radio-button>
+            <mat-radio-button value="geographic" color="primary">Geographic</mat-radio-button>
+            <mat-radio-button value="thematic" color="primary">Thematic</mat-radio-button>
+          </mat-radio-group>
+
+          <mat-checkbox [(ngModel)]="viewNoPickLists" name="viewNoPickLists" color="primary" class="view-checkbox">
+            View No Pick Lists
+          </mat-checkbox>
         </div>
 
         <div class="pick-lists-table-scroll">
           <table class="app-data-table pick-lists-table">
             <thead>
               <tr>
-                <th scope="col">Property</th>
-                <th scope="col">GM</th>
-                <th scope="col">Email</th>
-                <th scope="col">Phone</th>
-                <th scope="col">Logon on</th>
-                <th scope="col">Excom</th>
+                <th scope="col">ID</th>
+                <th scope="col">Name</th>
+                <th scope="col" class="type-col">Type</th>
+                <th scope="col">Pick List Date</th>
+                <th scope="col">No</th>
                 <th scope="col" class="app-data-table__col--actions" aria-label="Actions"></th>
               </tr>
             </thead>
             <tbody>
-              @for (row of properties; track row.property) {
+              @for (row of pickLists; track row.id) {
                 <tr>
-                  <td>{{ row.property }}</td>
-                  <td>{{ row.gm }}</td>
-                  <td>{{ row.email }}</td>
-                  <td>{{ row.phone }}</td>
-                  <td>{{ row.logonOn }}</td>
-                  <td>{{ row.excom }}</td>
+                  <td>{{ row.id }}</td>
+                  <td>{{ row.name }}</td>
+                  <td class="type-col">{{ row.type }}</td>
+                  <td>{{ row.pickListDate }}</td>
+                  <td>{{ row.no }}</td>
                   <td class="app-data-table__col--actions">
-                    <button mat-icon-button type="button" class="app-data-table__icon-btn" [attr.aria-label]="'View ' + row.property">
+                    <button mat-icon-button type="button" class="app-data-table__icon-btn" [attr.aria-label]="'View ' + row.id">
                       <mat-icon>visibility</mat-icon>
                     </button>
                   </td>

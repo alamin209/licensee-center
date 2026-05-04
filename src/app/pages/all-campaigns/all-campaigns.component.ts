@@ -1,40 +1,36 @@
 import { Component } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { MatCardModule } from '@angular/material/card';
+import { MatSelectModule } from '@angular/material/select';
+import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatRadioModule } from '@angular/material/radio';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
-import { CampaignTableRow } from '../campaign-table-row.model';
 
 @Component({
   selector: 'app-all-campaigns',
   standalone: true,
-  imports: [FormsModule, MatRadioModule, MatIconModule, MatButtonModule],
+  imports: [
+    CommonModule, 
+    FormsModule, 
+    MatCardModule, 
+    MatSelectModule, 
+    MatCheckboxModule, 
+    MatRadioModule, 
+    MatIconModule, 
+    MatButtonModule
+  ],
   templateUrl: './all-campaigns.component.html',
   styleUrl: './all-campaigns.component.scss'
 })
 export class AllCampaignsComponent {
-  listFilter: 'live' | 'draft' = 'live';
+  operatorKey = 'all';
+  listFilter = 'all';
+  viewNoPickLists = false;
 
-  campaigns: CampaignTableRow[] = [
-    {
-      id: '00001',
-      name: 'Bali',
-      type: 'Agent',
-      count: '200',
-      initiate: '03.03.24',
-      live: '03.05.24',
-      logOnPct: '8',
-      lead: 'Helga Kramar'
-    },
-    {
-      id: '00002',
-      name: 'San Diego, CA',
-      type: 'Geographic',
-      count: '40',
-      initiate: '03.03.24',
-      live: '16.03.24',
-      logOnPct: '25',
-      lead: 'Candice Tong'
-    }
+  campaigns = [
+    { id: '00001', name: 'Bali', type: 'Agent', pickListDate: '', count: '' },
+    { id: '00002', name: 'San Diego, CA', type: 'Geographic', pickListDate: '', count: '' }
   ];
 }

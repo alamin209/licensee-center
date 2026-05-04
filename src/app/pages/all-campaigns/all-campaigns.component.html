@@ -1,51 +1,63 @@
 <div class="app-page">
   <div class="page-header">
-    <h1>All Campaigns</h1>
+    <h1>Campaigns</h1>
   </div>
 
-  <div class="app-panel">
-    <div class="app-data-table-toolbar">
-      <mat-radio-group [(ngModel)]="listFilter" name="campaignListFilter" class="app-data-table-toolbar__radios">
-        <mat-radio-button value="live" color="primary">Live</mat-radio-button>
-        <mat-radio-button value="draft" color="primary">Draft</mat-radio-button>
-      </mat-radio-group>
-    </div>
+  <mat-card class="form-card app-outlined-form all-campaigns-card" appearance="outlined">
+    <mat-card-header class="custom-card-header">
+      <mat-card-title>All Campaigns</mat-card-title>
+    </mat-card-header>
 
-    <div class="app-data-table-scroll">
-      <table class="app-data-table">
-        <thead>
-          <tr>
-            <th scope="col">ID</th>
-            <th scope="col">Name</th>
-            <th scope="col">Type</th>
-            <th scope="col">No.</th>
-            <th scope="col">Initiate</th>
-            <th scope="col">Live</th>
-            <th scope="col">Log on%</th>
-            <th scope="col">Lead</th>
-            <th scope="col" class="app-data-table__col--actions" aria-label="Actions"></th>
-          </tr>
-        </thead>
-        <tbody>
-          @for (row of campaigns; track row.id) {
+    <mat-card-content class="profile-form">
+      <div class="all-campaigns-toolbar">
+        <mat-form-field appearance="outline" floatLabel="always" class="operator-select">
+          <mat-label>Select Operator</mat-label>
+          <mat-select [(ngModel)]="operatorKey" name="operatorSelect">
+            <mat-option value="all">All</mat-option>
+          </mat-select>
+        </mat-form-field>
+
+        <div class="toolbar-filters">
+          <mat-radio-group [(ngModel)]="listFilter" name="campaignListFilter" class="app-data-table-toolbar__radios">
+            <mat-radio-button value="all" color="primary">All</mat-radio-button>
+            <mat-radio-button value="agent" color="primary">Agent</mat-radio-button>
+            <mat-radio-button value="brand" color="primary">Brand/syndicate</mat-radio-button>
+            <mat-radio-button value="geographic" color="primary">Geographic</mat-radio-button>
+            <mat-radio-button value="thematic" color="primary">Thematic</mat-radio-button>
+          </mat-radio-group>
+
+          <mat-checkbox [(ngModel)]="viewNoPickLists" color="primary">View No Pick Lists</mat-checkbox>
+        </div>
+      </div>
+
+      <div class="app-data-table-scroll">
+        <table class="app-data-table">
+          <thead>
             <tr>
+              <th scope="col">ID</th>
+              <th scope="col">Name</th>
+              <th scope="col">Type</th>
+              <th scope="col">Pick List Date</th>
+              <th scope="col">No</th>
+              <th scope="col" class="app-data-table__col--actions"></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let row of campaigns">
               <td>{{ row.id }}</td>
               <td>{{ row.name }}</td>
               <td>{{ row.type }}</td>
+              <td>{{ row.pickListDate }}</td>
               <td>{{ row.count }}</td>
-              <td>{{ row.initiate }}</td>
-              <td>{{ row.live }}</td>
-              <td>{{ row.logOnPct }}</td>
-              <td>{{ row.lead }}</td>
               <td class="app-data-table__col--actions">
-                <button mat-icon-button type="button" class="app-data-table__icon-btn" [attr.aria-label]="'View campaign ' + row.name">
+                <button mat-icon-button type="button" class="app-data-table__icon-btn">
                   <mat-icon>visibility</mat-icon>
                 </button>
               </td>
             </tr>
-          }
-        </tbody>
-      </table>
-    </div>
-  </div>
+          </tbody>
+        </table>
+      </div>
+    </mat-card-content>
+  </mat-card>
 </div>

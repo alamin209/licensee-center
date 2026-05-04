@@ -11,6 +11,7 @@
   <mat-card class="form-card app-outlined-form" appearance="outlined">
 
     <mat-card-header class="custom-card-header campaign-card-header campaign-card-header--actions-end">
+      <mat-card-title>Define Campaigns</mat-card-title>
 
       <button mat-flat-button class="btn-primary" type="button">Save</button>
 
@@ -44,13 +45,8 @@
 
           <mat-label>Name of Campaign</mat-label>
 
-          <input
-            matInput
-            name="campaignName"
-            [(ngModel)]="campaignName"
-            readonly
-            (keydown.enter)="openCountryLocaleDialog(); $event.preventDefault()"
-          />
+          <input matInput name="campaignName" [(ngModel)]="campaignName" readonly
+            (keydown.enter)="openCountryLocaleDialog(); $event.preventDefault()" />
 
         </mat-form-field>
 
@@ -208,7 +204,8 @@
 
             <span matTextPrefix class="file-upload__prefix">
 
-              <button type="button" mat-button class="file-upload__btn" (click)="imageInput.click()">Choose file</button>
+              <button type="button" mat-button class="file-upload__btn" (click)="imageInput.click()">Choose
+                file</button>
 
               <span class="file-upload__divider" aria-hidden="true"></span>
 
@@ -218,7 +215,8 @@
 
           </mat-form-field>
 
-          <input #imageInput type="file" class="upload-field__native" accept="image/*" (change)="onFileSelected($event, 'image')" />
+          <input #imageInput type="file" class="upload-field__native" accept="image/*"
+            (change)="onFileSelected($event, 'image')" />
 
         </div>
 
@@ -242,7 +240,8 @@
 
           </mat-form-field>
 
-          <input #pdfInput type="file" class="upload-field__native" accept=".pdf,application/pdf" (change)="onFileSelected($event, 'pdf')" />
+          <input #pdfInput type="file" class="upload-field__native" accept=".pdf,application/pdf"
+            (change)="onFileSelected($event, 'pdf')" />
 
         </div>
 
@@ -266,7 +265,8 @@
 
             <span matTextPrefix class="file-upload__prefix">
 
-              <button type="button" mat-button class="file-upload__btn" (click)="videoInput.click()">Choose file</button>
+              <button type="button" mat-button class="file-upload__btn" (click)="videoInput.click()">Choose
+                file</button>
 
               <span class="file-upload__divider" aria-hidden="true"></span>
 
@@ -276,7 +276,8 @@
 
           </mat-form-field>
 
-          <input #videoInput type="file" class="upload-field__native" accept="video/*" (change)="onFileSelected($event, 'video')" />
+          <input #videoInput type="file" class="upload-field__native" accept="video/*"
+            (change)="onFileSelected($event, 'video')" />
 
         </div>
 
@@ -375,4 +376,3 @@
   </mat-card>
 
 </div>
-

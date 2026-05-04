@@ -1,10 +1,11 @@
-import { Component, inject } from '@angular/core';
+import { Component, DestroyRef, inject } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { CommonModule } from '@angular/common';
-import { DomSanitizer } from '@angular/platform-browser';
-import { RouterModule } from '@angular/router';
-import { MatIconModule, MatIconRegistry } from '@angular/material/icon';
+import { NavigationEnd, Router, RouterModule } from '@angular/router';
+import { filter } from 'rxjs/operators';
 import { MatListModule } from '@angular/material/list';
-import { MenuItem, MenuService } from '../../services/menu.service';
+import { MatIconModule } from '@angular/material/icon';
+import { MenuService, MenuItem } from '../../services/menu.service';
 
 @Component({
   selector: 'app-sidebar',
@@ -17,19 +18,37 @@ export class SidebarComponent {
   readonly menuService = inject(MenuService);
   readonly menuItems: MenuItem[] = this.menuService.getMenu();
 
-  private readonly iconRegistry = inject(MatIconRegistry);
-  private readonly sanitizer = inject(DomSanitizer);
+  private readonly router = inject(Router);
+  private readonly destroyRef = inject(DestroyRef);
 
   constructor() {
-    for (const [name, svg] of Object.entries(this.menuService.getCustomIcons())) {
-      this.iconRegistry.addSvgIconLiteral(
-        name,
-        this.sanitizer.bypassSecurityTrustHtml(svg.trim())
-      );
-    }
+    this.syncExpandedGroups();
+    this.router.events
+      .pipe(
+        filter((e): e is NavigationEnd => e instanceof NavigationEnd),
+        takeUntilDestroyed(this.destroyRef)
+      )
+      .subscribe(() => this.syncExpandedGroups());
   }
 
   toggleMenu(item: MenuItem): void {
     item.expanded = !item.expanded;
+  }
+
+  /** Open any group that contains the current URL so the active row is visible (accordion is 0fr when closed). */
+  private syncExpandedGroups(): void {
+    const url = this.router.url.split('?')[0];
+    for (const item of this.menuItems) {
+      if (!item.children?.length) continue;
+      const hasActiveChild = item.children.some((c) => {
+        if (!c.route || c.route === '#') return false;
+        if (url === c.route) return true;
+        if (c.linkActiveExact === false && url.startsWith(`${c.route}/`)) return true;
+        return false;
+      });
+      if (hasActiveChild) {
+        item.expanded = true;
+      }
+    }
   }
 }

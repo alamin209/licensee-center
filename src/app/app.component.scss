@@ -11,6 +11,45 @@
   flex: 1;
   overflow: hidden;
   background-color: #F7F9FA;
+  position: relative;
+}
+
+app-sidebar {
+  transition: transform 0.3s ease;
+}
+
+.sidebar-overlay {
+  display: none;
+}
+
+@media (max-width: 991px) {
+  app-sidebar {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    z-index: 100;
+    transform: translateX(-100%);
+  }
+
+  .app-layout.sidebar-open app-sidebar {
+    transform: translateX(0);
+  }
+
+  .sidebar-overlay {
+    display: none;
+  }
+  
+  .app-layout.sidebar-open .sidebar-overlay {
+    display: block;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0,0,0,0.4);
+    z-index: 90;
+  }
 }
 
 .content-area {

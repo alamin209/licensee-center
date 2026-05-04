@@ -10,31 +10,27 @@
   position: relative;
 }
 
+.menu-toggle-btn {
+  display: none;
+  margin-right: 12px;
+}
+
+@media (max-width: 991px) {
+  .menu-toggle-btn {
+    display: inline-flex;
+  }
+}
+
 .logo-container {
   display: flex;
   align-items: center;
   gap: 12px;
 }
 
-.logo-icon {
-  width: 32px;
-  height: 32px;
-  background-color: #2b303a;
-  border-radius: 4px;
-  position: relative;
-  overflow: hidden;
-  
-  &::after {
-    content: '';
-    position: absolute;
-    bottom: -8px;
-    left: -8px;
-    width: 48px;
-    height: 48px;
-    border: 1px solid white;
-    border-radius: 50%;
-    clip-path: polygon(100% 0, 100% 100%, 0 100%);
-  }
+.logo-icon-svg {
+  height: 38px;
+  width: auto;
+  object-fit: contain;
 }
 
 .logo-text {

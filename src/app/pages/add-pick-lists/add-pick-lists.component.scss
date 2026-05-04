@@ -8,33 +8,14 @@
   }
 }
 
-// Card body padding matches profile (`app-page-layout` `.form-card mat-card-content` = 20px).
-
 .pick-lists-body {
   display: flex;
   flex-direction: column;
-  gap: 0;
+  gap: 16px;
+  padding-top: 4px;
 }
 
-// Search sits in the left half; right column intentionally empty.
-.pick-lists-search-row {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  column-gap: 24px;
-  align-items: start;
-}
-
-.pick-lists-search {
-  width: 100%;
-  min-width: 0;
-  grid-column: 1;
-
-  .pick-lists-search__icon {
-    color: #8b959d;
-  }
-}
-
-.pick-lists-filters {
+.pick-lists-filters-grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
   column-gap: 24px;
@@ -45,33 +26,150 @@
     width: 100%;
     min-width: 0;
   }
+
+  .operator-field {
+    grid-column: 1;
+  }
+}
+
+.pick-lists-type-filters {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 24px;
+  flex-wrap: wrap;
+  padding: 8px 0 16px 0;
+  /* More bottom padding for separation */
+
+  .type-radio-group {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+
+    ::ng-deep .mdc-form-field {
+      padding-right: 8px;
+    }
+  }
+
+  .view-checkbox {
+    ::ng-deep {
+
+      /* Force transparency on the box itself */
+      .mdc-checkbox__background {
+        background-color: transparent !important;
+        border-color: #404c54 !important;
+        border-width: 2px !important;
+      }
+
+      /* Keep it transparent even when selected */
+      .mdc-checkbox--selected .mdc-checkbox__background,
+      .mat-mdc-checkbox.mat-mdc-checkbox-checked .mdc-checkbox__background {
+        background-color: transparent !important;
+        border-color: #404c54 !important;
+      }
+
+      /* Ensure checkmark is always dark gray */
+      .mdc-checkbox__checkmark {
+        color: #404c54 !important;
+      }
+
+      .mdc-checkbox__checkmark-path {
+        stroke: #404c54 !important;
+        stroke-width: 4px !important;
+      }
+
+      /* Disable all ripples and focus states that might show blue */
+      .mat-mdc-checkbox-ripple,
+      .mdc-checkbox__ripple,
+      .mat-mdc-focus-indicator,
+      .mat-mdc-checkbox-persistent-ripple {
+        display: none !important;
+        opacity: 0 !important;
+      }
+
+      .mdc-label {
+        font-size: 14px;
+        color: #404c54;
+        font-weight: 400;
+        padding-left: 8px;
+      }
+    }
+  }
 }
 
 .pick-lists-table-scroll {
   overflow-x: auto;
-  margin: 0 -20px;
-  padding: 0 20px;
+  margin: 0 -24px;
+  padding: 0 24px;
 }
 
 .pick-lists-table {
-  min-width: 720px;
+  min-width: 800px;
+  border-collapse: separate;
+  border-spacing: 0;
+  border-top: 1px solid #e8ecef;
 
   thead th {
-    background-color: #f4f6f8;
-    border-bottom-color: #e8ecef;
+    background-color: #fafbfc;
+    /* Subtle grey background for header */
+    border-bottom: 1px solid #e8ecef;
+    color: #404c54;
+    font-weight: 500;
+    font-size: 12px;
+    letter-spacing: 0.05em;
+    padding: 12px 16px;
+    text-align: left;
+  }
+
+  tbody td {
+    padding: 14px 16px;
+    border-bottom: 1px solid #f4f6f8;
+    color: #404c54;
+    font-size: 14px;
+  }
+
+  tr:last-child td {
+    border-bottom: none;
+  }
+
+  .type-col {
+    width: 140px;
+  }
+
+  .app-data-table__icon-btn {
+    width: 32px;
+    height: 32px;
+    line-height: 32px;
+
+    mat-icon {
+      font-size: 20px;
+      width: 20px;
+      height: 20px;
+      color: #8b959d;
+    }
+  }
+}
+
+@media (max-width: 900px) {
+  .pick-lists-filters-grid {
+    column-gap: 16px;
   }
 }
 
 @media (max-width: 720px) {
-  .pick-lists-search-row {
+  .pick-lists-filters-grid {
     grid-template-columns: minmax(0, 1fr);
+
+    .operator-field {
+      grid-column: auto;
+    }
   }
 
-  .pick-lists-search {
-    grid-column: auto;
-  }
-
-  .pick-lists-filters {
-    grid-template-columns: minmax(0, 1fr);
+  .pick-lists-type-filters {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 16px;
   }
 }

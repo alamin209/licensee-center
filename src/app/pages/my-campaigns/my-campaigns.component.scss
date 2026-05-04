@@ -1,3 +1,20 @@
 :host {
   display: block;
 }
+
+.my-campaigns-card {
+  .custom-card-header {
+    margin-bottom: 0px;
+  }
+
+  mat-card-content {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    padding-top: 4px;
+  }
+}
+
+.app-data-table-toolbar {
+  margin-top: 20px; // Use container gap instead
+}
