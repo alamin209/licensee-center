@@ -9,40 +9,42 @@
         <mat-card-header class="custom-card-header">
           <mat-card-title>Edit My Profile</mat-card-title>
           <mat-card-subtitle class="demo-hint">
-            Frontend demo: edits stay in this browser tab until reload. Submit to update View all Profiles.
+            Every field is editable: replace the sample values or type into empty boxes, then Submit. Data stays in this
+            browser tab until reload and appears on View all Profiles after Submit.
           </mat-card-subtitle>
         </mat-card-header>
 
         <mat-card-content class="profile-form">
+          <form class="profile-edit-form" novalidate (ngSubmit)="onSubmit()">
           <div class="section-title">1. Personal info</div>
 
           <div class="form-grid form-grid--cols-2">
             <mat-form-field appearance="outline">
               <mat-label>Surname Given Name</mat-label>
-              <input matInput name="givenName" [(ngModel)]="profile.givenName" />
+              <input matInput type="text" name="givenName" autocomplete="given-name" [(ngModel)]="profile.givenName" />
             </mat-form-field>
 
             <mat-form-field appearance="outline">
               <mat-label>Last Name</mat-label>
-              <input matInput name="lastName" [(ngModel)]="profile.lastName" />
+              <input matInput type="text" name="lastName" autocomplete="family-name" [(ngModel)]="profile.lastName" />
             </mat-form-field>
           </div>
 
           <div class="form-grid form-grid--row-preferred">
             <mat-form-field appearance="outline">
               <mat-label>Preferred</mat-label>
-              <input matInput name="preferred" [(ngModel)]="profile.preferred" />
+              <input matInput type="text" name="preferred" [(ngModel)]="profile.preferred" />
             </mat-form-field>
 
             <div class="form-grid form-grid--cols-title-user">
               <mat-form-field appearance="outline">
                 <mat-label>Title</mat-label>
-                <input matInput name="title" [(ngModel)]="profile.title" />
+                <input matInput type="text" name="title" [(ngModel)]="profile.title" />
               </mat-form-field>
 
               <mat-form-field appearance="outline">
                 <mat-label>User ID</mat-label>
-                <input matInput name="userId" [(ngModel)]="profile.userId" />
+                <input matInput type="text" name="userId" inputmode="numeric" [(ngModel)]="profile.userId" />
               </mat-form-field>
             </div>
           </div>
@@ -50,12 +52,19 @@
           <div class="form-grid form-grid--cols-2">
             <mat-form-field appearance="outline">
               <mat-label>Personal Email</mat-label>
-              <input matInput name="personalEmail" type="email" [(ngModel)]="profile.personalEmail" />
+              <input
+                matInput
+                type="email"
+                name="personalEmail"
+                autocomplete="email"
+                placeholder="name@example.com"
+                [(ngModel)]="profile.personalEmail"
+              />
             </mat-form-field>
 
             <mat-form-field appearance="outline">
               <mat-label>Cell &amp; Text</mat-label>
-              <input matInput name="cell" [(ngModel)]="profile.cell" />
+              <input matInput type="tel" name="cell" autocomplete="tel" [(ngModel)]="profile.cell" />
             </mat-form-field>
           </div>
           <hr class="form-divider" />
@@ -65,36 +74,55 @@
           <div class="form-grid form-grid--cols-2">
             <mat-form-field appearance="outline">
               <mat-label>Contact Email</mat-label>
-              <input matInput name="contactEmail" type="email" [(ngModel)]="profile.contactEmail" />
+              <input
+                matInput
+                type="email"
+                name="contactEmail"
+                placeholder="work@example.com"
+                [(ngModel)]="profile.contactEmail"
+              />
             </mat-form-field>
 
             <mat-form-field appearance="outline">
               <mat-label>Company Email</mat-label>
-              <input matInput name="companyEmail" type="email" [(ngModel)]="profile.companyEmail" />
+              <input
+                matInput
+                type="email"
+                name="companyEmail"
+                placeholder="company@example.com"
+                [(ngModel)]="profile.companyEmail"
+              />
             </mat-form-field>
           </div>
 
           <div class="form-grid form-grid--cols-2">
             <mat-form-field appearance="outline">
               <mat-label>LinkedIn</mat-label>
-              <input matInput name="linkedin" [(ngModel)]="profile.linkedin" />
+              <input matInput type="text" name="linkedin" placeholder="linkedin.com/in/yourprofile" [(ngModel)]="profile.linkedin" />
             </mat-form-field>
 
             <mat-form-field appearance="outline">
               <mat-label>Teams ID</mat-label>
-              <input matInput name="teamsId" [(ngModel)]="profile.teamsId" />
+              <input matInput type="text" name="teamsId" placeholder="Your Teams handle" [(ngModel)]="profile.teamsId" />
             </mat-form-field>
           </div>
 
           <div class="form-grid form-grid--cols-1">
             <mat-form-field appearance="outline" class="form-field--textarea">
               <mat-label>A Little About Me ..</mat-label>
-              <textarea matInput rows="3" name="about" [(ngModel)]="profile.about"></textarea>
+              <textarea
+                matInput
+                rows="3"
+                name="about"
+                placeholder="Add a short bio or notes (optional)"
+                [(ngModel)]="profile.about"
+              ></textarea>
             </mat-form-field>
           </div>
           <hr class="form-divider" />
 
           <div class="section-title section-title--spaced">3. Personal info</div>
+          <p class="field-section-hint">Optional fields below accept any text you add — it is saved when you Submit.</p>
 
           <div class="form-grid form-grid--cols-2 profile-form__uploads">
             <app-file-drop-upload
@@ -123,43 +151,44 @@
           <div class="form-grid form-grid--cols-2">
             <mat-form-field appearance="outline">
               <mat-label>Trading Entity</mat-label>
-              <input matInput name="tradingEntity" [(ngModel)]="profile.tradingEntity" />
+              <input matInput type="text" name="tradingEntity" placeholder="e.g. entity or business name" [(ngModel)]="profile.tradingEntity" />
             </mat-form-field>
 
             <mat-form-field appearance="outline">
               <mat-label>Registration Number</mat-label>
-              <input matInput name="registration" [(ngModel)]="profile.registration" />
+              <input matInput type="text" name="registration" placeholder="Registration or license #" [(ngModel)]="profile.registration" />
             </mat-form-field>
           </div>
 
           <div class="form-grid form-grid--cols-2">
             <mat-form-field appearance="outline">
               <mat-label>Digital Presence #1</mat-label>
-              <input matInput name="dp1" [(ngModel)]="profile.digitalPresence1" />
+              <input matInput type="text" name="dp1" placeholder="Website, social, or portfolio URL" [(ngModel)]="profile.digitalPresence1" />
             </mat-form-field>
 
             <mat-form-field appearance="outline">
               <mat-label>Digital Presence #2</mat-label>
-              <input matInput name="dp2" [(ngModel)]="profile.digitalPresence2" />
+              <input matInput type="text" name="dp2" placeholder="Optional link or handle" [(ngModel)]="profile.digitalPresence2" />
             </mat-form-field>
           </div>
 
           <div class="form-grid form-grid--cols-2">
             <mat-form-field appearance="outline">
               <mat-label>Digital Presence #3</mat-label>
-              <input matInput name="dp3" [(ngModel)]="profile.digitalPresence3" />
+              <input matInput type="text" name="dp3" placeholder="Optional link or handle" [(ngModel)]="profile.digitalPresence3" />
             </mat-form-field>
 
             <mat-form-field appearance="outline">
               <mat-label>Digital Presence #4</mat-label>
-              <input matInput name="dp4" [(ngModel)]="profile.digitalPresence4" />
+              <input matInput type="text" name="dp4" placeholder="Optional link or handle" [(ngModel)]="profile.digitalPresence4" />
             </mat-form-field>
           </div>
 
           <div class="form-actions profile-form__actions">
             <button mat-flat-button type="button" class="btn-cancel" (click)="onCancel()">Cancel</button>
-            <button mat-flat-button type="button" class="btn-primary" (click)="onSubmit()">Submit</button>
+            <button mat-flat-button type="submit" class="btn-primary">Submit</button>
           </div>
+          </form>
         </mat-card-content>
       </mat-card>
     }

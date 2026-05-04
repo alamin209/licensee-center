@@ -89,8 +89,9 @@ export class ProfileEditComponent {
       extras.push(`CV: ${this.cvFile.name}`);
     }
     const suffix = extras.length ? ` ${extras.join(' · ')}` : '';
-    this.snackBar.open(`Profile saved (demo). View all Profiles shows this data until reload.${suffix}`, 'OK', {
-      duration: 6000
+    this.snackBar.open(`Profile saved (demo). Showing your profile below.${suffix}`, 'OK', {
+      duration: 6500
     });
+    void this.router.navigate(['/profile/profiles']);
   }
 }
