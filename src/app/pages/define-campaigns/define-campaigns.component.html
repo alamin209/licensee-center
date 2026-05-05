@@ -10,7 +10,7 @@
 
   <mat-card class="form-card app-outlined-form" appearance="outlined">
 
-    <form #campaignForm="ngForm">
+    <form #campaignForm="ngForm" novalidate (ngSubmit)="onSubmit(campaignForm)">
       <mat-card-header class="custom-card-header campaign-card-header">
         <mat-card-title>Define Campaigns</mat-card-title>
       </mat-card-header>
@@ -39,23 +39,38 @@
 
 
 
-        <mat-form-field appearance="outline" class="campaign-name-field">
-          <mat-label>Name of Campaign</mat-label>
-          <input matInput name="campaignName" [(ngModel)]="campaignName" required />
-        </mat-form-field>
-
-
-
         @if (campaignType === 'geographic') {
-
-        <div class="campaigns-grid-span campaigns-locale-strip">
-
-          <span class="campaigns-locale-summary">{{ localeSummary }}</span>
-
-          <button mat-stroked-button type="button" (click)="openCountryLocaleDialog()">Edit</button>
-
-        </div>
-
+          <div class="geographic-display-box">
+             <span class="locale-text" [title]="localeSummary">{{ localeSummary || 'Select Location' }}</span>
+             <button mat-flat-button type="button" class="btn-primary edit-btn" (click)="openCountryLocaleDialog()">Edit</button>
+          </div>
+        } @else {
+          <mat-form-field appearance="outline" class="campaign-name-field">
+            <mat-label>Name of Campaign</mat-label>
+            <input
+              matInput
+              name="campaignName"
+              [(ngModel)]="campaignName"
+              required
+              minlength="3"
+              maxlength="120"
+              [pattern]="campaignNamePattern"
+              #campaignNameMdl="ngModel"
+            />
+            @if (showFieldError(campaignNameMdl)) {
+              <mat-error>
+                @if (campaignNameMdl.hasError('required')) {
+                  Campaign name is required.
+                } @else if (campaignNameMdl.hasError('minlength')) {
+                  Campaign name must be at least 3 characters.
+                } @else if (campaignNameMdl.hasError('maxlength')) {
+                  Campaign name must be 120 characters or fewer.
+                } @else {
+                  Use letters, numbers, spaces, and basic punctuation only.
+                }
+              </mat-error>
+            }
+          </mat-form-field>
         }
 
 
@@ -74,7 +89,25 @@
 
           <mat-label>Campaign ID</mat-label>
 
-          <input matInput name="campaignId" [(ngModel)]="campaignId" required />
+          <input
+            matInput
+            name="campaignId"
+            [(ngModel)]="campaignId"
+            required
+            minlength="3"
+            maxlength="50"
+            [pattern]="campaignIdPattern"
+            #campaignIdMdl="ngModel"
+          />
+          @if (showFieldError(campaignIdMdl)) {
+            <mat-error>
+              @if (campaignIdMdl.hasError('required')) {
+                Campaign ID is required.
+              } @else {
+                Use 3-50 characters: letters, numbers, underscore, or hyphen.
+              }
+            </mat-error>
+          }
 
         </mat-form-field>
 
@@ -218,7 +251,18 @@
 
         <mat-form-field appearance="outline" class="upload-url-field">
           <mat-label>Upload Url</mat-label>
-          <input matInput name="uploadUrl" [(ngModel)]="uploadUrl" type="url" placeholder="https://…" />
+          <input
+            matInput
+            name="uploadUrl"
+            [(ngModel)]="uploadUrl"
+            type="url"
+            placeholder="https://…"
+            [pattern]="optionalHttpsUrlPattern"
+            #uploadUrlMdl="ngModel"
+          />
+          @if (showFieldError(uploadUrlMdl)) {
+            <mat-error>Enter a valid URL starting with http:// or https://, or leave blank.</mat-error>
+          }
         </mat-form-field>
 
 
@@ -260,7 +304,24 @@
 
           <mat-label>Number of Properties</mat-label>
 
-          <input matInput type="number" min="0" name="numProperties" [(ngModel)]="numProperties" required />
+          <input
+            matInput
+            type="number"
+            min="0"
+            name="numProperties"
+            [(ngModel)]="numProperties"
+            required
+            #numPropertiesMdl="ngModel"
+          />
+          @if (showFieldError(numPropertiesMdl)) {
+            <mat-error>
+              @if (numPropertiesMdl.hasError('required')) {
+                Number of properties is required.
+              } @else {
+                Number of properties must be 0 or greater.
+              }
+            </mat-error>
+          }
 
         </mat-form-field>
 
@@ -314,7 +375,18 @@
 
           <mat-label>Date Initiated</mat-label>
 
-          <input matInput [matDatepicker]="datePicker" placeholder="DD / MM / YYYY" name="dateInitiated" [(ngModel)]="dateInitiated" required />
+          <input
+            matInput
+            [matDatepicker]="datePicker"
+            placeholder="DD / MM / YYYY"
+            name="dateInitiated"
+            [(ngModel)]="dateInitiated"
+            required
+            #dateInitiatedMdl="ngModel"
+          />
+          @if (showFieldError(dateInitiatedMdl)) {
+            <mat-error>Date initiated is required.</mat-error>
+          }
 
           <mat-datepicker-toggle matIconSuffix [for]="datePicker"></mat-datepicker-toggle>
 

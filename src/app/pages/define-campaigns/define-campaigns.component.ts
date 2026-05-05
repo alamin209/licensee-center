@@ -9,7 +9,7 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatIconModule } from '@angular/material/icon';
 import { MatDialog } from '@angular/material/dialog';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, NgForm, NgModel } from '@angular/forms';
 import {
   CountryLocaleDialogComponent,
   CountryLocaleDialogData,
@@ -64,6 +64,9 @@ export class DefineCampaignsComponent {
   campaignName = '';
 
   uploadUrl = '';
+  readonly campaignNamePattern = "^[A-Za-z0-9][A-Za-z0-9 &'().,\\-/]{2,119}$";
+  readonly campaignIdPattern = '^[A-Za-z0-9][A-Za-z0-9_-]{2,49}$';
+  readonly optionalHttpsUrlPattern = '^$|^https?:\\/\\/[^\\s/$.?#].[^\\s]*$';
 
   imageFile: File | null = null;
   pdfFile: File | null = null;
@@ -72,6 +75,18 @@ export class DefineCampaignsComponent {
   @ViewChild('imageUpload') imageUpload?: FileDropUploadComponent;
   @ViewChild('pdfUpload') pdfUpload?: FileDropUploadComponent;
   @ViewChild('videoUpload') videoUpload?: FileDropUploadComponent;
+
+  showFieldError(model: NgModel): boolean {
+    return !!(model.invalid && (model.dirty || model.touched));
+  }
+
+  onSubmit(form: NgForm): void {
+    form.form.updateValueAndValidity({ emitEvent: false });
+    if (form.invalid) {
+      form.form.markAllAsTouched();
+      return;
+    }
+  }
 
   onReset(): void {
     this.imageFile = null;
