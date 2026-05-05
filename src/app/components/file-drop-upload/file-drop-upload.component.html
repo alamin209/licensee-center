@@ -1,6 +1,7 @@
 <div
   class="media-upload"
   [class.media-upload--dropping]="dropActive"
+  [class.media-upload--error]="!!errorMsg"
   (dragenter)="onDragEnter($event)"
   (dragleave)="onDragLeave($event)"
   (dragover)="onDragOver($event)"
@@ -17,10 +18,15 @@
   <input #fileInput type="file" class="media-upload__native" [accept]="accept" (change)="onNativeChange($event)" />
 
   @if (hasFile) {
-    <div class="media-upload__result" [class.media-upload__result--document]="mode === 'document'">
+    <div class="media-upload__result" [class.media-upload__result--document]="mode === 'document' || mode === 'video'">
       @if (mode === 'image' && previewUrl) {
         <div class="picture-preview">
           <img [src]="previewUrl" alt="Preview of selected upload" class="picture-preview__img" />
+        </div>
+      }
+      @if (mode === 'video' && previewUrl) {
+        <div class="picture-preview">
+          <video [src]="previewUrl" controls class="picture-preview__img"></video>
         </div>
       }
       @if (mode === 'document') {
@@ -37,9 +43,11 @@
       </div>
     </div>
   } @else {
-    <div class="media-upload__zone" [class.media-upload__zone--document]="mode === 'document'">
+    <div class="media-upload__zone" [class.media-upload__zone--document]="mode === 'document' || mode === 'video'">
       @if (mode === 'image') {
         <mat-icon class="media-upload__icon" aria-hidden="true">add_a_photo</mat-icon>
+      } @else if (mode === 'video') {
+        <mat-icon class="media-upload__icon" aria-hidden="true">movie</mat-icon>
       } @else {
         <mat-icon class="media-upload__icon" aria-hidden="true">upload_file</mat-icon>
       }
@@ -53,5 +61,9 @@
         </button>
       </span>
     </div>
+  }
+
+  @if (errorMsg) {
+    <div class="media-upload__error">{{ errorMsg }}</div>
   }
 </div>

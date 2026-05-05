@@ -17,14 +17,38 @@
 .form-card {
   --mat-form-field-container-height: 40px;
   --mat-mdc-form-field-floating-label-scale: 1;
+  /** Readable, neutral placeholders (not too pale, not as strong as typed text). */
+  --app-input-placeholder-color: rgba(38, 50, 61, 0.42);
+  --app-input-placeholder-color-focus: rgba(38, 50, 61, 0.34);
 
   mat-form-field,
   .radio-field {
     margin-bottom: var(--app-form-field-stack-gap, 32px);
   }
 
+  // Do not hide `.mat-mdc-form-field-subscript-wrapper` — that suppresses `mat-hint` and `mat-error`
+  // under outlined fields. Keep tight spacing; MDC collapses the row when there is no hint/error.
   .mat-mdc-form-field-subscript-wrapper {
-    display: none;
+    padding-top: 2px;
+  }
+
+  // Clear error colour (theme tokens can read as brown/grey on some surfaces).
+  .mat-mdc-form-field-error-wrapper,
+  mat-error,
+  .mat-mdc-form-field-error {
+    color: #c62828 !important;
+    font-weight: 500;
+    font-size: 0.8125rem;
+    line-height: 1.4;
+    letter-spacing: 0.01em;
+  }
+
+  // Hints (e.g. textarea helper) — same tone as placeholders, not body text.
+  mat-hint,
+  .mat-mdc-form-field-hint {
+    color: var(--app-input-placeholder-color);
+    font-size: 0.8125rem;
+    line-height: 1.4;
   }
 
   // Resting label (in the field): readable size. Floated label on notch: Figma body-small.
@@ -183,7 +207,7 @@
     }
 
     input.mat-mdc-input-element::placeholder {
-      color: #8b959d;
+      color: var(--app-input-placeholder-color);
       opacity: 1;
     }
   }
@@ -195,17 +219,77 @@
     font-size: 14px;
     line-height: 24px;
     letter-spacing: 0.15px;
-    color: #000000DE;
+    color: #000000de;
     vertical-align: middle;
+
+    &::placeholder {
+      color: var(--app-input-placeholder-color);
+      opacity: 1;
+      font-weight: 400 !important;
+      font-style: normal;
+    }
+
+    &:focus::placeholder {
+      color: var(--app-input-placeholder-color-focus);
+    }
+
+    &:focus::-webkit-input-placeholder {
+      color: var(--app-input-placeholder-color-focus);
+    }
+
+    &:focus::-moz-placeholder {
+      color: var(--app-input-placeholder-color-focus);
+    }
+
+    &::-webkit-input-placeholder {
+      color: var(--app-input-placeholder-color);
+      opacity: 1;
+      font-weight: 400 !important;
+      font-style: normal;
+    }
+
+    &::-moz-placeholder {
+      color: var(--app-input-placeholder-color);
+      opacity: 1;
+      font-weight: 400 !important;
+      font-style: normal;
+    }
 
     &:disabled {
       color: #929ba2 !important;
       -webkit-text-fill-color: #929ba2 !important;
+
+      &::placeholder,
+      &::-webkit-input-placeholder,
+      &::-moz-placeholder {
+        color: rgba(146, 155, 162, 0.88);
+      }
     }
   }
 
   textarea.mat-mdc-input-element {
     line-height: 24px;
+  }
+
+  // Material MDC can override generic `::placeholder` rules; restate on MDC class.
+  .mat-mdc-form-field .mdc-text-field__input::placeholder,
+  .mat-mdc-form-field .mdc-text-field__input::-webkit-input-placeholder,
+  .mat-mdc-form-field .mdc-text-field__input::-moz-placeholder {
+    color: var(--app-input-placeholder-color) !important;
+    -webkit-text-fill-color: var(--app-input-placeholder-color) !important;
+    font-weight: 400 !important;
+    font-style: normal !important;
+    opacity: 1 !important;
+  }
+
+  .mat-mdc-form-field .mdc-text-field__input:read-only::placeholder,
+  .mat-mdc-form-field .mdc-text-field__input:read-only::-webkit-input-placeholder,
+  .mat-mdc-form-field .mdc-text-field__input:read-only::-moz-placeholder {
+    color: var(--app-input-placeholder-color) !important;
+    -webkit-text-fill-color: var(--app-input-placeholder-color) !important;
+    font-weight: 400 !important;
+    font-style: normal !important;
+    opacity: 1 !important;
   }
 
   .mat-mdc-select-value-text {

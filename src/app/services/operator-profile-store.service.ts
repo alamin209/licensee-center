@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { isPdfFile } from '../utils/file-helpers';
 
 export interface OperatorProfileDemo {
   givenName: string;
@@ -55,14 +56,66 @@ export class OperatorProfileStore {
   /** Data URL of last submitted profile photo (for Verify / read-only views). */
   submittedPhotoDataUrl: string | null = null;
 
+  /** Portrait preview while editing (before Submit) — surfaced on Verify Operator. */
+  draftPhotoDataUrl: string | null = null;
+  draftPhotoName: string | null = null;
+  draftCvName: string | null = null;
+  /** Blob URL for in-session PDF preview (draft CV). */
+  draftCvPdfBlobUrl: string | null = null;
+  /** Blob URL for PDF preview after profile Submit. */
+  submittedCvPdfBlobUrl: string | null = null;
+
+  /** Prefer last submit; fallback to draft pick so uploads show everywhere in-session. */
+  get previewPhotoDataUrl(): string | null {
+    return this.submittedPhotoDataUrl ?? this.draftPhotoDataUrl ?? null;
+  }
+
+  get previewCvName(): string | null {
+    return this.submittedCvName ?? this.draftCvName ?? null;
+  }
+
+  /** PDF preview blob URL — Word/DOC uploads have no iframe preview here. */
+  get previewCvPdfBlobUrl(): string | null {
+    return this.submittedCvPdfBlobUrl ?? this.draftCvPdfBlobUrl ?? null;
+  }
+
+  syncDraftCvFromFile(file: File | null): void {
+    if (this.draftCvPdfBlobUrl) {
+      URL.revokeObjectURL(this.draftCvPdfBlobUrl);
+      this.draftCvPdfBlobUrl = null;
+    }
+    if (!file) {
+      this.draftCvName = null;
+      return;
+    }
+    this.draftCvName = file.name;
+    if (isPdfFile(file)) {
+      this.draftCvPdfBlobUrl = URL.createObjectURL(file);
+    }
+  }
+
   commitSubmit(photo: File | null, cv: File | null, photoDataUrl: string | null): void {
     Object.assign(this.submitted, this.draft);
     this.submittedPhotoName = photo?.name ?? null;
+    if (this.submittedCvPdfBlobUrl) {
+      URL.revokeObjectURL(this.submittedCvPdfBlobUrl);
+      this.submittedCvPdfBlobUrl = null;
+    }
     this.submittedCvName = cv?.name ?? null;
+    if (cv && isPdfFile(cv)) {
+      this.submittedCvPdfBlobUrl = URL.createObjectURL(cv);
+    }
     this.submittedPhotoDataUrl = photoDataUrl;
   }
 
   resetDraftToInitial(): void {
     Object.assign(this.draft, INITIAL_OPERATOR_PROFILE);
+    this.draftPhotoDataUrl = null;
+    this.draftPhotoName = null;
+    if (this.draftCvPdfBlobUrl) {
+      URL.revokeObjectURL(this.draftCvPdfBlobUrl);
+      this.draftCvPdfBlobUrl = null;
+    }
+    this.draftCvName = null;
   }
 }

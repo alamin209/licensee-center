@@ -1,9 +1,4 @@
 import { Routes } from '@angular/router';
-import { ViewAllProfilesComponent } from './pages/view-all-profiles/view-all-profiles.component';
-import { VerifyOperatorComponent } from './pages/verify-operator/verify-operator.component';
-import { BlankPageComponent } from './pages/blank-page/blank-page.component';
-import { DefineCampaignGeographicComponent } from './pages/define-campaign-geographic/define-campaign-geographic.component';
-import { CampaignPropertyComponent } from './pages/campaign-property/campaign-property.component';
 
 const loadProfileEdit = () =>
   import('./pages/profile-edit/profile-edit.component').then((m) => m.ProfileEditComponent);
@@ -20,27 +15,39 @@ const loadMyCampaigns = () =>
 const loadAllCampaigns = () =>
   import('./pages/all-campaigns/all-campaigns.component').then((m) => m.AllCampaignsComponent);
 
+const loadViewAllProfiles = () =>
+  import('./pages/view-all-profiles/view-all-profiles.component').then((m) => m.ViewAllProfilesComponent);
+const loadVerifyOperator = () =>
+  import('./pages/verify-operator/verify-operator.component').then((m) => m.VerifyOperatorComponent);
+const loadBlankPage = () =>
+  import('./pages/blank-page/blank-page.component').then((m) => m.BlankPageComponent);
+const loadDefineCampaignGeographic = () =>
+  import('./pages/define-campaign-geographic/define-campaign-geographic.component').then((m) => m.DefineCampaignGeographicComponent);
+const loadCampaignProperty = () =>
+  import('./pages/campaign-property/campaign-property.component').then((m) => m.CampaignPropertyComponent);
+
 export const routes: Routes = [
   { path: '', redirectTo: 'profile/all', pathMatch: 'full' },
 
-  // Edit My Profile → same screen as git (`ProfileEditComponent`); old URL still works.
+  // Edit My Profile — `ProfileEditComponent` (same component, view mode driven by URL path).
   { path: 'operator-console/edit-my-profile', redirectTo: 'profile/all', pathMatch: 'full' },
-  { path: 'profile/all', loadComponent: loadProfileEdit },
+  { path: 'profile/edit', loadComponent: loadProfileEdit },
+  { path: 'profile/view', loadComponent: loadProfileEdit },
   { path: 'profile/profiles', loadComponent: loadProfileEdit },
   { path: 'profile/verify', loadComponent: loadProfileEdit },
 
-  { path: 'operator-console/view-all-profiles', component: ViewAllProfilesComponent },
-  { path: 'operator-console/verify-operator', component: VerifyOperatorComponent },
+  { path: 'operator-console/view-all-profiles', loadComponent: loadViewAllProfiles },
+  { path: 'operator-console/verify-operator', loadComponent: loadVerifyOperator },
 
-  { path: 'placeholder', component: BlankPageComponent },
-  { path: 'communications/:id', component: BlankPageComponent },
-  { path: 'introduction/:id', component: BlankPageComponent },
-  { path: 'components/:id', component: BlankPageComponent },
-  { path: 'directory/:id', component: BlankPageComponent },
-  { path: 'hands-on/:id', component: BlankPageComponent },
-  { path: 'licencing/:id', component: BlankPageComponent },
-  { path: 'activation/:id', component: BlankPageComponent },
-  { path: 'other/:id', component: BlankPageComponent },
+  { path: 'placeholder', loadComponent: loadBlankPage },
+  { path: 'communications/:id', loadComponent: loadBlankPage },
+  { path: 'introduction/:id', loadComponent: loadBlankPage },
+  { path: 'components/:id', loadComponent: loadBlankPage },
+  { path: 'directory/:id', loadComponent: loadBlankPage },
+  { path: 'hands-on/:id', loadComponent: loadBlankPage },
+  { path: 'licencing/:id', loadComponent: loadBlankPage },
+  { path: 'activation/:id', loadComponent: loadBlankPage },
+  { path: 'other/:id', loadComponent: loadBlankPage },
 
   { path: 'campaigns/define', loadComponent: loadDefineCampaigns },
   { path: 'campaigns/define-campaigns', redirectTo: 'campaigns/define', pathMatch: 'full' },
@@ -54,8 +61,8 @@ export const routes: Routes = [
   { path: 'campaigns/my-campaigns', redirectTo: 'campaigns/my', pathMatch: 'full' },
   { path: 'campaigns/all', loadComponent: loadAllCampaigns },
   { path: 'campaigns/all-campaigns', redirectTo: 'campaigns/all', pathMatch: 'full' },
-  { path: 'campaigns/campaign-property/:campaignId', component: CampaignPropertyComponent },
-  { path: 'campaigns/define-campaign-geographic', component: DefineCampaignGeographicComponent },
+  { path: 'campaigns/campaign-property/:campaignId', loadComponent: loadCampaignProperty },
+  { path: 'campaigns/define-campaign-geographic', loadComponent: loadDefineCampaignGeographic },
 
-  { path: '**', redirectTo: 'profile/all' }
+  { path: '**', redirectTo: 'profile/edit' }
 ];

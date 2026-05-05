@@ -21,6 +21,21 @@
   flex-wrap: wrap;
 }
 
+.profile-form__actions--edit {
+  border-top: 1px solid #e8eaed;
+  margin-top: 1.75rem;
+  padding-top: 1.25rem;
+
+  .btn-secondary,
+  .profile-edit__btn-submit {
+    min-width: 7rem;
+  }
+
+  .profile-edit__btn-submit.btn-primary {
+    box-shadow: 0 2px 6px rgba(28, 108, 228, 0.28);
+  }
+}
+
 .profile-readonly {
   display: grid;
   grid-template-columns: minmax(140px, 220px) 1fr;

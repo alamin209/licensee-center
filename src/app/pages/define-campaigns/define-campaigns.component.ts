@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, ViewChild } from '@angular/core';
 import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
@@ -12,19 +12,10 @@ import { MatDialog } from '@angular/material/dialog';
 import { FormsModule } from '@angular/forms';
 import {
   CountryLocaleDialogComponent,
-  CountryLocaleDialogData
+  CountryLocaleDialogData,
+  LOCATION_DATA
 } from './country-locale-dialog.component';
-
-const localeLabels: Record<string, string> = {
-  usa: 'USA',
-  ca: 'Canada',
-  illinois: 'Illinois',
-  california: 'California',
-  ny: 'New York',
-  chicago: 'Chicago',
-  la: 'Los Angeles',
-  nyc: 'New York City'
-};
+import { FileDropUploadComponent } from '../../components/file-drop-upload/file-drop-upload.component';
 
 @Component({
   selector: 'app-define-campaigns',
@@ -39,7 +30,8 @@ const localeLabels: Record<string, string> = {
     MatDatepickerModule,
     MatNativeDateModule,
     MatIconModule,
-    FormsModule
+    FormsModule,
+    FileDropUploadComponent
   ],
   templateUrl: './define-campaigns.component.html',
   styleUrl: './define-campaigns.component.scss'
@@ -47,35 +39,63 @@ const localeLabels: Record<string, string> = {
 export class DefineCampaignsComponent {
   private readonly dialog = inject(MatDialog);
 
-  selfLicensing = 'yes';
-  campaignType = 'agent-specific';
-  director = 'kim-powley';
-  dataCollator = 'frank-brown';
-  licenseManager = 'director';
-  campaignLead = 'paolo-randone';
-  associateRep = 'frank-brown';
-  selectLicense = 'self-licensed';
-  agentSuccessFee = '15';
-  productPriceVary = '100-plus';
+  selfLicensing = '';
+  campaignType = '';
+  director = '';
+  dataCollator = '';
+  licenseManager = '';
+  campaignLead = '';
+  associateRep = '';
+  selectLicense = '';
+  agentSuccessFee = '';
+  productPriceVary = '';
+  descriptor = '';
+  campaignId = '';
+  tagline = '';
+  numProperties: number | null = null;
+  notesInternal = '';
+  notesExternal = '';
+  dateInitiated: Date | null = null;
 
-  localeCountry = 'usa';
-  localeState = 'illinois';
-  localeLocale = 'chicago';
+  localeCountry = '';
+  localeState = '';
+  localeLocale = '';
 
-  /** Shown in Name of Campaign; refreshed when country/locale dialog saves. */
-  campaignName = 'Selected Southeast Asian resorts';
+  campaignName = '';
 
   uploadUrl = '';
 
-  imageFileName = '';
-  pdfFileName = '';
-  videoFileName = '';
+  imageFile: File | null = null;
+  pdfFile: File | null = null;
+  videoFile: File | null = null;
+
+  @ViewChild('imageUpload') imageUpload?: FileDropUploadComponent;
+  @ViewChild('pdfUpload') pdfUpload?: FileDropUploadComponent;
+  @ViewChild('videoUpload') videoUpload?: FileDropUploadComponent;
+
+  onReset(): void {
+    this.imageFile = null;
+    this.pdfFile = null;
+    this.videoFile = null;
+    this.imageUpload?.reset();
+    this.pdfUpload?.reset();
+    this.videoUpload?.reset();
+    this.localeCountry = '';
+    this.localeState = '';
+    this.localeLocale = '';
+    this.campaignName = '';
+  }
 
   get localeSummary(): string {
-    const country = localeLabels[this.localeCountry] ?? this.localeCountry;
-    const locale = localeLabels[this.localeLocale] ?? this.localeLocale;
-    const state = localeLabels[this.localeState] ?? this.localeState;
-    return `${country}, ${locale}, ${state}`;
+    const cData = LOCATION_DATA[this.localeCountry];
+    const countryName = cData ? cData.name : this.localeCountry;
+    
+    const sData = cData?.states?.[this.localeState];
+    const stateName = sData ? sData.name : this.localeState;
+    
+    const localeName = sData?.locales?.[this.localeLocale] ?? this.localeLocale;
+
+    return `${countryName}, ${stateName}, ${localeName}`;
   }
 
   openCountryLocaleDialog(): void {
@@ -101,19 +121,15 @@ export class DefineCampaignsComponent {
       });
   }
 
-  onFileSelected(event: Event, target: 'image' | 'pdf' | 'video'): void {
-    const input = event.target as HTMLInputElement;
-    const name = input.files?.[0]?.name ?? '';
-    switch (target) {
-      case 'image':
-        this.imageFileName = name;
-        break;
-      case 'pdf':
-        this.pdfFileName = name;
-        break;
-      case 'video':
-        this.videoFileName = name;
-        break;
-    }
+  onImageChange(file: File | null): void {
+    this.imageFile = file;
+  }
+
+  onPdfChange(file: File | null): void {
+    this.pdfFile = file;
+  }
+
+  onVideoChange(file: File | null): void {
+    this.videoFile = file;
   }
 }

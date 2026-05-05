@@ -1,6 +1,7 @@
-import { Component, DestroyRef, inject, signal, viewChild } from '@angular/core';
+import { Component, DestroyRef, inject, Injectable, signal, viewChild } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { FormsModule } from '@angular/forms';
+import { AbstractControl, FormsModule, NgForm, NgModel } from '@angular/forms';
+import { ErrorStateMatcher } from '@angular/material/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -18,9 +19,21 @@ import { isImageFile } from '../../utils/file-helpers';
 
 export type ProfileViewMode = 'edit' | 'profiles' | 'verify';
 
+/** Red outline + error helpers while typing (`dirty`), after blur (`touched`), or after failed submit (`form.submitted`). */
+@Injectable()
+class ProfileFormErrorStateMatcher implements ErrorStateMatcher {
+  isErrorState(control: AbstractControl | null, form: { submitted?: boolean } | null = null): boolean {
+    if (!control) {
+      return false;
+    }
+    return !!(control.invalid && (control.dirty || control.touched || !!form?.submitted));
+  }
+}
+
 @Component({
   selector: 'app-profile-edit',
   standalone: true,
+  providers: [{ provide: ErrorStateMatcher, useClass: ProfileFormErrorStateMatcher }],
   imports: [
     FormsModule,
     RouterLink,
@@ -41,8 +54,28 @@ export class ProfileEditComponent {
   private readonly destroyRef = inject(DestroyRef);
   readonly store = inject(OperatorProfileStore);
 
+  /**
+   * Person names: letter + letters/spaces/punctuation (Unicode letters). Optional fields use string `^$|…` below.
+   */
+  readonly personNamePattern = /^[\p{L}][\p{L}\s.'\u2019-]{0,79}$/u;
+  /** Optional cell / SMS — digits with common separators or leading +. */
+  readonly phoneFlexiblePattern = '^$|^\\+?[0-9 \\-().\\/]{10,}\\d$';
+
+  readonly linkedInOptionalPattern =
+    '^$|^https?:\\/\\/([\\w-]+\\.)?linkedin\\.com\\/[-\\w#%?=.&+\\/]+$|^linkedin\\.com\\/[-\\w#%?=.&+\\/]+$';
+  /** Links or domain-style paths (portfolio, social URLs). Empty allowed. */
+  readonly optionalPresenceUrlPattern =
+    '^$|^(?:https?:\\/\\/)?(?:www\\.)?[\\w-]+(?:\\.[\\w-]{2,})+(?:\\/[^\\s]*)?$';
+  readonly teamsHandlePattern = '^$|^[-_A-Za-z0-9@.]{1,128}$';
+  readonly registrationOptionalPattern = '^$|^[-A-Za-z0-9#\\/\\s.]{2,80}$';
+
+  readonly preferredMaxLen = 60;
+  readonly aboutMaxLen = 800;
+  readonly tradingMaxLen = 120;
+
   readonly photoUpload = viewChild<FileDropUploadComponent>('photoUpload');
   readonly cvUpload = viewChild<FileDropUploadComponent>('cvUpload');
+  readonly profileNgForm = viewChild<NgForm>('profileEditForm');
 
   /** Same object as `store.draft` — form edits persist when switching profile URLs. */
   readonly profile: OperatorProfileDemo = this.store.draft;
@@ -63,6 +96,11 @@ export class ProfileEditComponent {
         takeUntilDestroyed(this.destroyRef)
       )
       .subscribe(() => this.refreshViewMode());
+  }
+
+  /** Show validation under the field while typing (`dirty`) or after blur / submit (`touched`). */
+  showFieldError(m: NgModel): boolean {
+    return !!(m.invalid && (m.dirty || m.touched));
   }
 
   get operatorSelectLabel(): string {
@@ -96,16 +134,48 @@ export class ProfileEditComponent {
     });
   }
 
+  async onProfilePhotoChanged(file: File | null): Promise<void> {
+    this.profilePhoto = file;
+    if (!file || !isImageFile(file)) {
+      this.store.draftPhotoDataUrl = null;
+      this.store.draftPhotoName = null;
+      return;
+    }
+    this.store.draftPhotoName = file.name;
+    const dataUrl = await this.readPhotoAsDataUrl(file);
+    this.store.draftPhotoDataUrl = dataUrl;
+  }
+
+  onCvFileChanged(file: File | null): void {
+    this.cvFile = file;
+    this.store.syncDraftCvFromFile(file);
+  }
+
   onCancel(): void {
     this.store.resetDraftToInitial();
     this.profilePhoto = null;
     this.cvFile = null;
     this.photoUpload()?.reset();
     this.cvUpload()?.reset();
+    queueMicrotask(() => {
+      const ng = this.profileNgForm();
+      if (ng) {
+        ng.form.markAsUntouched();
+        ng.form.markAsPristine();
+      }
+    });
     this.snackBar.open('Form reset to demo defaults.', 'OK', { duration: 4000 });
   }
 
-  async onSubmit(): Promise<void> {
+  async onSubmit(profileForm: NgForm): Promise<void> {
+    this.trimProfileWhitespace();
+    profileForm.form.updateValueAndValidity({ emitEvent: false });
+    if (profileForm.invalid) {
+      profileForm.form.markAllAsTouched();
+      this.snackBar.open('Please fix the highlighted fields.', 'OK', { duration: 5200 });
+      return;
+    }
+
     const photoDataUrl = await this.readPhotoAsDataUrl(this.profilePhoto);
     this.store.commitSubmit(this.profilePhoto, this.cvFile, photoDataUrl);
     const extras: string[] = [];
@@ -132,5 +202,34 @@ export class ProfileEditComponent {
 
   onVerifyApprove(): void {
     this.snackBar.open('Operator marked verified (demo — no backend).', 'OK', { duration: 5500 });
+  }
+
+  /** Trim editable text fields before submit so validators and stored data align. */
+  private trimProfileWhitespace(): void {
+    const p = this.profile;
+    const keys: (keyof OperatorProfileDemo)[] = [
+      'givenName',
+      'lastName',
+      'preferred',
+      'personalEmail',
+      'cell',
+      'contactEmail',
+      'companyEmail',
+      'linkedin',
+      'teamsId',
+      'about',
+      'tradingEntity',
+      'registration',
+      'digitalPresence1',
+      'digitalPresence2',
+      'digitalPresence3',
+      'digitalPresence4'
+    ];
+    for (const k of keys) {
+      const v = p[k];
+      if (typeof v === 'string') {
+        (p[k] as string) = v.trim();
+      }
+    }
   }
 }

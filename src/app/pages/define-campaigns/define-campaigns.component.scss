@@ -12,6 +12,18 @@
   }
 }
 
+.campaign-card-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 16px;
+  padding: 16px 24px;
+  border-top: 1px solid #eff1f2;
+  margin: 0;
+  background-color: #fafafa;
+  border-bottom-left-radius: 8px;
+  border-bottom-right-radius: 8px;
+}
+
 // Row-pair grid: each row is one logical pair (left + right), so uneven
 // heights (e.g. Self Licensing vs Select License) do not desync later rows.
 // Vertical spacing under fields: `html { --app-form-field-stack-gap }` + `app-outlined-forms.scss`.
@@ -36,6 +48,10 @@
   input[readonly] {
     cursor: pointer;
   }
+}
+
+.upload-url-field {
+  padding-top: 24px;
 }
 
 .campaigns-grid-span {

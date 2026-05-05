@@ -3,27 +3,28 @@
 <mat-dialog-content class="country-locale-dialog__body app-outlined-form">
   <mat-form-field appearance="outline" floatLabel="always">
     <mat-label>Select Country</mat-label>
-    <mat-select [(ngModel)]="work.country" name="dlgCountry">
-      <mat-option value="usa">USA</mat-option>
-      <mat-option value="ca">Canada</mat-option>
+    <mat-select [(ngModel)]="work.country" name="dlgCountry" (selectionChange)="onCountryChange()">
+      @for (country of countries; track country.id) {
+        <mat-option [value]="country.id">{{ country.name }}</mat-option>
+      }
     </mat-select>
   </mat-form-field>
 
   <mat-form-field appearance="outline" floatLabel="always">
     <mat-label>Select State</mat-label>
-    <mat-select [(ngModel)]="work.state" name="dlgState">
-      <mat-option value="illinois">Illinois</mat-option>
-      <mat-option value="california">California</mat-option>
-      <mat-option value="ny">New York</mat-option>
+    <mat-select [(ngModel)]="work.state" name="dlgState" (selectionChange)="onStateChange()" [disabled]="!work.country">
+      @for (state of states; track state.id) {
+        <mat-option [value]="state.id">{{ state.name }}</mat-option>
+      }
     </mat-select>
   </mat-form-field>
 
   <mat-form-field appearance="outline" floatLabel="always">
     <mat-label>Select Locale</mat-label>
-    <mat-select [(ngModel)]="work.locale" name="dlgLocale">
-      <mat-option value="chicago">Chicago</mat-option>
-      <mat-option value="la">Los Angeles</mat-option>
-      <mat-option value="nyc">New York City</mat-option>
+    <mat-select [(ngModel)]="work.locale" name="dlgLocale" [disabled]="!work.state">
+      @for (locale of locales; track locale.id) {
+        <mat-option [value]="locale.id">{{ locale.name }}</mat-option>
+      }
     </mat-select>
   </mat-form-field>
 </mat-dialog-content>

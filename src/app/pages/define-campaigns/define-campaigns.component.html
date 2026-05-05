@@ -10,12 +10,10 @@
 
   <mat-card class="form-card app-outlined-form" appearance="outlined">
 
-    <mat-card-header class="custom-card-header campaign-card-header campaign-card-header--actions-end">
-      <mat-card-title>Define Campaigns</mat-card-title>
-
-      <button mat-flat-button class="btn-primary" type="button">Save</button>
-
-    </mat-card-header>
+    <form #campaignForm="ngForm">
+      <mat-card-header class="custom-card-header campaign-card-header">
+        <mat-card-title>Define Campaigns</mat-card-title>
+      </mat-card-header>
 
 
 
@@ -27,7 +25,7 @@
 
           <mat-label>Select Type</mat-label>
 
-          <mat-select [(ngModel)]="campaignType" name="campaignType">
+          <mat-select [(ngModel)]="campaignType" name="campaignType" required>
 
             <mat-option value="agent-specific">Agent Specific</mat-option>
 
@@ -41,13 +39,9 @@
 
 
 
-        <mat-form-field appearance="outline" class="campaign-name-field" (click)="openCountryLocaleDialog()">
-
+        <mat-form-field appearance="outline" class="campaign-name-field">
           <mat-label>Name of Campaign</mat-label>
-
-          <input matInput name="campaignName" [(ngModel)]="campaignName" readonly
-            (keydown.enter)="openCountryLocaleDialog(); $event.preventDefault()" />
-
+          <input matInput name="campaignName" [(ngModel)]="campaignName" required />
         </mat-form-field>
 
 
@@ -70,7 +64,7 @@
 
           <mat-label>Optional Descriptor</mat-label>
 
-          <input matInput name="descriptor" value="Resorts in Frank Brown's network" />
+          <input matInput name="descriptor" [(ngModel)]="descriptor" />
 
         </mat-form-field>
 
@@ -80,7 +74,7 @@
 
           <mat-label>Campaign ID</mat-label>
 
-          <input matInput name="campaignId" value="00001" />
+          <input matInput name="campaignId" [(ngModel)]="campaignId" required />
 
         </mat-form-field>
 
@@ -90,7 +84,7 @@
 
           <mat-label>Optional Tagline</mat-label>
 
-          <input matInput name="tagline" value="An opportunity to win in online reputation" />
+          <input matInput name="tagline" [(ngModel)]="tagline" />
 
         </mat-form-field>
 
@@ -100,7 +94,7 @@
 
           <mat-label>License Manager</mat-label>
 
-          <mat-select [(ngModel)]="licenseManager" name="licenseManager">
+          <mat-select [(ngModel)]="licenseManager" name="licenseManager" required>
 
             <mat-option value="director">Director</mat-option>
 
@@ -114,7 +108,7 @@
 
           <mat-label>Select Director</mat-label>
 
-          <mat-select [(ngModel)]="director" name="director">
+          <mat-select [(ngModel)]="director" name="director" required>
 
             <mat-option value="kim-powley">Kim Powley</mat-option>
 
@@ -128,7 +122,7 @@
 
           <mat-label>Campaign Lead</mat-label>
 
-          <mat-select [(ngModel)]="campaignLead" name="campaignLead">
+          <mat-select [(ngModel)]="campaignLead" name="campaignLead" required>
 
             <mat-option value="paolo-randone">Paolo Randone</mat-option>
 
@@ -142,7 +136,7 @@
 
           <mat-label>Select data collator</mat-label>
 
-          <mat-select [(ngModel)]="dataCollator" name="dataCollator">
+          <mat-select [(ngModel)]="dataCollator" name="dataCollator" required>
 
             <mat-option value="frank-brown">Frank Brown</mat-option>
 
@@ -156,7 +150,7 @@
 
           <mat-label>Associate Representative</mat-label>
 
-          <mat-select [(ngModel)]="associateRep" name="associateRep">
+          <mat-select [(ngModel)]="associateRep" name="associateRep" required>
 
             <mat-option value="frank-brown">Frank Brown</mat-option>
 
@@ -170,7 +164,7 @@
 
           <span class="radio-field__label">Self Licensing</span>
 
-          <mat-radio-group [(ngModel)]="selfLicensing" name="selfLicensing" class="radio-field__group">
+          <mat-radio-group [(ngModel)]="selfLicensing" name="selfLicensing" class="radio-field__group" required>
 
             <mat-radio-button value="yes" color="primary">Yes</mat-radio-button>
 
@@ -186,7 +180,7 @@
 
           <mat-label>Select License</mat-label>
 
-          <mat-select [(ngModel)]="selectLicense" name="selectLicense">
+          <mat-select [(ngModel)]="selectLicense" name="selectLicense" required>
 
             <mat-option value="self-licensed">Self Licensed</mat-option>
 
@@ -197,88 +191,47 @@
 
 
         <div class="upload-field">
-
-          <mat-form-field appearance="outline" floatLabel="always" class="file-upload">
-
-            <mat-label>Upload Image</mat-label>
-
-            <span matTextPrefix class="file-upload__prefix">
-
-              <button type="button" mat-button class="file-upload__btn" (click)="imageInput.click()">Choose
-                file</button>
-
-              <span class="file-upload__divider" aria-hidden="true"></span>
-
-            </span>
-
-            <input matInput readonly [value]="imageFileName" placeholder="File not selected" />
-
-          </mat-form-field>
-
-          <input #imageInput type="file" class="upload-field__native" accept="image/*"
-            (change)="onFileSelected($event, 'image')" />
-
+          <app-file-drop-upload
+            #imageUpload
+            label="Upload Image"
+            accept="image/*"
+            dropTitle="Drag and drop an image here"
+            mode="image"
+            (fileChange)="onImageChange($event)">
+          </app-file-drop-upload>
         </div>
 
 
 
         <div class="upload-field">
-
-          <mat-form-field appearance="outline" floatLabel="always" class="file-upload">
-
-            <mat-label>Upload PDF</mat-label>
-
-            <span matTextPrefix class="file-upload__prefix">
-
-              <button type="button" mat-button class="file-upload__btn" (click)="pdfInput.click()">Choose file</button>
-
-              <span class="file-upload__divider" aria-hidden="true"></span>
-
-            </span>
-
-            <input matInput readonly [value]="pdfFileName" placeholder="File not selected" />
-
-          </mat-form-field>
-
-          <input #pdfInput type="file" class="upload-field__native" accept=".pdf,application/pdf"
-            (change)="onFileSelected($event, 'pdf')" />
-
+          <app-file-drop-upload
+            #pdfUpload
+            label="Upload PDF"
+            accept=".pdf,application/pdf"
+            dropTitle="Drag and drop a PDF here"
+            mode="document"
+            (fileChange)="onPdfChange($event)">
+          </app-file-drop-upload>
         </div>
 
 
 
-        <mat-form-field appearance="outline">
-
+        <mat-form-field appearance="outline" class="upload-url-field">
           <mat-label>Upload Url</mat-label>
-
           <input matInput name="uploadUrl" [(ngModel)]="uploadUrl" type="url" placeholder="https://…" />
-
         </mat-form-field>
 
 
 
         <div class="upload-field">
-
-          <mat-form-field appearance="outline" floatLabel="always" class="file-upload">
-
-            <mat-label>Upload Video</mat-label>
-
-            <span matTextPrefix class="file-upload__prefix">
-
-              <button type="button" mat-button class="file-upload__btn" (click)="videoInput.click()">Choose
-                file</button>
-
-              <span class="file-upload__divider" aria-hidden="true"></span>
-
-            </span>
-
-            <input matInput readonly [value]="videoFileName" placeholder="File not selected" />
-
-          </mat-form-field>
-
-          <input #videoInput type="file" class="upload-field__native" accept="video/*"
-            (change)="onFileSelected($event, 'video')" />
-
+          <app-file-drop-upload
+            #videoUpload
+            label="Upload Video"
+            accept="video/*"
+            dropTitle="Drag and drop a video here"
+            mode="video"
+            (fileChange)="onVideoChange($event)">
+          </app-file-drop-upload>
         </div>
 
 
@@ -287,7 +240,7 @@
 
           <mat-label>Notes Internal</mat-label>
 
-          <textarea matInput rows="2" name="notesInternal"></textarea>
+          <textarea matInput rows="2" name="notesInternal" [(ngModel)]="notesInternal"></textarea>
 
         </mat-form-field>
 
@@ -297,7 +250,7 @@
 
           <mat-label>Notes External</mat-label>
 
-          <textarea matInput rows="2" name="notesExternal"></textarea>
+          <textarea matInput rows="2" name="notesExternal" [(ngModel)]="notesExternal"></textarea>
 
         </mat-form-field>
 
@@ -307,7 +260,7 @@
 
           <mat-label>Number of Properties</mat-label>
 
-          <input matInput name="numProperties" value="25" />
+          <input matInput type="number" min="0" name="numProperties" [(ngModel)]="numProperties" required />
 
         </mat-form-field>
 
@@ -317,7 +270,7 @@
 
           <mat-label>Product Price Vary %</mat-label>
 
-          <mat-select [(ngModel)]="productPriceVary" name="productPriceVary">
+          <mat-select [(ngModel)]="productPriceVary" name="productPriceVary" required>
 
             <mat-option value="3">3%</mat-option>
 
@@ -337,7 +290,7 @@
 
           <mat-label>Agent Success Fee%</mat-label>
 
-          <mat-select [(ngModel)]="agentSuccessFee" name="agentSuccessFee">
+          <mat-select [(ngModel)]="agentSuccessFee" name="agentSuccessFee" required>
 
             <mat-option value="3">3%</mat-option>
 
@@ -361,7 +314,7 @@
 
           <mat-label>Date Initiated</mat-label>
 
-          <input matInput [matDatepicker]="datePicker" placeholder="DD / MM / YYYY" name="dateInitiated" />
+          <input matInput [matDatepicker]="datePicker" placeholder="DD / MM / YYYY" name="dateInitiated" [(ngModel)]="dateInitiated" required />
 
           <mat-datepicker-toggle matIconSuffix [for]="datePicker"></mat-datepicker-toggle>
 
@@ -371,8 +324,13 @@
 
       </div>
 
-    </mat-card-content>
+      </mat-card-content>
 
+      <div class="campaign-card-actions">
+        <button mat-stroked-button type="button" (click)="campaignForm.resetForm(); onReset()">Reset</button>
+        <button mat-flat-button class="btn-primary" type="submit">Save</button>
+      </div>
+    </form>
   </mat-card>
 
 </div>

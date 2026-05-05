@@ -11,9 +11,9 @@ import {
 } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
-import { assignFileToInput, isImageFile, isPdfOrWordFile } from '../../utils/file-helpers';
+import { assignFileToInput, isImageFile, isPdfOrWordFile, isVideoFile } from '../../utils/file-helpers';
 
-export type FileDropUploadMode = 'image' | 'document';
+export type FileDropUploadMode = 'image' | 'document' | 'video';
 
 @Component({
   selector: 'app-file-drop-upload',
@@ -39,6 +39,7 @@ export class FileDropUploadComponent implements OnChanges, OnDestroy {
   previewUrl: string | null = null;
   /** Updated when file state or mode changes; avoids getter work each change detection. */
   hasFile = false;
+  errorMsg = '';
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['mode']) {
@@ -94,6 +95,7 @@ export class FileDropUploadComponent implements OnChanges, OnDestroy {
   clear(fileInput: HTMLInputElement): void {
     this.revokePreview();
     this.displayName = '';
+    this.errorMsg = '';
     fileInput.value = '';
     this.syncHasFile();
     this.fileChange.emit(null);
@@ -107,6 +109,7 @@ export class FileDropUploadComponent implements OnChanges, OnDestroy {
     } else {
       this.revokePreview();
       this.displayName = '';
+      this.errorMsg = '';
       this.syncHasFile();
       this.fileChange.emit(null);
     }
@@ -115,6 +118,8 @@ export class FileDropUploadComponent implements OnChanges, OnDestroy {
   private apply(file: File | undefined, input: HTMLInputElement): void {
     if (this.mode === 'image') {
       this.applyImage(file, input);
+    } else if (this.mode === 'video') {
+      this.applyVideo(file, input);
     } else {
       this.applyDocument(file, input);
     }
@@ -122,6 +127,7 @@ export class FileDropUploadComponent implements OnChanges, OnDestroy {
 
   private applyImage(file: File | undefined, input: HTMLInputElement): void {
     this.revokePreview();
+    this.errorMsg = '';
     if (!file) {
       this.displayName = '';
       this.syncHasFile();
@@ -131,6 +137,7 @@ export class FileDropUploadComponent implements OnChanges, OnDestroy {
     if (!isImageFile(file)) {
       input.value = '';
       this.displayName = '';
+      this.errorMsg = 'Invalid format. Please upload an image file.';
       this.syncHasFile();
       this.fileChange.emit(null);
       return;
@@ -143,6 +150,7 @@ export class FileDropUploadComponent implements OnChanges, OnDestroy {
   }
 
   private applyDocument(file: File | undefined, input: HTMLInputElement): void {
+    this.errorMsg = '';
     if (!file) {
       this.displayName = '';
       this.syncHasFile();
@@ -152,11 +160,37 @@ export class FileDropUploadComponent implements OnChanges, OnDestroy {
     if (!isPdfOrWordFile(file)) {
       input.value = '';
       this.displayName = '';
+      this.errorMsg = 'Invalid format. Please upload a PDF or Word document.';
       this.syncHasFile();
       this.fileChange.emit(null);
       return;
     }
     this.displayName = file.name;
+    assignFileToInput(file, input);
+    this.syncHasFile();
+    this.fileChange.emit(file);
+  }
+
+  private applyVideo(file: File | undefined, input: HTMLInputElement): void {
+    this.revokePreview();
+    this.errorMsg = '';
+    if (!file) {
+      this.displayName = '';
+      this.syncHasFile();
+      this.fileChange.emit(null);
+      return;
+    }
+    if (!isVideoFile(file)) {
+      input.value = '';
+      this.displayName = '';
+      this.errorMsg = 'Invalid format. Please upload a video file.';
+      this.syncHasFile();
+      this.fileChange.emit(null);
+      return;
+    }
+    this.displayName = file.name;
+    // We optionally use previewUrl for videos if we want to preview them
+    this.previewUrl = URL.createObjectURL(file);
     assignFileToInput(file, input);
     this.syncHasFile();
     this.fileChange.emit(file);

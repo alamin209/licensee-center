@@ -1,39 +1,47 @@
-<div class="app-page">
+<div class="app-page verify-op">
   <div class="page-header">
     <h1>Operator console</h1>
   </div>
 
   <mat-card class="form-card app-outlined-form" appearance="outlined">
     <mat-card-header class="custom-card-header">
-      <mat-card-title>Verify &amp; Approve Operators</mat-card-title>
+      <mat-card-title>Verify &amp; approve operators</mat-card-title>
     </mat-card-header>
 
     <mat-card-content class="profile-form">
+      <p class="verify-op__hint">
+        Data and profile photo mirror
+        <a routerLink="/profile/all">Edit My Profile</a>
+        for this demo (same browser session).
+      </p>
+
       <div class="form-grid form-grid--cols-2">
-        <mat-form-field appearance="outline">
-          <mat-label>Operators by Name</mat-label>
-          <mat-select [value]="'tankard'">
-            <mat-option value="tankard">TANKARD Melinda</mat-option>
+        <mat-form-field appearance="outline" class="verify-op__select-field">
+          <mat-label>Operators by name</mat-label>
+          <mat-select [(ngModel)]="verifyOperatorPick" name="operatorPick">
+            <mat-option value="current">{{ operatorMenuLabel }}</mat-option>
           </mat-select>
         </mat-form-field>
       </div>
 
+      <div class="section-title">1. Personal info</div>
+
       <div class="form-grid form-grid--cols-2">
         <mat-form-field appearance="outline">
           <mat-label>First Name</mat-label>
-          <input matInput name="givenName" value="Melinda" />
+          <input matInput readonly name="givenName" [(ngModel)]="profile.givenName" />
         </mat-form-field>
 
         <mat-form-field appearance="outline">
           <mat-label>Last Name</mat-label>
-          <input matInput name="lastName" value="Tankard" />
+          <input matInput readonly name="lastName" [(ngModel)]="profile.lastName" />
         </mat-form-field>
       </div>
 
       <div class="form-grid form-grid--row-preferred">
         <mat-form-field appearance="outline">
           <mat-label>Preferred</mat-label>
-          <input matInput name="preferred" value="Mel" />
+          <input matInput readonly name="preferred" [(ngModel)]="profile.preferred" />
         </mat-form-field>
 
         <div class="form-grid form-grid--cols-title-user">
@@ -43,7 +51,7 @@
               matInput
               type="text"
               name="title"
-              value="Associate Representative"
+              [(ngModel)]="profile.title"
               disabled
               title="Assigned by the system — not editable"
             />
@@ -56,7 +64,7 @@
               type="text"
               name="userId"
               inputmode="numeric"
-              value="36574"
+              [(ngModel)]="profile.userId"
               disabled
               title="Assigned by the system — not editable"
             />
@@ -67,123 +75,153 @@
       <div class="form-grid form-grid--cols-2">
         <mat-form-field appearance="outline">
           <mat-label>Personal Email</mat-label>
-          <input matInput name="personalEmail" value="melindaT347@gmail.com" />
+          <input matInput readonly name="personalEmail" type="email" [(ngModel)]="profile.personalEmail" placeholder="name@example.com" />
         </mat-form-field>
 
         <mat-form-field appearance="outline">
           <mat-label>Cell &amp; Text</mat-label>
-          <input matInput name="cell" value="+658934527812" />
+          <input matInput readonly name="cell" type="tel" [(ngModel)]="profile.cell" />
         </mat-form-field>
       </div>
 
+      <hr class="form-divider" />
+
+      <div class="section-title section-title--spaced">2. Contact info</div>
 
       <div class="form-grid form-grid--cols-2">
         <mat-form-field appearance="outline">
           <mat-label>Contact Email</mat-label>
-          <input matInput name="contactEmail" value="LicensingM01@gbxm.com" />
+          <input matInput readonly name="contactEmail" type="email" [(ngModel)]="profile.contactEmail" placeholder="work@example.com" />
         </mat-form-field>
 
         <mat-form-field appearance="outline">
           <mat-label>Company Email</mat-label>
-          <input matInput name="companyEmail" value="MelindaT@gbxm.com" />
+          <input matInput readonly name="companyEmail" type="email" [(ngModel)]="profile.companyEmail" placeholder="company@example.com" />
         </mat-form-field>
       </div>
 
       <div class="form-grid form-grid--cols-2">
         <mat-form-field appearance="outline">
           <mat-label>LinkedIN</mat-label>
-          <input matInput name="linkedin" value="linkedin.com/in/meltankard" />
+          <input matInput readonly name="linkedin" [(ngModel)]="profile.linkedin" placeholder="linkedin.com/in/yourprofile" />
         </mat-form-field>
 
         <mat-form-field appearance="outline">
           <mat-label>Teams ID</mat-label>
-          <input matInput name="teamsId" value="melinda25" />
+          <input matInput readonly name="teamsId" [(ngModel)]="profile.teamsId" placeholder="Your Teams handle" />
         </mat-form-field>
       </div>
 
       <div class="form-grid form-grid--cols-1">
-        <mat-form-field appearance="outline" class="form-field--textarea">
+        <mat-form-field
+          appearance="outline"
+          class="form-field--textarea"
+          floatLabel="always"
+          subscriptSizing="dynamic"
+        >
           <mat-label>A Little About Me ..</mat-label>
-          <textarea matInput rows="3" name="about"></textarea>
+          <textarea matInput readonly rows="3" name="about" [(ngModel)]="profile.about"></textarea>
         </mat-form-field>
       </div>
 
+      <hr class="form-divider" />
 
       <div class="section-title section-title--spaced">3. Personal info</div>
 
-      <div class="form-grid form-grid--cols-2">
-        <div class="upload-field">
-          <mat-form-field appearance="outline" floatLabel="always" class="file-upload">
-            <mat-label>Upload Picture</mat-label>
-            <span matTextPrefix class="file-upload__prefix">
-              <button type="button" mat-button class="file-upload__btn" (click)="pictureInput.click()">
-                Choose file
-              </button>
-              <span class="file-upload__divider" aria-hidden="true"></span>
-            </span>
-            <input matInput readonly [value]="pictureFileName" placeholder="File not selected" />
-          </mat-form-field>
-          <input #pictureInput type="file" class="upload-field__native" accept="image/*"
-            (change)="onPictureSelected($event)" />
+      <div class="verify-op__media-grid">
+        <div class="verify-op__media-card">
+          <div class="verify-op__media-card-head">
+            <span class="verify-op__eyebrow">Upload picture</span>
+            @if (!hasProfilePhoto) {
+              <span class="verify-op__badge verify-op__badge--muted">Not set</span>
+            }
+          </div>
+          @if (hasProfilePhoto) {
+            <div class="verify-op__photo-frame">
+              <img [src]="store.previewPhotoDataUrl!" alt="Uploaded profile photo" class="verify-op__photo" />
+            </div>
+          } @else {
+            <div class="verify-op__photo-empty">
+              Add a JPEG, PNG, or WebP under Edit My Profile — it appears here instantly.
+            </div>
+          }
         </div>
 
-        <div class="upload-field">
-          <mat-form-field appearance="outline" floatLabel="always" class="file-upload">
-            <mat-label>Upload CV</mat-label>
-            <span matTextPrefix class="file-upload__prefix">
-              <button type="button" mat-button class="file-upload__btn" (click)="cvInput.click()">
-                Choose file
-              </button>
-              <span class="file-upload__divider" aria-hidden="true"></span>
-            </span>
-            <input matInput readonly [value]="cvFileName" placeholder="File not selected" />
-          </mat-form-field>
-          <input #cvInput type="file" class="upload-field__native" accept=".pdf,.doc,.docx,application/pdf"
-            (change)="onCvSelected($event)" />
+        <div class="verify-op__media-card verify-op__media-card--cv">
+          <div class="verify-op__media-card-head">
+            <span class="verify-op__eyebrow">Résumé / CV</span>
+          </div>
+          <p class="verify-op__cv-name">{{ cvDisplayName }}</p>
+          @if (!store.previewCvName) {
+            <p class="verify-op__cv-hint">
+              Upload a PDF or Word file from Edit My Profile — PDFs preview below.
+            </p>
+          }
+          @if (showPdfPreview) {
+            <div class="verify-op__pdf-shell">
+              <iframe
+                class="verify-op__pdf-frame"
+                title="Uploaded CV preview (PDF)"
+                [src]="store.previewCvPdfBlobUrl! | safeResourceUrl"
+              ></iframe>
+            </div>
+          } @else if (cvIsWordWithoutPreview) {
+            <p class="verify-op__cv-hint verify-op__cv-hint--word">
+              Word documents can’t be previewed in the browser here. Download the original from Edit My Profile after save.
+            </p>
+          }
         </div>
       </div>
 
       <div class="form-grid form-grid--cols-2">
         <mat-form-field appearance="outline">
           <mat-label>Trading Entity</mat-label>
-          <input matInput name="tradingEntity" />
+          <input matInput readonly name="tradingEntity" [(ngModel)]="profile.tradingEntity" placeholder="e.g. entity or business name" />
         </mat-form-field>
 
         <mat-form-field appearance="outline">
           <mat-label>Registration Number</mat-label>
-          <input matInput name="registration" />
+          <input matInput readonly name="registration" [(ngModel)]="profile.registration" placeholder="Registration or license #" />
         </mat-form-field>
       </div>
 
       <div class="form-grid form-grid--cols-2">
         <mat-form-field appearance="outline">
           <mat-label>Digital Presence #1</mat-label>
-          <input matInput name="dp1" />
+          <input matInput readonly name="dp1" [(ngModel)]="profile.digitalPresence1" placeholder="Website, social, or portfolio URL" />
         </mat-form-field>
 
         <mat-form-field appearance="outline">
           <mat-label>Digital Presence #2</mat-label>
-          <input matInput name="dp2" />
+          <input matInput readonly name="dp2" [(ngModel)]="profile.digitalPresence2" placeholder="Optional link or handle" />
         </mat-form-field>
       </div>
 
       <div class="form-grid form-grid--cols-2">
         <mat-form-field appearance="outline">
           <mat-label>Digital Presence #3</mat-label>
-          <input matInput name="dp3" />
+          <input matInput readonly name="dp3" [(ngModel)]="profile.digitalPresence3" placeholder="Optional link or handle" />
         </mat-form-field>
 
         <mat-form-field appearance="outline">
           <mat-label>Digital Presence #4</mat-label>
-          <input matInput name="dp4" />
+          <input matInput readonly name="dp4" [(ngModel)]="profile.digitalPresence4" placeholder="Optional link or handle" />
         </mat-form-field>
       </div>
 
-      <div class="form-actions">
-        <button mat-flat-button class="btn-primary" type="button">Save</button>
-        <button mat-flat-button class="btn-primary" type="button">Submit</button>
-        <button mat-flat-button class="btn-primary" type="button">Verify</button>
+      <div class="form-actions verify-op__actions">
+        <button mat-flat-button class="btn-primary" type="button" (click)="onSave()">Save</button>
+        <button mat-flat-button class="btn-primary" type="button" (click)="onSubmit()">Submit</button>
+        <button mat-flat-button class="btn-primary verify-op__btn-accent" type="button" (click)="onVerifyApprove()">
+          Verify
+        </button>
       </div>
+
+      <p class="verify-op__footer">
+        <a routerLink="/profile/all">Edit My Profile</a>
+        ·
+        <a routerLink="/profile/profiles">View all Profiles</a>
+      </p>
     </mat-card-content>
   </mat-card>
 </div>

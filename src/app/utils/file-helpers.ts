@@ -16,6 +16,17 @@ export function isPdfOrWordFile(file: File): boolean {
   return n.endsWith('.pdf') || n.endsWith('.doc') || n.endsWith('.docx');
 }
 
+export function isPdfFile(file: File): boolean {
+  if (file.type === 'application/pdf') {
+    return true;
+  }
+  return file.name.toLowerCase().endsWith('.pdf');
+}
+
+export function isVideoFile(file: File): boolean {
+  return file.type.startsWith('video/');
+}
+
 /** Syncs a dropped file onto a file input (picker already does this natively). */
 export function assignFileToInput(file: File, input: HTMLInputElement): void {
   try {

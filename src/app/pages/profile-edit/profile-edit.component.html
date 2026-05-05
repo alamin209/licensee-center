@@ -11,25 +11,74 @@
         </mat-card-header>
 
         <mat-card-content class="profile-form">
-          <form class="profile-edit-form" novalidate (ngSubmit)="onSubmit()">
+          <form
+            #profileEditForm="ngForm"
+            class="profile-edit-form"
+            novalidate
+            (ngSubmit)="onSubmit(profileEditForm)"
+          >
           <div class="section-title">1. Personal info</div>
 
           <div class="form-grid form-grid--cols-2">
             <mat-form-field appearance="outline">
               <mat-label>First Name</mat-label>
-              <input matInput type="text" name="givenName" autocomplete="given-name" [(ngModel)]="profile.givenName" />
+              <input
+                matInput
+                type="text"
+                name="givenName"
+                required
+                maxlength="80"
+                [pattern]="personNamePattern"
+                autocomplete="given-name"
+                [(ngModel)]="profile.givenName"
+                #givenNameMdl="ngModel"
+              />
+              @if (showFieldError(givenNameMdl)) {
+                <mat-error>
+                  @if (givenNameMdl.hasError('required')) {
+                    Enter a first name.
+                  } @else {
+                    Use letters only (accented letters allowed), spaces, hyphen, apostrophe, or period. Max 80 characters.
+                  }
+                </mat-error>
+              }
             </mat-form-field>
 
             <mat-form-field appearance="outline">
               <mat-label>Last Name</mat-label>
-              <input matInput type="text" name="lastName" autocomplete="family-name" [(ngModel)]="profile.lastName" />
+              <input
+                matInput
+                type="text"
+                name="lastName"
+                required
+                maxlength="80"
+                [pattern]="personNamePattern"
+                autocomplete="family-name"
+                [(ngModel)]="profile.lastName"
+                #lastNameMdl="ngModel"
+              />
+              @if (showFieldError(lastNameMdl)) {
+                <mat-error>
+                  @if (lastNameMdl.hasError('required')) {
+                    Enter a last name.
+                  } @else {
+                    Use letters only (accented letters allowed), spaces, hyphen, apostrophe, or period. Max 80 characters.
+                  }
+                </mat-error>
+              }
             </mat-form-field>
           </div>
 
           <div class="form-grid form-grid--row-preferred">
             <mat-form-field appearance="outline">
               <mat-label>Preferred</mat-label>
-              <input matInput type="text" name="preferred" [(ngModel)]="profile.preferred" />
+              <input
+                matInput
+                type="text"
+                name="preferred"
+                [maxlength]="preferredMaxLen"
+                [(ngModel)]="profile.preferred"
+              />
             </mat-form-field>
 
             <div class="form-grid form-grid--cols-title-user">
@@ -67,15 +116,41 @@
                 matInput
                 type="email"
                 name="personalEmail"
+                email
+                required
+                maxlength="254"
                 autocomplete="email"
                 placeholder="name@example.com"
                 [(ngModel)]="profile.personalEmail"
+                #personalEmailMdl="ngModel"
               />
+              @if (showFieldError(personalEmailMdl)) {
+                <mat-error>
+                  @if (personalEmailMdl.hasError('required')) {
+                    Personal email is required.
+                  } @else {
+                    Please enter a valid email address — for example {{ 'name' + '@' + 'example.com' }}.
+                  }
+                </mat-error>
+              }
             </mat-form-field>
 
             <mat-form-field appearance="outline">
               <mat-label>Cell &amp; Text</mat-label>
-              <input matInput type="tel" name="cell" autocomplete="tel" [(ngModel)]="profile.cell" />
+              <input
+                matInput
+                type="tel"
+                name="cell"
+                maxlength="28"
+                [pattern]="phoneFlexiblePattern"
+                autocomplete="tel"
+                inputmode="tel"
+                [(ngModel)]="profile.cell"
+                #cellMdl="ngModel"
+              />
+              @if (showFieldError(cellMdl)) {
+                <mat-error>Use digits with optional country code (+) and separators (spaces, dashes, parentheses). Leave blank if none.</mat-error>
+              }
             </mat-form-field>
           </div>
           <hr class="form-divider" />
@@ -89,9 +164,15 @@
                 matInput
                 type="email"
                 name="contactEmail"
+                email
+                maxlength="254"
                 placeholder="work@example.com"
                 [(ngModel)]="profile.contactEmail"
+                #contactEmailMdl="ngModel"
               />
+              @if (showFieldError(contactEmailMdl)) {
+                <mat-error>Enter a valid email address or leave this blank.</mat-error>
+              }
             </mat-form-field>
 
             <mat-form-field appearance="outline">
@@ -100,34 +181,64 @@
                 matInput
                 type="email"
                 name="companyEmail"
+                email
+                maxlength="254"
                 placeholder="company@example.com"
                 [(ngModel)]="profile.companyEmail"
+                #companyEmailMdl="ngModel"
               />
+              @if (showFieldError(companyEmailMdl)) {
+                <mat-error>Enter a valid email address or leave this blank.</mat-error>
+              }
             </mat-form-field>
           </div>
 
           <div class="form-grid form-grid--cols-2">
             <mat-form-field appearance="outline">
               <mat-label>LinkedIn</mat-label>
-              <input matInput type="text" name="linkedin" placeholder="linkedin.com/in/yourprofile" [(ngModel)]="profile.linkedin" />
+              <input
+                matInput
+                type="text"
+                name="linkedin"
+                maxlength="200"
+                [pattern]="linkedInOptionalPattern"
+                placeholder="linkedin.com/in/yourprofile"
+                [(ngModel)]="profile.linkedin"
+                #linkedinMdl="ngModel"
+              />
+              @if (showFieldError(linkedinMdl)) {
+                <mat-error>Use a LinkedIn URL (with or without https://) or leave blank.</mat-error>
+              }
             </mat-form-field>
 
             <mat-form-field appearance="outline">
               <mat-label>Teams ID</mat-label>
-              <input matInput type="text" name="teamsId" placeholder="Your Teams handle" [(ngModel)]="profile.teamsId" />
+              <input
+                matInput
+                type="text"
+                name="teamsId"
+                maxlength="128"
+                [pattern]="teamsHandlePattern"
+                placeholder="Your Teams handle"
+                [(ngModel)]="profile.teamsId"
+                #teamsIdMdl="ngModel"
+              />
+              @if (showFieldError(teamsIdMdl)) {
+                <mat-error>Use letters, numbers, dot, hyphen, underscore, &#64;, or leave blank.</mat-error>
+              }
             </mat-form-field>
           </div>
 
           <div class="form-grid form-grid--cols-1">
-            <mat-form-field appearance="outline" class="form-field--textarea">
+            <mat-form-field
+              appearance="outline"
+              class="form-field--textarea"
+              floatLabel="always"
+              subscriptSizing="dynamic"
+            >
               <mat-label>A Little About Me ..</mat-label>
-              <textarea
-                matInput
-                rows="3"
-                name="about"
-                placeholder="Add a short bio or notes (optional)"
-                [(ngModel)]="profile.about"
-              ></textarea>
+              <textarea matInput rows="3" name="about" [(ngModel)]="profile.about" [maxlength]="aboutMaxLen"></textarea>
+              <mat-hint>Add a short bio or notes (optional)</mat-hint>
             </mat-form-field>
           </div>
           <hr class="form-divider" />
@@ -143,7 +254,7 @@
               accept="image/*"
               dropTitle="Drop your photo here"
               dropSub="or use the button below to choose a file from your device"
-              (fileChange)="profilePhoto = $event"
+              (fileChange)="onProfilePhotoChanged($event)"
             />
 
             <app-file-drop-upload
@@ -154,49 +265,124 @@
               accept=".pdf,.doc,.docx,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document"
               dropTitle="Drop your CV here"
               dropSub="or use the button below to choose a PDF or Word file"
-              (fileChange)="cvFile = $event"
+              (fileChange)="onCvFileChanged($event)"
             />
           </div>
 
           <div class="form-grid form-grid--cols-2">
             <mat-form-field appearance="outline">
               <mat-label>Trading Entity</mat-label>
-              <input matInput type="text" name="tradingEntity" placeholder="e.g. entity or business name" [(ngModel)]="profile.tradingEntity" />
+              <input
+                matInput
+                type="text"
+                name="tradingEntity"
+                [maxlength]="tradingMaxLen"
+                placeholder="e.g. entity or business name"
+                [(ngModel)]="profile.tradingEntity"
+              />
             </mat-form-field>
 
             <mat-form-field appearance="outline">
               <mat-label>Registration Number</mat-label>
-              <input matInput type="text" name="registration" placeholder="Registration or license #" [(ngModel)]="profile.registration" />
+              <input
+                matInput
+                type="text"
+                name="registration"
+                [pattern]="registrationOptionalPattern"
+                maxlength="80"
+                placeholder="Registration or license #"
+                [(ngModel)]="profile.registration"
+                #registrationMdl="ngModel"
+              />
+              @if (showFieldError(registrationMdl)) {
+                <mat-error>Use 2–80 letters, digits, spaces, #, slashes, dots, hyphen, or leave blank.</mat-error>
+              }
             </mat-form-field>
           </div>
 
           <div class="form-grid form-grid--cols-2">
             <mat-form-field appearance="outline">
               <mat-label>Digital Presence #1</mat-label>
-              <input matInput type="text" name="dp1" placeholder="Website, social, or portfolio URL" [(ngModel)]="profile.digitalPresence1" />
+              <input
+                matInput
+                type="text"
+                inputmode="url"
+                autocomplete="url"
+                name="dp1"
+                maxlength="300"
+                [pattern]="optionalPresenceUrlPattern"
+                placeholder="Website, social, or portfolio URL"
+                [(ngModel)]="profile.digitalPresence1"
+                #dp1Mdl="ngModel"
+              />
+              @if (showFieldError(dp1Mdl)) {
+                <mat-error>Enter a URL (optional https://), e.g. example.com/about, or leave blank.</mat-error>
+              }
             </mat-form-field>
 
             <mat-form-field appearance="outline">
               <mat-label>Digital Presence #2</mat-label>
-              <input matInput type="text" name="dp2" placeholder="Optional link or handle" [(ngModel)]="profile.digitalPresence2" />
+              <input
+                matInput
+                type="text"
+                inputmode="url"
+                autocomplete="off"
+                name="dp2"
+                maxlength="300"
+                [pattern]="optionalPresenceUrlPattern"
+                placeholder="Optional link or handle"
+                [(ngModel)]="profile.digitalPresence2"
+                #dp2Mdl="ngModel"
+              />
+              @if (showFieldError(dp2Mdl)) {
+                <mat-error>Enter a URL (optional https://) or leave blank.</mat-error>
+              }
             </mat-form-field>
           </div>
 
           <div class="form-grid form-grid--cols-2">
             <mat-form-field appearance="outline">
               <mat-label>Digital Presence #3</mat-label>
-              <input matInput type="text" name="dp3" placeholder="Optional link or handle" [(ngModel)]="profile.digitalPresence3" />
+              <input
+                matInput
+                type="text"
+                inputmode="url"
+                autocomplete="off"
+                name="dp3"
+                maxlength="300"
+                [pattern]="optionalPresenceUrlPattern"
+                placeholder="Optional link or handle"
+                [(ngModel)]="profile.digitalPresence3"
+                #dp3Mdl="ngModel"
+              />
+              @if (showFieldError(dp3Mdl)) {
+                <mat-error>Enter a URL (optional https://) or leave blank.</mat-error>
+              }
             </mat-form-field>
 
             <mat-form-field appearance="outline">
               <mat-label>Digital Presence #4</mat-label>
-              <input matInput type="text" name="dp4" placeholder="Optional link or handle" [(ngModel)]="profile.digitalPresence4" />
+              <input
+                matInput
+                type="text"
+                inputmode="url"
+                autocomplete="off"
+                name="dp4"
+                maxlength="300"
+                [pattern]="optionalPresenceUrlPattern"
+                placeholder="Optional link or handle"
+                [(ngModel)]="profile.digitalPresence4"
+                #dp4Mdl="ngModel"
+              />
+              @if (showFieldError(dp4Mdl)) {
+                <mat-error>Enter a URL (optional https://) or leave blank.</mat-error>
+              }
             </mat-form-field>
           </div>
 
-          <div class="form-actions profile-form__actions">
-            <button mat-flat-button type="button" class="btn-cancel" (click)="onCancel()">Cancel</button>
-            <button mat-flat-button type="submit" class="btn-primary">Submit</button>
+          <div class="form-actions profile-form__actions profile-form__actions--edit">
+            <button mat-flat-button type="button" class="btn-secondary" (click)="onCancel()">Reset</button>
+            <button mat-flat-button type="submit" class="btn-primary profile-edit__btn-submit">Submit</button>
           </div>
           </form>
         </mat-card-content>
@@ -372,18 +558,18 @@
           <div class="verify-media-row">
             <div class="verify-media-card">
               <span class="verify-readonly-label">Profile photo</span>
-              @if (store.submittedPhotoDataUrl) {
+              @if (store.previewPhotoDataUrl) {
                 <div class="verify-photo-frame">
-                  <img [src]="store.submittedPhotoDataUrl" alt="Profile photo from last submit" class="verify-photo-img" />
+                  <img [src]="store.previewPhotoDataUrl" alt="Profile photo" class="verify-photo-img" />
                 </div>
               } @else {
-                <div class="verify-photo-placeholder">No photo on file — submit a photo from Edit My Profile</div>
+                <div class="verify-photo-placeholder">No photo yet — add one from Edit My Profile</div>
               }
             </div>
             <div class="verify-media-card">
               <span class="verify-readonly-label">Résumé / CV</span>
               <span class="verify-readonly-value verify-readonly-value--block">{{
-                store.submittedCvName || '—'
+                store.previewCvName || '—'
               }}</span>
             </div>
           </div>
