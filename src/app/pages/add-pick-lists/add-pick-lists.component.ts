@@ -57,8 +57,8 @@ export class AddPickListsComponent implements OnInit, OnDestroy {
   private router = inject(Router);
   private destroy$ = new Subject<void>();
 
-  campaignNameKey = '';
-  campaignNumberKey = '';
+  campaignNameKey = 'chicago-il';
+  campaignNumberKey = '00001';
   operatorKey = 'all';
   filterType = 'all';
   viewNoPickLists = true;
@@ -116,12 +116,14 @@ export class AddPickListsComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+    // Pre-select the latest user-created campaign if one exists
     this.campaigns$.pipe(takeUntil(this.destroy$)).subscribe(campaigns => {
       if (campaigns.length > 0) {
         const latest = campaigns[campaigns.length - 1];
         this.campaignNameKey = latest.campaignName;
         this.campaignNumberKey = latest.campaignId;
       }
+      // else keep the static defaults ('chicago-il', '00001')
     });
   }
 
