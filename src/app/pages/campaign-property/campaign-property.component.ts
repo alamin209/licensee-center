@@ -102,7 +102,7 @@ export class CampaignPropertyComponent implements OnInit {
   }
 
   onAdd(): void {
-    // Navigate to add property or similar
+    this.router.navigate(['/campaigns/define']);
   }
 
   viewDetail(row: PropertyRow): void {

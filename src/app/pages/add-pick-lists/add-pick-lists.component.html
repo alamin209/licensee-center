@@ -15,18 +15,36 @@
           <mat-form-field appearance="outline" floatLabel="always">
             <mat-label>Select Campaign Name</mat-label>
             <mat-select [(ngModel)]="campaignNameKey" name="campaignName">
+              <!-- Static options -->
               <mat-option value="chicago-il">Chicago, Illinois</mat-option>
               <mat-option value="san-diego">San Diego, CA</mat-option>
               <mat-option value="bali">Bali</mat-option>
+              <!-- Dynamic campaigns created by user -->
+              @if ((campaigns$ | async)?.length) {
+                <mat-optgroup label="My Campaigns">
+                  @for (c of campaigns$ | async; track c.campaignId) {
+                    <mat-option [value]="c.campaignName">{{ c.campaignName }}</mat-option>
+                  }
+                </mat-optgroup>
+              }
             </mat-select>
           </mat-form-field>
 
           <mat-form-field appearance="outline" floatLabel="always">
             <mat-label>Select Campaign Number</mat-label>
             <mat-select [(ngModel)]="campaignNumberKey" name="campaignNumber">
+              <!-- Static options -->
               <mat-option value="00001">00001</mat-option>
               <mat-option value="00005">00005</mat-option>
               <mat-option value="00002">00002</mat-option>
+              <!-- Dynamic campaigns created by user -->
+              @if ((campaigns$ | async)?.length) {
+                <mat-optgroup label="My Campaigns">
+                  @for (c of campaigns$ | async; track c.campaignId) {
+                    <mat-option [value]="c.campaignId">{{ c.campaignId }}</mat-option>
+                  }
+                </mat-optgroup>
+              }
             </mat-select>
           </mat-form-field>
 
@@ -40,7 +58,7 @@
         </div>
 
         <div class="pick-lists-type-filters">
-          <mat-radio-group [(ngModel)]="filterType" name="filterType" class="type-radio-group">
+          <mat-radio-group [(ngModel)]="filterType" name="filterType" class="type-radio-group" (change)="onFilterTypeChange()">
             <mat-radio-button value="all" color="primary">All</mat-radio-button>
             <mat-radio-button value="agent" color="primary">Agent</mat-radio-button>
             <mat-radio-button value="brand" color="primary">Brand/syndicate</mat-radio-button>
@@ -53,36 +71,88 @@
           </mat-checkbox>
         </div>
 
+        <div class="table-actions-row">
+          <mat-form-field appearance="outline" class="search-field" subscriptSizing="dynamic">
+            <mat-icon matPrefix>search</mat-icon>
+            <input matInput (keyup)="onSearch($event)" placeholder="Search by name or ID...">
+          </mat-form-field>
+        </div>
+
         <div class="pick-lists-table-scroll">
           <table class="app-data-table pick-lists-table">
             <thead>
               <tr>
-                <th scope="col">ID</th>
-                <th scope="col">Name</th>
-                <th scope="col" class="type-col">Type</th>
-                <th scope="col">Pick List Date</th>
-                <th scope="col">No</th>
+                <th scope="col">
+                  <span class="th-content">
+                    <mat-icon class="th-icon">tag</mat-icon>
+                    Campaign ID
+                  </span>
+                </th>
+                <th scope="col">
+                  <span class="th-content">
+                    <mat-icon class="th-icon">campaign</mat-icon>
+                    Campaign Name
+                  </span>
+                </th>
+                <th scope="col" class="type-col">
+                  <span class="th-content">
+                    <mat-icon class="th-icon">label</mat-icon>
+                    Type
+                  </span>
+                </th>
+                <th scope="col">
+                  <span class="th-content">
+                    <mat-icon class="th-icon">calendar_today</mat-icon>
+                    Pick List Date
+                  </span>
+                </th>
+                <th scope="col">
+                  <span class="th-content">
+                    <mat-icon class="th-icon">pin</mat-icon>
+                    No
+                  </span>
+                </th>
                 <th scope="col" class="app-data-table__col--actions" aria-label="Actions"></th>
               </tr>
             </thead>
             <tbody>
-              @for (row of pickLists; track row.id) {
+              @for (row of pickLists$ | async; track row.id) {
                 <tr>
-                  <td>{{ row.id }}</td>
-                  <td>{{ row.name }}</td>
-                  <td class="type-col">{{ row.type }}</td>
+                  <td><span class="id-badge">{{ row.id }}</span></td>
+                  <td><strong>{{ row.name }}</strong></td>
+                  <td class="type-col">
+                    <span class="type-tag" [class]="row.type.toLowerCase()">{{ row.type }}</span>
+                  </td>
                   <td>{{ row.pickListDate }}</td>
                   <td>{{ row.no }}</td>
                   <td class="app-data-table__col--actions">
-                    <button mat-icon-button type="button" class="app-data-table__icon-btn" [attr.aria-label]="'View ' + row.id">
+                    <button mat-icon-button type="button" class="app-data-table__icon-btn" 
+                      (click)="onViewCampaign(row.id)"
+                      [matTooltip]="'View Details for ' + row.name"
+                      [attr.aria-label]="'View ' + row.id">
                       <mat-icon>visibility</mat-icon>
                     </button>
+                  </td>
+                </tr>
+              } @empty {
+                <tr>
+                  <td colspan="6" class="empty-table-msg">
+                    <mat-icon>search_off</mat-icon>
+                    <p>No campaigns found matching your criteria.</p>
                   </td>
                 </tr>
               }
             </tbody>
           </table>
         </div>
+
+        <mat-paginator 
+          [length]="totalLength"
+          [pageSize]="pageSize"
+          [pageSizeOptions]="[5, 10, 25, 100]"
+          (page)="onPageChange($event)"
+          aria-label="Select page">
+        </mat-paginator>
       </div>
     </mat-card-content>
   </mat-card>

@@ -22,6 +22,13 @@
   background-color: #fafafa;
   border-bottom-left-radius: 8px;
   border-bottom-right-radius: 8px;
+
+  .btn-reset {
+    &:hover {
+      background-color: transparent !important;
+      border-color: rgba(0, 0, 0, 0.12) !important;
+    }
+  }
 }
 
 // Row-pair grid: each row is one logical pair (left + right), so uneven
@@ -39,6 +46,11 @@
   .radio-field {
     width: 100%;
     min-width: 0;
+  }
+
+  .upload-field,
+  .radio-field {
+    margin-bottom: 40px;
   }
 }
 
@@ -106,6 +118,14 @@
     row-gap: 0;
     line-height: 24px;
   }
+
+  &__error {
+    width: 100%;
+    margin-top: 4px;
+    font-size: 0.8125rem;
+    line-height: 1.4;
+    color: #c62828;
+  }
 }
 
 :host ::ng-deep .radio-field {
@@ -126,8 +146,61 @@
   }
 }
 
-@media (max-width: 720px) {
-  .campaigns-grid {
-    grid-template-columns: minmax(0, 1fr);
+.submitted-campaigns-card {
+  margin-top: 32px;
+}
+
+.campaign-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 8px 0;
+}
+
+.campaign-item {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 16px;
+  border: 1px solid #eff1f2;
+  border-radius: 8px;
+  background-color: #fff;
+  transition: box-shadow 0.2s ease;
+
+  &:hover {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  }
+
+  &__info {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    strong {
+      font-size: 16px;
+      color: #1c6ce4;
+    }
+  }
+
+  &__id {
+    font-size: 12px;
+    color: #6b7780;
+    background: #f0f2f5;
+    padding: 2px 8px;
+    border-radius: 4px;
+  }
+
+  &__meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    font-size: 14px;
+    color: #404c54;
+  }
+
+  &__location {
+    color: #6b7780;
+    font-style: italic;
   }
 }
+

@@ -5,6 +5,7 @@ import {
   Input,
   OnChanges,
   OnDestroy,
+  OnInit,
   Output,
   SimpleChanges,
   ViewChild
@@ -22,7 +23,7 @@ export type FileDropUploadMode = 'image' | 'document' | 'video';
   templateUrl: './file-drop-upload.component.html',
   styleUrl: './file-drop-upload.component.scss'
 })
-export class FileDropUploadComponent implements OnChanges, OnDestroy {
+export class FileDropUploadComponent implements OnInit, OnChanges, OnDestroy {
   @ViewChild('fileInput') private readonly fileInputRef?: ElementRef<HTMLInputElement>;
 
   @Input({ required: true }) label!: string;
@@ -31,6 +32,8 @@ export class FileDropUploadComponent implements OnChanges, OnDestroy {
   @Input({ required: true }) dropTitle!: string;
   @Input() dropSub = '';
   @Input() mode: FileDropUploadMode = 'image';
+  @Input() initialFileName = '';
+  @Input() initialPreviewUrl: string | null = null;
 
   @Output() fileChange = new EventEmitter<File | null>();
 
@@ -40,6 +43,16 @@ export class FileDropUploadComponent implements OnChanges, OnDestroy {
   /** Updated when file state or mode changes; avoids getter work each change detection. */
   hasFile = false;
   errorMsg = '';
+
+  ngOnInit(): void {
+    if (this.initialFileName) {
+      this.displayName = this.initialFileName;
+    }
+    if (this.initialPreviewUrl) {
+      this.previewUrl = this.initialPreviewUrl;
+    }
+    this.syncHasFile();
+  }
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['mode']) {

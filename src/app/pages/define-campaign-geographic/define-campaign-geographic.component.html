@@ -6,7 +6,6 @@
   <mat-card class="form-card app-outlined-form" appearance="outlined">
     <mat-card-header class="custom-card-header campaign-card-header">
       <mat-card-title>Define Campaigns</mat-card-title>
-      <button mat-flat-button class="btn-primary" type="button">Save</button>
     </mat-card-header>
 
     <mat-card-content class="profile-form">
@@ -20,9 +19,14 @@
           </mat-select>
         </mat-form-field>
 
+        <mat-form-field appearance="outline">
+          <mat-label>Name of Campaign</mat-label>
+          <input matInput name="campaignName" [(ngModel)]="campaignName" />
+        </mat-form-field>
+
         <mat-form-field appearance="outline" class="location-selector-field">
           <mat-label>Location</mat-label>
-          <input matInput [value]="campaignName" readonly (click)="openCountryLocaleDialog()" />
+          <input matInput [value]="campaignLocation" readonly (click)="openCountryLocaleDialog()" />
           <div matSuffix>
             <button mat-flat-button class="btn-primary btn-sm" type="button" (click)="openCountryLocaleDialog()">Edit</button>
           </div>
@@ -30,17 +34,17 @@
 
         <mat-form-field appearance="outline">
           <mat-label>Optional Descriptor</mat-label>
-          <input matInput name="descriptor" value="TripAdvisor top 60 rankings Chicago" />
+          <input matInput name="descriptor" [(ngModel)]="descriptor" />
         </mat-form-field>
 
         <mat-form-field appearance="outline">
           <mat-label>Campaign ID</mat-label>
-          <input matInput name="campaignId" value="000059" />
+          <input matInput name="campaignId" [(ngModel)]="campaignId" />
         </mat-form-field>
 
         <mat-form-field appearance="outline">
           <mat-label>Optional Tagline</mat-label>
-          <input matInput name="tagline" value="The 'reputation wind' behind your back!" />
+          <input matInput name="tagline" [(ngModel)]="tagline" />
         </mat-form-field>
 
         <mat-form-field appearance="outline" floatLabel="always">
@@ -95,62 +99,59 @@
         </mat-form-field>
 
         <div class="upload-field">
-          <mat-form-field appearance="outline" floatLabel="always" class="file-upload">
-            <mat-label>Upload Image</mat-label>
-            <span matTextPrefix class="file-upload__prefix">
-              <button type="button" mat-button class="file-upload__btn" (click)="imageInput.click()">Choose file</button>
-              <span class="file-upload__divider" aria-hidden="true"></span>
-            </span>
-            <input matInput readonly [value]="imageFileName" placeholder="File not selected" />
-          </mat-form-field>
-          <input #imageInput type="file" class="upload-field__native" accept="image/*"
-            (change)="onFileSelected($event, 'image')" />
+          <app-file-drop-upload 
+            label="Upload Image" 
+            accept="image/*"
+            dropTitle="Drag and drop an image here" 
+            mode="image"
+            [initialFileName]="imageFileName"
+            [initialPreviewUrl]="imageFileUrl"
+            (fileChange)="onImageChange($event)">
+          </app-file-drop-upload>
         </div>
 
         <div class="upload-field">
-          <mat-form-field appearance="outline" floatLabel="always" class="file-upload">
-            <mat-label>Upload PDF</mat-label>
-            <span matTextPrefix class="file-upload__prefix">
-              <button type="button" mat-button class="file-upload__btn" (click)="pdfInput.click()">Choose file</button>
-              <span class="file-upload__divider" aria-hidden="true"></span>
-            </span>
-            <input matInput readonly [value]="pdfFileName" placeholder="File not selected" />
-          </mat-form-field>
-          <input #pdfInput type="file" class="upload-field__native" accept=".pdf,application/pdf"
-            (change)="onFileSelected($event, 'pdf')" />
+          <app-file-drop-upload 
+            label="Upload PDF" 
+            accept=".pdf,application/pdf"
+            dropTitle="Drag and drop a PDF here" 
+            mode="document"
+            [initialFileName]="pdfFileName"
+            [initialPreviewUrl]="pdfFileUrl"
+            (fileChange)="onPdfChange($event)">
+          </app-file-drop-upload>
         </div>
 
         <mat-form-field appearance="outline">
           <mat-label>Upload Url</mat-label>
-          <input matInput name="uploadUrl" type="url" placeholder="https://…" />
+          <input matInput name="uploadUrl" [(ngModel)]="uploadUrl" type="url" placeholder="https://…" />
         </mat-form-field>
 
         <div class="upload-field">
-          <mat-form-field appearance="outline" floatLabel="always" class="file-upload">
-            <mat-label>Upload Video</mat-label>
-            <span matTextPrefix class="file-upload__prefix">
-              <button type="button" mat-button class="file-upload__btn" (click)="videoInput.click()">Choose file</button>
-              <span class="file-upload__divider" aria-hidden="true"></span>
-            </span>
-            <input matInput readonly [value]="videoFileName" placeholder="File not selected" />
-          </mat-form-field>
-          <input #videoInput type="file" class="upload-field__native" accept="video/*"
-            (change)="onFileSelected($event, 'video')" />
+          <app-file-drop-upload 
+            label="Upload Video" 
+            accept="video/*"
+            dropTitle="Drag and drop a video here" 
+            mode="video"
+            [initialFileName]="videoFileName"
+            [initialPreviewUrl]="videoFileUrl"
+            (fileChange)="onVideoChange($event)">
+          </app-file-drop-upload>
         </div>
 
         <mat-form-field appearance="outline" class="form-field--textarea">
           <mat-label>Notes Internal</mat-label>
-          <textarea matInput rows="2" name="notesInternal"></textarea>
+          <textarea matInput rows="2" name="notesInternal" [(ngModel)]="notesInternal"></textarea>
         </mat-form-field>
 
         <mat-form-field appearance="outline" class="form-field--textarea">
           <mat-label>Notes External</mat-label>
-          <textarea matInput rows="2" name="notesExternal"></textarea>
+          <textarea matInput rows="2" name="notesExternal" [(ngModel)]="notesExternal"></textarea>
         </mat-form-field>
 
         <mat-form-field appearance="outline">
           <mat-label>Number of Properties</mat-label>
-          <input matInput name="numProperties" value="25" />
+          <input matInput name="numProperties" [(ngModel)]="numProperties" />
         </mat-form-field>
 
         <mat-form-field appearance="outline" floatLabel="always">
@@ -177,11 +178,55 @@
 
         <mat-form-field appearance="outline">
           <mat-label>Date Initiated</mat-label>
-          <input matInput [matDatepicker]="datePicker" placeholder="DD / MM / YYYY" name="dateInitiated" />
+          <input matInput [matDatepicker]="datePicker" placeholder="DD / MM / YYYY" name="dateInitiated" [(ngModel)]="dateInitiated" />
           <mat-datepicker-toggle matIconSuffix [for]="datePicker"></mat-datepicker-toggle>
           <mat-datepicker #datePicker></mat-datepicker>
         </mat-form-field>
       </div>
-    </mat-card-content>
-  </mat-card>
+      </mat-card-content>
+
+      @if (lastCreatedCampaign?.imageFileUrl || lastCreatedCampaign?.pdfFileUrl || lastCreatedCampaign?.videoFileUrl) {
+        <mat-card-content class="preview-media-section">
+          <h3 class="media-title">Media Review</h3>
+          <div class="media-grid">
+            @if (lastCreatedCampaign?.imageFileUrl) {
+              <div class="media-card">
+                <label>Campaign Image</label>
+                <div class="media-wrapper image-wrapper">
+                  <img [src]="lastCreatedCampaign?.imageFileUrl" alt="Campaign Image" />
+                </div>
+              </div>
+            }
+
+            @if (lastCreatedCampaign?.videoFileUrl) {
+              <div class="media-card">
+                <label>Campaign Video</label>
+                <div class="media-wrapper video-wrapper">
+                  <video controls>
+                    <source [src]="lastCreatedCampaign?.videoFileUrl" type="video/mp4" />
+                    Your browser does not support the video tag.
+                  </video>
+                </div>
+              </div>
+            }
+
+            @if (lastCreatedCampaign?.pdfFileUrl) {
+              <div class="media-card full-width">
+                <label>Campaign PDF Document</label>
+                <div class="media-wrapper pdf-wrapper">
+                  <iframe [src]="lastCreatedCampaign?.pdfFileUrl | safeUrl" width="100%" height="500px"></iframe>
+                </div>
+              </div>
+            }
+          </div>
+        </mat-card-content>
+      }
+
+      <div class="campaign-card-actions">
+        <button mat-stroked-button type="button" (click)="onBack()">
+          <mat-icon>arrow_back</mat-icon> Back
+        </button>
+        <button mat-flat-button class="btn-primary" type="button" (click)="onSave()">Save & Finish</button>
+      </div>
+    </mat-card>
 </div>

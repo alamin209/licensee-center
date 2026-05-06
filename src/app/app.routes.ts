@@ -25,6 +25,8 @@ const loadDefineCampaignGeographic = () =>
   import('./pages/define-campaign-geographic/define-campaign-geographic.component').then((m) => m.DefineCampaignGeographicComponent);
 const loadCampaignProperty = () =>
   import('./pages/campaign-property/campaign-property.component').then((m) => m.CampaignPropertyComponent);
+const loadCampaignPreview = () =>
+  import('./pages/campaign-preview/campaign-preview.component').then((m) => m.CampaignPreviewComponent);
 
 export const routes: Routes = [
   { path: '', redirectTo: 'profile/all', pathMatch: 'full' },
@@ -63,6 +65,7 @@ export const routes: Routes = [
   { path: 'campaigns/all-campaigns', redirectTo: 'campaigns/all', pathMatch: 'full' },
   { path: 'campaigns/campaign-property/:campaignId', loadComponent: loadCampaignProperty },
   { path: 'campaigns/define-campaign-geographic', loadComponent: loadDefineCampaignGeographic },
+  { path: 'campaigns/preview', loadComponent: loadCampaignPreview },
 
   { path: '**', redirectTo: 'profile/edit' }
 ];

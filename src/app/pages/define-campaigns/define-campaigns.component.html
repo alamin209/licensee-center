@@ -6,8 +6,6 @@
 
   </div>
 
-
-
   <mat-card class="form-card app-outlined-form" appearance="outlined">
 
     <form #campaignForm="ngForm" novalidate (ngSubmit)="onSubmit(campaignForm)">
@@ -15,394 +13,337 @@
         <mat-card-title>Define Campaigns</mat-card-title>
       </mat-card-header>
 
+      <mat-card-content class="profile-form">
 
+        <div class="campaigns-grid">
 
-    <mat-card-content class="profile-form">
+          <mat-form-field appearance="outline" floatLabel="always">
 
-      <div class="campaigns-grid">
+            <mat-label>Select Type</mat-label>
 
-        <mat-form-field appearance="outline" floatLabel="always">
+            <mat-select [(ngModel)]="campaignType" name="campaignType" required #campaignTypeMdl="ngModel">
 
-          <mat-label>Select Type</mat-label>
+              <mat-option value="agent-specific">Agent Specific</mat-option>
 
-          <mat-select [(ngModel)]="campaignType" name="campaignType" required>
+              <mat-option value="geographic">Geographic</mat-option>
 
-            <mat-option value="agent-specific">Agent Specific</mat-option>
+              <mat-option value="other">Other</mat-option>
 
-            <mat-option value="geographic">Geographic</mat-option>
+            </mat-select>
+            @if (showFieldError(campaignTypeMdl)) {
+            <mat-error>Select a campaign type.</mat-error>
+            }
 
-            <mat-option value="other">Other</mat-option>
+          </mat-form-field>
 
-          </mat-select>
-
-        </mat-form-field>
-
-
-
-        @if (campaignType === 'geographic') {
-          <div class="geographic-display-box">
-             <span class="locale-text" [title]="localeSummary">{{ localeSummary || 'Select Location' }}</span>
-             <button mat-flat-button type="button" class="btn-primary edit-btn" (click)="openCountryLocaleDialog()">Edit</button>
-          </div>
-        } @else {
           <mat-form-field appearance="outline" class="campaign-name-field">
             <mat-label>Name of Campaign</mat-label>
-            <input
-              matInput
-              name="campaignName"
-              [(ngModel)]="campaignName"
-              required
-              minlength="3"
-              maxlength="120"
-              [pattern]="campaignNamePattern"
-              #campaignNameMdl="ngModel"
-            />
+            <input matInput name="campaignName" [(ngModel)]="campaignName" required minlength="3" maxlength="120"
+              [pattern]="campaignNamePattern" #campaignNameMdl="ngModel" />
             @if (showFieldError(campaignNameMdl)) {
-              <mat-error>
-                @if (campaignNameMdl.hasError('required')) {
-                  Campaign name is required.
-                } @else if (campaignNameMdl.hasError('minlength')) {
-                  Campaign name must be at least 3 characters.
-                } @else if (campaignNameMdl.hasError('maxlength')) {
-                  Campaign name must be 120 characters or fewer.
-                } @else {
-                  Use letters, numbers, spaces, and basic punctuation only.
-                }
-              </mat-error>
+            <mat-error>
+              @if (campaignNameMdl.hasError('required')) {
+              Campaign name is required.
+              } @else if (campaignNameMdl.hasError('minlength')) {
+              Campaign name must be at least 3 characters.
+              } @else if (campaignNameMdl.hasError('maxlength')) {
+              Campaign name must be 120 characters or fewer.
+              } @else {
+              Use letters, numbers, spaces, and basic punctuation only.
+              }
+            </mat-error>
             }
           </mat-form-field>
-        }
 
+          @if (campaignType === 'geographic') {
+          <div class="geographic-display-box">
+            <span class="locale-text" [title]="campaignLocation">{{ campaignLocation || 'Select Location' }}</span>
+            <button mat-flat-button type="button" class="btn-primary edit-btn"
+              (click)="openCountryLocaleDialog()">Edit Location</button>
+          </div>
+          }
 
+          <mat-form-field appearance="outline">
 
-        <mat-form-field appearance="outline">
+            <mat-label>Optional Descriptor</mat-label>
 
-          <mat-label>Optional Descriptor</mat-label>
+            <input matInput name="descriptor" [(ngModel)]="descriptor" />
 
-          <input matInput name="descriptor" [(ngModel)]="descriptor" />
+          </mat-form-field>
 
-        </mat-form-field>
+          <mat-form-field appearance="outline">
 
+            <mat-label>Campaign ID</mat-label>
 
-
-        <mat-form-field appearance="outline">
-
-          <mat-label>Campaign ID</mat-label>
-
-          <input
-            matInput
-            name="campaignId"
-            [(ngModel)]="campaignId"
-            required
-            minlength="3"
-            maxlength="50"
-            [pattern]="campaignIdPattern"
-            #campaignIdMdl="ngModel"
-          />
-          @if (showFieldError(campaignIdMdl)) {
+            <input matInput name="campaignId" [(ngModel)]="campaignId" required minlength="3" maxlength="50"
+              [pattern]="campaignIdPattern" #campaignIdMdl="ngModel" />
+            @if (showFieldError(campaignIdMdl)) {
             <mat-error>
               @if (campaignIdMdl.hasError('required')) {
-                Campaign ID is required.
+              Campaign ID is required.
               } @else {
-                Use 3-50 characters: letters, numbers, underscore, or hyphen.
+              Use 3-50 characters: letters, numbers, underscore, or hyphen.
               }
             </mat-error>
-          }
+            }
 
-        </mat-form-field>
+          </mat-form-field>
 
+          <mat-form-field appearance="outline">
 
+            <mat-label>Optional Tagline</mat-label>
 
-        <mat-form-field appearance="outline">
+            <input matInput name="tagline" [(ngModel)]="tagline" />
 
-          <mat-label>Optional Tagline</mat-label>
+          </mat-form-field>
 
-          <input matInput name="tagline" [(ngModel)]="tagline" />
+          <mat-form-field appearance="outline" floatLabel="always">
 
-        </mat-form-field>
+            <mat-label>License Manager</mat-label>
 
+            <mat-select [(ngModel)]="licenseManager" name="licenseManager" #licenseManagerMdl="ngModel">
 
+              <mat-option value="director">Director</mat-option>
 
-        <mat-form-field appearance="outline" floatLabel="always">
+            </mat-select>
 
-          <mat-label>License Manager</mat-label>
+          </mat-form-field>
 
-          <mat-select [(ngModel)]="licenseManager" name="licenseManager" required>
+          <mat-form-field appearance="outline" floatLabel="always">
 
-            <mat-option value="director">Director</mat-option>
+            <mat-label>Select Director</mat-label>
 
-          </mat-select>
+            <mat-select [(ngModel)]="director" name="director" #directorMdl="ngModel">
 
-        </mat-form-field>
+              <mat-option value="kim-powley">Kim Powley</mat-option>
 
+            </mat-select>
 
+          </mat-form-field>
 
-        <mat-form-field appearance="outline" floatLabel="always">
+          <mat-form-field appearance="outline" floatLabel="always">
 
-          <mat-label>Select Director</mat-label>
+            <mat-label>Campaign Lead</mat-label>
 
-          <mat-select [(ngModel)]="director" name="director" required>
+            <mat-select [(ngModel)]="campaignLead" name="campaignLead" #campaignLeadMdl="ngModel">
 
-            <mat-option value="kim-powley">Kim Powley</mat-option>
+              <mat-option value="paolo-randone">Paolo Randone</mat-option>
 
-          </mat-select>
+            </mat-select>
 
-        </mat-form-field>
+          </mat-form-field>
 
+          <mat-form-field appearance="outline" floatLabel="always">
 
+            <mat-label>Select data collator</mat-label>
 
-        <mat-form-field appearance="outline" floatLabel="always">
+            <mat-select [(ngModel)]="dataCollator" name="dataCollator" #dataCollatorMdl="ngModel">
 
-          <mat-label>Campaign Lead</mat-label>
+              <mat-option value="frank-brown">Frank Brown</mat-option>
 
-          <mat-select [(ngModel)]="campaignLead" name="campaignLead" required>
+            </mat-select>
 
-            <mat-option value="paolo-randone">Paolo Randone</mat-option>
+          </mat-form-field>
 
-          </mat-select>
+          <mat-form-field appearance="outline" floatLabel="always">
 
-        </mat-form-field>
+            <mat-label>Associate Representative</mat-label>
 
+            <mat-select [(ngModel)]="associateRep" name="associateRep" #associateRepMdl="ngModel">
 
+              <mat-option value="frank-brown">Frank Brown</mat-option>
 
-        <mat-form-field appearance="outline" floatLabel="always">
+            </mat-select>
 
-          <mat-label>Select data collator</mat-label>
+          </mat-form-field>
 
-          <mat-select [(ngModel)]="dataCollator" name="dataCollator" required>
+          <div class="radio-field">
 
-            <mat-option value="frank-brown">Frank Brown</mat-option>
+            <span class="radio-field__label">Self Licensing</span>
 
-          </mat-select>
+            <mat-radio-group [(ngModel)]="selfLicensing" name="selfLicensing" class="radio-field__group"
+              #selfLicensingMdl="ngModel">
 
-        </mat-form-field>
+              <mat-radio-button value="yes" color="primary">Yes</mat-radio-button>
 
+              <mat-radio-button value="no" color="primary">No</mat-radio-button>
 
+            </mat-radio-group>
 
-        <mat-form-field appearance="outline" floatLabel="always">
+          </div>
 
-          <mat-label>Associate Representative</mat-label>
+          <mat-form-field appearance="outline" floatLabel="always">
 
-          <mat-select [(ngModel)]="associateRep" name="associateRep" required>
+            <mat-label>Select License</mat-label>
 
-            <mat-option value="frank-brown">Frank Brown</mat-option>
+            <mat-select [(ngModel)]="selectLicense" name="selectLicense" #selectLicenseMdl="ngModel">
 
-          </mat-select>
+              <mat-option value="self-licensed">Self Licensed</mat-option>
 
-        </mat-form-field>
+            </mat-select>
 
+          </mat-form-field>
 
-
-        <div class="radio-field">
-
-          <span class="radio-field__label">Self Licensing</span>
-
-          <mat-radio-group [(ngModel)]="selfLicensing" name="selfLicensing" class="radio-field__group" required>
-
-            <mat-radio-button value="yes" color="primary">Yes</mat-radio-button>
-
-            <mat-radio-button value="no" color="primary">No</mat-radio-button>
-
-          </mat-radio-group>
-
-        </div>
-
-
-
-        <mat-form-field appearance="outline" floatLabel="always">
-
-          <mat-label>Select License</mat-label>
-
-          <mat-select [(ngModel)]="selectLicense" name="selectLicense" required>
-
-            <mat-option value="self-licensed">Self Licensed</mat-option>
-
-          </mat-select>
-
-        </mat-form-field>
-
-
-
-        <div class="upload-field">
-          <app-file-drop-upload
-            #imageUpload
-            label="Upload Image"
+          <div class="upload-field">
+            <app-file-drop-upload #imageUpload
+            label="Upload Image" 
             accept="image/*"
-            dropTitle="Drag and drop an image here"
+            dropTitle="Drag and drop an image here" 
             mode="image"
+            [initialFileName]="imageFile?.name || ''"
+            [initialPreviewUrl]="imageFileUrl"
             (fileChange)="onImageChange($event)">
           </app-file-drop-upload>
-        </div>
+          </div>
 
-
-
-        <div class="upload-field">
-          <app-file-drop-upload
-            #pdfUpload
-            label="Upload PDF"
+          <div class="upload-field">
+            <app-file-drop-upload #pdfUpload
+            label="Upload PDF" 
             accept=".pdf,application/pdf"
-            dropTitle="Drag and drop a PDF here"
+            dropTitle="Drag and drop a PDF here" 
             mode="document"
+            [initialFileName]="pdfFile?.name || ''"
+            [initialPreviewUrl]="pdfFileUrl"
             (fileChange)="onPdfChange($event)">
           </app-file-drop-upload>
-        </div>
+          </div>
 
-
-
-        <mat-form-field appearance="outline" class="upload-url-field">
-          <mat-label>Upload Url</mat-label>
-          <input
-            matInput
-            name="uploadUrl"
-            [(ngModel)]="uploadUrl"
-            type="url"
-            placeholder="https://…"
-            [pattern]="optionalHttpsUrlPattern"
-            #uploadUrlMdl="ngModel"
-          />
-          @if (showFieldError(uploadUrlMdl)) {
+          <mat-form-field appearance="outline" class="upload-url-field">
+            <mat-label>Upload Url</mat-label>
+            <input matInput name="uploadUrl" [(ngModel)]="uploadUrl" type="url" placeholder="https://…"
+              [pattern]="optionalHttpsUrlPattern" #uploadUrlMdl="ngModel" />
+            @if (showFieldError(uploadUrlMdl)) {
             <mat-error>Enter a valid URL starting with http:// or https://, or leave blank.</mat-error>
-          }
-        </mat-form-field>
+            }
+          </mat-form-field>
 
-
-
-        <div class="upload-field">
-          <app-file-drop-upload
-            #videoUpload
-            label="Upload Video"
+          <div class="upload-field">
+            <app-file-drop-upload #videoUpload
+            label="Upload Video" 
             accept="video/*"
-            dropTitle="Drag and drop a video here"
+            dropTitle="Drag and drop a video here" 
             mode="video"
+            [initialFileName]="videoFile?.name || ''"
+            [initialPreviewUrl]="videoFileUrl"
             (fileChange)="onVideoChange($event)">
           </app-file-drop-upload>
+          </div>
+
+          <mat-form-field appearance="outline" class="form-field--textarea">
+
+            <mat-label>Notes Internal</mat-label>
+
+            <textarea matInput rows="2" name="notesInternal" [(ngModel)]="notesInternal"></textarea>
+
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" class="form-field--textarea">
+
+            <mat-label>Notes External</mat-label>
+
+            <textarea matInput rows="2" name="notesExternal" [(ngModel)]="notesExternal"></textarea>
+
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+
+            <mat-label>Number of Properties</mat-label>
+
+            <input matInput type="number" min="0" name="numProperties" [(ngModel)]="numProperties"
+              #numPropertiesMdl="ngModel" />
+
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" floatLabel="always">
+
+            <mat-label>Product Price Vary %</mat-label>
+
+            <mat-select [(ngModel)]="productPriceVary" name="productPriceVary" #productPriceVaryMdl="ngModel">
+
+              <mat-option value="3">3%</mat-option>
+
+              <mat-option value="5">5%</mat-option>
+
+              <mat-option value="7.5">7.5%</mat-option>
+
+              <mat-option value="100-plus">3, 5, 7.5, 10, 15, 20, 25, 30, 50, 60, 80, 90, 100% + 3</mat-option>
+
+            </mat-select>
+
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" floatLabel="always">
+
+            <mat-label>Agent Success Fee%</mat-label>
+
+            <mat-select [(ngModel)]="agentSuccessFee" name="agentSuccessFee" #agentSuccessFeeMdl="ngModel">
+
+              <mat-option value="3">3%</mat-option>
+
+              <mat-option value="5">5%</mat-option>
+
+              <mat-option value="10">10%</mat-option>
+
+              <mat-option value="15">15%</mat-option>
+
+              <mat-option value="20">20%</mat-option>
+
+              <mat-option value="25">25%</mat-option>
+
+            </mat-select>
+
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+
+            <mat-label>Date Initiated</mat-label>
+
+            <input matInput [matDatepicker]="datePicker" placeholder="DD / MM / YYYY" name="dateInitiated"
+              [(ngModel)]="dateInitiated" #dateInitiatedMdl="ngModel" />
+
+            <mat-datepicker-toggle matIconSuffix [for]="datePicker"></mat-datepicker-toggle>
+
+            <mat-datepicker #datePicker></mat-datepicker>
+
+          </mat-form-field>
+
         </div>
-
-
-
-        <mat-form-field appearance="outline" class="form-field--textarea">
-
-          <mat-label>Notes Internal</mat-label>
-
-          <textarea matInput rows="2" name="notesInternal" [(ngModel)]="notesInternal"></textarea>
-
-        </mat-form-field>
-
-
-
-        <mat-form-field appearance="outline" class="form-field--textarea">
-
-          <mat-label>Notes External</mat-label>
-
-          <textarea matInput rows="2" name="notesExternal" [(ngModel)]="notesExternal"></textarea>
-
-        </mat-form-field>
-
-
-
-        <mat-form-field appearance="outline">
-
-          <mat-label>Number of Properties</mat-label>
-
-          <input
-            matInput
-            type="number"
-            min="0"
-            name="numProperties"
-            [(ngModel)]="numProperties"
-            required
-            #numPropertiesMdl="ngModel"
-          />
-          @if (showFieldError(numPropertiesMdl)) {
-            <mat-error>
-              @if (numPropertiesMdl.hasError('required')) {
-                Number of properties is required.
-              } @else {
-                Number of properties must be 0 or greater.
-              }
-            </mat-error>
-          }
-
-        </mat-form-field>
-
-
-
-        <mat-form-field appearance="outline" floatLabel="always">
-
-          <mat-label>Product Price Vary %</mat-label>
-
-          <mat-select [(ngModel)]="productPriceVary" name="productPriceVary" required>
-
-            <mat-option value="3">3%</mat-option>
-
-            <mat-option value="5">5%</mat-option>
-
-            <mat-option value="7.5">7.5%</mat-option>
-
-            <mat-option value="100-plus">3, 5, 7.5, 10, 15, 20, 25, 30, 50, 60, 80, 90, 100% + 3</mat-option>
-
-          </mat-select>
-
-        </mat-form-field>
-
-
-
-        <mat-form-field appearance="outline" floatLabel="always">
-
-          <mat-label>Agent Success Fee%</mat-label>
-
-          <mat-select [(ngModel)]="agentSuccessFee" name="agentSuccessFee" required>
-
-            <mat-option value="3">3%</mat-option>
-
-            <mat-option value="5">5%</mat-option>
-
-            <mat-option value="10">10%</mat-option>
-
-            <mat-option value="15">15%</mat-option>
-
-            <mat-option value="20">20%</mat-option>
-
-            <mat-option value="25">25%</mat-option>
-
-          </mat-select>
-
-        </mat-form-field>
-
-
-
-        <mat-form-field appearance="outline">
-
-          <mat-label>Date Initiated</mat-label>
-
-          <input
-            matInput
-            [matDatepicker]="datePicker"
-            placeholder="DD / MM / YYYY"
-            name="dateInitiated"
-            [(ngModel)]="dateInitiated"
-            required
-            #dateInitiatedMdl="ngModel"
-          />
-          @if (showFieldError(dateInitiatedMdl)) {
-            <mat-error>Date initiated is required.</mat-error>
-          }
-
-          <mat-datepicker-toggle matIconSuffix [for]="datePicker"></mat-datepicker-toggle>
-
-          <mat-datepicker #datePicker></mat-datepicker>
-
-        </mat-form-field>
-
-      </div>
 
       </mat-card-content>
 
       <div class="campaign-card-actions">
-        <button mat-stroked-button type="button" (click)="campaignForm.resetForm(); onReset()">Reset</button>
+        <button mat-stroked-button type="button" class="btn-reset" (click)="campaignForm.resetForm(); onReset()">Reset</button>
         <button mat-flat-button class="btn-primary" type="submit">Save</button>
       </div>
     </form>
   </mat-card>
+
+  @if ((campaigns$ | async); as campaigns) {
+    @if (campaigns.length > 0) {
+      <mat-card class="form-card submitted-campaigns-card" appearance="outlined">
+        <mat-card-header class="custom-card-header">
+          <mat-card-title>Submitted Campaigns (In State)</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <div class="campaign-list">
+            @for (c of campaigns; track c.campaignId) {
+              <div class="campaign-item">
+                <div class="campaign-item__info">
+                  <strong>{{ c.campaignName }}</strong>
+                  <span class="campaign-item__id">ID: {{ c.campaignId }}</span>
+                </div>
+                <div class="campaign-item__meta">
+                  <span>Type: {{ c.campaignType }}</span>
+                  @if (c.location) {
+                    <span class="campaign-item__location">Location: {{ c.location }}</span>
+                  }
+                </div>
+              </div>
+            }
+          </div>
+        </mat-card-content>
+      </mat-card>
+    }
+  }
 
 </div>

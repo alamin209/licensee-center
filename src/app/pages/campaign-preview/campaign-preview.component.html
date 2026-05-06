@@ -1,0 +1,114 @@
+<div class="app-page">
+  <div class="page-header">
+    <h1>Preview Campaign</h1>
+  </div>
+
+  <mat-card class="form-card app-outlined-form" appearance="outlined">
+    <div class="preview-container">
+      <mat-card-header class="custom-card-header preview-header">
+        <mat-card-title>Review Campaign Details</mat-card-title>
+        <p class="preview-subtitle">Please review the information below before proceeding.</p>
+      </mat-card-header>
+
+      <mat-card-content class="preview-content">
+        <div class="preview-grid">
+          <div class="preview-item">
+            <label>Campaign Type</label>
+            <span>{{ campaign?.campaignType }}</span>
+          </div>
+          <div class="preview-item">
+            <label>Campaign Name</label>
+            <span>{{ campaign?.campaignName }}</span>
+          </div>
+          <div class="preview-item">
+            <label>Campaign ID</label>
+            <span>{{ campaign?.campaignId }}</span>
+          </div>
+          <div class="preview-item">
+            <label>License Manager</label>
+            <span>{{ campaign?.licenseManager }}</span>
+          </div>
+          <div class="preview-item">
+            <label>Director</label>
+            <span>{{ campaign?.director }}</span>
+          </div>
+          <div class="preview-item">
+            <label>Campaign Lead</label>
+            <span>{{ campaign?.campaignLead }}</span>
+          </div>
+          <div class="preview-item">
+            <label>Properties</label>
+            <span>{{ campaign?.numProperties || 'N/A' }}</span>
+          </div>
+          <div class="preview-item">
+            <label>Price Vary %</label>
+            <span>{{ campaign?.productPriceVary || 'N/A' }}</span>
+          </div>
+        </div>
+
+        <div class="preview-full-item">
+          <label>Descriptor</label>
+          <p>{{ campaign?.descriptor || 'No descriptor provided.' }}</p>
+        </div>
+
+        <div class="preview-full-item">
+          <label>Tagline</label>
+          <p>{{ campaign?.tagline || 'No tagline provided.' }}</p>
+        </div>
+        
+        @if (campaign?.location) {
+          <div class="preview-full-item">
+            <label>Location</label>
+            <p>{{ campaign?.location }}</p>
+          </div>
+        }
+
+        @if (campaign?.imageFileUrl || campaign?.pdfFileUrl || campaign?.videoFileUrl) {
+          <div class="preview-media-section">
+            <h3 class="media-title">Media Review</h3>
+            <div class="media-grid">
+              @if (campaign?.imageFileUrl) {
+                <div class="media-card">
+                  <label>Campaign Image</label>
+                  <div class="media-wrapper image-wrapper">
+                    <img [src]="campaign?.imageFileUrl" alt="Campaign Image" />
+                  </div>
+                </div>
+              }
+
+              @if (campaign?.videoFileUrl) {
+                <div class="media-card">
+                  <label>Campaign Video</label>
+                  <div class="media-wrapper video-wrapper">
+                    <video controls>
+                      <source [src]="campaign?.videoFileUrl" type="video/mp4" />
+                      Your browser does not support the video tag.
+                    </video>
+                  </div>
+                </div>
+              }
+
+              @if (campaign?.pdfFileUrl) {
+                <div class="media-card full-width">
+                  <label>Campaign PDF Document</label>
+                  <div class="media-wrapper pdf-wrapper">
+                    <iframe [src]="campaign?.pdfFileUrl | safeUrl" width="100%" height="500px"></iframe>
+                  </div>
+                </div>
+              }
+            </div>
+          </div>
+        }
+      </mat-card-content>
+
+      <div class="preview-actions">
+        <button mat-stroked-button (click)="onBack()">
+          <mat-icon>arrow_back</mat-icon> Back to Edit
+        </button>
+        <button mat-flat-button class="btn-primary" (click)="onConfirm()">
+          Confirm & Forward <mat-icon>arrow_forward</mat-icon>
+        </button>
+      </div>
+    </div>
+  </mat-card>
+</div>
