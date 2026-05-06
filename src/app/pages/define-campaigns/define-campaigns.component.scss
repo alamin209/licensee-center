@@ -27,6 +27,17 @@
     &:hover {
       background-color: transparent !important;
       border-color: rgba(0, 0, 0, 0.12) !important;
+      color: inherit !important;
+      box-shadow: none !important;
+    }
+
+    ::ng-deep .mat-mdc-button-persistent-ripple,
+    ::ng-deep .mat-ripple {
+      display: none !important;
+    }
+
+    &:hover ::ng-deep .mat-mdc-button-persistent-ripple::before {
+      opacity: 0 !important;
     }
   }
 }
