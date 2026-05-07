@@ -58,8 +58,9 @@ export class DefineCampaignsComponent implements OnInit {
   campaignLead = '';
   associateRep = '';
   selectLicense = '';
-  agentSuccessFee = '';
-  productPriceVary = '';
+  agentSuccessFee: number = 0;
+  productPriceVary: number = 0;
+  priceVaryStep: number = 5;
   descriptor = '';
   campaignId = '';
   tagline = '';
@@ -110,8 +111,8 @@ export class DefineCampaignsComponent implements OnInit {
       this.associateRep = last.associateRep;
       this.selfLicensing = last.selfLicensing;
       this.selectLicense = last.selectLicense;
-      this.agentSuccessFee = last.agentSuccessFee;
-      this.productPriceVary = last.productPriceVary;
+      this.agentSuccessFee = Number(last.agentSuccessFee) || 0;
+      this.productPriceVary = Number(last.productPriceVary) || 0;
       this.numProperties = last.numProperties;
       this.notesInternal = last.notesInternal ?? '';
       this.notesExternal = last.notesExternal ?? '';
@@ -123,11 +124,29 @@ export class DefineCampaignsComponent implements OnInit {
       this.pdfFileUrl = last.pdfFileUrl ?? null;
       this.videoFileName = last.videoFile ?? '';
       this.videoFileUrl = last.videoFileUrl ?? null;
+    } else {
+      this.generateNewCampaignId();
     }
+  }
+
+  generateNewCampaignId(): void {
+    const randomSuffix = Math.floor(1000 + Math.random() * 9000);
+    const timestamp = new Date().getTime().toString().slice(-4);
+    this.campaignId = `CMP-${timestamp}${randomSuffix}`;
   }
 
   showFieldError(model: NgModel): boolean {
     return !!(model.invalid && (model.dirty || model.touched));
+  }
+
+  incrementPriceVary(): void {
+    const nextValue = Math.round((this.productPriceVary + this.priceVaryStep) * 100) / 100;
+    this.productPriceVary = Math.min(100, nextValue);
+  }
+
+  decrementPriceVary(): void {
+    const nextValue = Math.round((this.productPriceVary - this.priceVaryStep) * 100) / 100;
+    this.productPriceVary = Math.max(-100, nextValue);
   }
 
   onSubmit(form: NgForm): void {
@@ -185,11 +204,15 @@ export class DefineCampaignsComponent implements OnInit {
     this.imageUpload?.reset();
     this.pdfUpload?.reset();
     this.videoUpload?.reset();
+    this.productPriceVary = 0;
+    this.agentSuccessFee = 0;
     this.localeCountry = '';
     this.localeState = '';
     this.localeLocale = '';
     this.campaignName = '';
+    this.generateNewCampaignId();
   }
+
 
   get localeSummary(): string {
     const cData = LOCATION_DATA[this.localeCountry];

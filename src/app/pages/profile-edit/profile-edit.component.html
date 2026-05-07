@@ -4,622 +4,468 @@
   </div>
 
   @switch (viewMode()) {
-    @case ('edit') {
-      <mat-card class="form-card app-outlined-form" appearance="outlined">
-        <mat-card-header class="custom-card-header">
-          <mat-card-title>Edit My Profile</mat-card-title>
-        </mat-card-header>
+  @case ('edit') {
+  <mat-card class="form-card app-outlined-form" appearance="outlined">
+    <mat-card-header class="custom-card-header">
+      <mat-card-title>Edit My Profile</mat-card-title>
+    </mat-card-header>
 
-        <mat-card-content class="profile-form">
-          <form
-            #profileEditForm="ngForm"
-            class="profile-edit-form"
-            novalidate
-            (ngSubmit)="onSubmit(profileEditForm)"
-          >
-          <div class="section-title">1. Personal info</div>
+    <mat-card-content class="profile-form">
+      <form #profileEditForm="ngForm" class="profile-edit-form" novalidate (ngSubmit)="onSubmit(profileEditForm)">
+        <div class="section-title">1. Personal info</div>
 
-          <div class="form-grid form-grid--cols-2">
-            <mat-form-field appearance="outline">
-              <mat-label>First Name</mat-label>
-              <input
-                matInput
-                type="text"
-                name="givenName"
-                required
-                maxlength="80"
-                [pattern]="personNamePattern"
-                autocomplete="given-name"
-                [(ngModel)]="profile.givenName"
-                #givenNameMdl="ngModel"
-              />
-              @if (showFieldError(givenNameMdl)) {
-                <mat-error>
-                  @if (givenNameMdl.hasError('required')) {
-                    Enter a first name.
-                  } @else {
-                    Use letters only (accented letters allowed), spaces, hyphen, apostrophe, or period. Max 80 characters.
-                  }
-                </mat-error>
+        <div class="form-grid form-grid--cols-2">
+          <mat-form-field appearance="outline">
+            <mat-label>First Name</mat-label>
+            <input matInput type="text" name="givenName" required maxlength="80" [pattern]="personNamePattern"
+              autocomplete="given-name" [(ngModel)]="profile.givenName" #givenNameMdl="ngModel" />
+            @if (showFieldError(givenNameMdl)) {
+            <mat-error>
+              @if (givenNameMdl.hasError('required')) {
+              Enter a first name.
+              } @else {
+              Use letters only (accented letters allowed), spaces, hyphen, apostrophe, or period. Max 80 characters.
               }
-            </mat-form-field>
-
-            <mat-form-field appearance="outline">
-              <mat-label>Last Name</mat-label>
-              <input
-                matInput
-                type="text"
-                name="lastName"
-                required
-                maxlength="80"
-                [pattern]="personNamePattern"
-                autocomplete="family-name"
-                [(ngModel)]="profile.lastName"
-                #lastNameMdl="ngModel"
-              />
-              @if (showFieldError(lastNameMdl)) {
-                <mat-error>
-                  @if (lastNameMdl.hasError('required')) {
-                    Enter a last name.
-                  } @else {
-                    Use letters only (accented letters allowed), spaces, hyphen, apostrophe, or period. Max 80 characters.
-                  }
-                </mat-error>
-              }
-            </mat-form-field>
-          </div>
-
-          <div class="form-grid form-grid--row-preferred">
-            <mat-form-field appearance="outline">
-              <mat-label>Preferred</mat-label>
-              <input
-                matInput
-                type="text"
-                name="preferred"
-                [maxlength]="preferredMaxLen"
-                [(ngModel)]="profile.preferred"
-              />
-            </mat-form-field>
-
-            <div class="form-grid form-grid--cols-title-user">
-              <mat-form-field appearance="outline">
-                <mat-label>Operator</mat-label>
-                <input
-                  matInput
-                  type="text"
-                  name="title"
-                  [(ngModel)]="profile.title"
-                  [disabled]="true"
-                  title="Assigned by the system — not editable"
-                />
-              </mat-form-field>
-
-              <mat-form-field appearance="outline">
-                <mat-label>User ID</mat-label>
-                <input
-                  matInput
-                  type="text"
-                  name="userId"
-                  inputmode="numeric"
-                  [(ngModel)]="profile.userId"
-                  [disabled]="true"
-                  title="Assigned by the system — not editable"
-                />
-              </mat-form-field>
-            </div>
-          </div>
-
-          <div class="form-grid form-grid--cols-2">
-            <mat-form-field appearance="outline">
-              <mat-label>Personal Email</mat-label>
-              <input
-                matInput
-                type="email"
-                name="personalEmail"
-                email
-                required
-                maxlength="254"
-                autocomplete="email"
-                placeholder="name@example.com"
-                [(ngModel)]="profile.personalEmail"
-                #personalEmailMdl="ngModel"
-              />
-              @if (showFieldError(personalEmailMdl)) {
-                <mat-error>
-                  @if (personalEmailMdl.hasError('required')) {
-                    Personal email is required.
-                  } @else {
-                    Please enter a valid email address — for example {{ 'name' + '@' + 'example.com' }}.
-                  }
-                </mat-error>
-              }
-            </mat-form-field>
-
-            <mat-form-field appearance="outline">
-              <mat-label>Cell &amp; Text</mat-label>
-              <input
-                matInput
-                type="tel"
-                name="cell"
-                maxlength="28"
-                [pattern]="phoneFlexiblePattern"
-                autocomplete="tel"
-                inputmode="tel"
-                [(ngModel)]="profile.cell"
-                #cellMdl="ngModel"
-              />
-              @if (showFieldError(cellMdl)) {
-                <mat-error>Use digits with optional country code (+) and separators (spaces, dashes, parentheses). Leave blank if none.</mat-error>
-              }
-            </mat-form-field>
-          </div>
-          <hr class="form-divider" />
-
-          <div class="section-title section-title--spaced">2. Contact info</div>
-
-          <div class="form-grid form-grid--cols-2">
-            <mat-form-field appearance="outline">
-              <mat-label>Contact Email</mat-label>
-              <input
-                matInput
-                type="email"
-                name="contactEmail"
-                email
-                maxlength="254"
-                placeholder="work@example.com"
-                [(ngModel)]="profile.contactEmail"
-                #contactEmailMdl="ngModel"
-              />
-              @if (showFieldError(contactEmailMdl)) {
-                <mat-error>Enter a valid email address or leave this blank.</mat-error>
-              }
-            </mat-form-field>
-
-            <mat-form-field appearance="outline">
-              <mat-label>Company Email</mat-label>
-              <input
-                matInput
-                type="email"
-                name="companyEmail"
-                email
-                maxlength="254"
-                placeholder="company@example.com"
-                [(ngModel)]="profile.companyEmail"
-                #companyEmailMdl="ngModel"
-              />
-              @if (showFieldError(companyEmailMdl)) {
-                <mat-error>Enter a valid email address or leave this blank.</mat-error>
-              }
-            </mat-form-field>
-          </div>
-
-          <div class="form-grid form-grid--cols-2">
-            <mat-form-field appearance="outline">
-              <mat-label>LinkedIn</mat-label>
-              <input
-                matInput
-                type="text"
-                name="linkedin"
-                maxlength="200"
-                [pattern]="linkedInOptionalPattern"
-                placeholder="linkedin.com/in/yourprofile"
-                [(ngModel)]="profile.linkedin"
-                #linkedinMdl="ngModel"
-              />
-              @if (showFieldError(linkedinMdl)) {
-                <mat-error>Use a LinkedIn URL (with or without https://) or leave blank.</mat-error>
-              }
-            </mat-form-field>
-
-            <mat-form-field appearance="outline">
-              <mat-label>Teams ID</mat-label>
-              <input
-                matInput
-                type="text"
-                name="teamsId"
-                maxlength="128"
-                [pattern]="teamsHandlePattern"
-                placeholder="Your Teams handle"
-                [(ngModel)]="profile.teamsId"
-                #teamsIdMdl="ngModel"
-              />
-              @if (showFieldError(teamsIdMdl)) {
-                <mat-error>Use letters, numbers, dot, hyphen, underscore, &#64;, or leave blank.</mat-error>
-              }
-            </mat-form-field>
-          </div>
-
-          <div class="form-grid form-grid--cols-1">
-            <mat-form-field
-              appearance="outline"
-              class="form-field--textarea"
-              floatLabel="always"
-              subscriptSizing="dynamic"
-            >
-              <mat-label>A Little About Me ..</mat-label>
-              <textarea matInput rows="3" name="about" [(ngModel)]="profile.about" [maxlength]="aboutMaxLen"></textarea>
-              <mat-hint>Add a short bio or notes (optional)</mat-hint>
-            </mat-form-field>
-          </div>
-          <hr class="form-divider" />
-
-          <div class="section-title section-title--spaced">3. Personal info</div>
-
-          <div class="form-grid form-grid--cols-2 profile-form__uploads">
-            <app-file-drop-upload
-              #photoUpload
-              mode="image"
-              label="Profile photo"
-              hint="JPEG, PNG, or WebP — drag and drop or browse"
-              accept="image/*"
-              dropTitle="Drop your photo here"
-              dropSub="or use the button below to choose a file from your device"
-              (fileChange)="onProfilePhotoChanged($event)"
-            />
-
-            <app-file-drop-upload
-              #cvUpload
-              mode="document"
-              label="Résumé / CV"
-              hint="PDF or Word — drag and drop or browse"
-              accept=".pdf,.doc,.docx,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document"
-              dropTitle="Drop your CV here"
-              dropSub="or use the button below to choose a PDF or Word file"
-              (fileChange)="onCvFileChanged($event)"
-            />
-          </div>
-
-          <div class="form-grid form-grid--cols-2">
-            <mat-form-field appearance="outline">
-              <mat-label>Trading Entity</mat-label>
-              <input
-                matInput
-                type="text"
-                name="tradingEntity"
-                [maxlength]="tradingMaxLen"
-                placeholder="e.g. entity or business name"
-                [(ngModel)]="profile.tradingEntity"
-              />
-            </mat-form-field>
-
-            <mat-form-field appearance="outline">
-              <mat-label>Registration Number</mat-label>
-              <input
-                matInput
-                type="text"
-                name="registration"
-                [pattern]="registrationOptionalPattern"
-                maxlength="80"
-                placeholder="Registration or license #"
-                [(ngModel)]="profile.registration"
-                #registrationMdl="ngModel"
-              />
-              @if (showFieldError(registrationMdl)) {
-                <mat-error>Use 2–80 letters, digits, spaces, #, slashes, dots, hyphen, or leave blank.</mat-error>
-              }
-            </mat-form-field>
-          </div>
-
-          <div class="form-grid form-grid--cols-2">
-            <mat-form-field appearance="outline">
-              <mat-label>Digital Presence #1</mat-label>
-              <input
-                matInput
-                type="text"
-                inputmode="url"
-                autocomplete="url"
-                name="dp1"
-                maxlength="300"
-                [pattern]="optionalPresenceUrlPattern"
-                placeholder="Website, social, or portfolio URL"
-                [(ngModel)]="profile.digitalPresence1"
-                #dp1Mdl="ngModel"
-              />
-              @if (showFieldError(dp1Mdl)) {
-                <mat-error>Enter a URL (optional https://), e.g. example.com/about, or leave blank.</mat-error>
-              }
-            </mat-form-field>
-
-            <mat-form-field appearance="outline">
-              <mat-label>Digital Presence #2</mat-label>
-              <input
-                matInput
-                type="text"
-                inputmode="url"
-                autocomplete="off"
-                name="dp2"
-                maxlength="300"
-                [pattern]="optionalPresenceUrlPattern"
-                placeholder="Optional link or handle"
-                [(ngModel)]="profile.digitalPresence2"
-                #dp2Mdl="ngModel"
-              />
-              @if (showFieldError(dp2Mdl)) {
-                <mat-error>Enter a URL (optional https://) or leave blank.</mat-error>
-              }
-            </mat-form-field>
-          </div>
-
-          <div class="form-grid form-grid--cols-2">
-            <mat-form-field appearance="outline">
-              <mat-label>Digital Presence #3</mat-label>
-              <input
-                matInput
-                type="text"
-                inputmode="url"
-                autocomplete="off"
-                name="dp3"
-                maxlength="300"
-                [pattern]="optionalPresenceUrlPattern"
-                placeholder="Optional link or handle"
-                [(ngModel)]="profile.digitalPresence3"
-                #dp3Mdl="ngModel"
-              />
-              @if (showFieldError(dp3Mdl)) {
-                <mat-error>Enter a URL (optional https://) or leave blank.</mat-error>
-              }
-            </mat-form-field>
-
-            <mat-form-field appearance="outline">
-              <mat-label>Digital Presence #4</mat-label>
-              <input
-                matInput
-                type="text"
-                inputmode="url"
-                autocomplete="off"
-                name="dp4"
-                maxlength="300"
-                [pattern]="optionalPresenceUrlPattern"
-                placeholder="Optional link or handle"
-                [(ngModel)]="profile.digitalPresence4"
-                #dp4Mdl="ngModel"
-              />
-              @if (showFieldError(dp4Mdl)) {
-                <mat-error>Enter a URL (optional https://) or leave blank.</mat-error>
-              }
-            </mat-form-field>
-          </div>
-
-          <div class="form-actions profile-form__actions profile-form__actions--edit">
-            <button mat-flat-button type="button" class="btn-secondary" (click)="onCancel()">Reset</button>
-            <button mat-flat-button type="submit" class="btn-primary profile-edit__btn-submit">Submit</button>
-          </div>
-          </form>
-        </mat-card-content>
-      </mat-card>
-    }
-
-    @case ('profiles') {
-      <mat-card class="form-card app-outlined-form profile-readonly-card" appearance="outlined">
-        <mat-card-header class="custom-card-header">
-          <mat-card-title>View all Profiles</mat-card-title>
-          <mat-card-subtitle class="demo-hint">
-            Shows the last submitted profile (demo, in memory). Use
-            <a routerLink="/profile/all">Edit My Profile</a>
-            to change it, then Submit.
-          </mat-card-subtitle>
-        </mat-card-header>
-
-        <mat-card-content class="profile-form">
-          <div class="section-title">Submitted operator</div>
-
-          <dl class="profile-readonly">
-            <dt>First Name</dt>
-            <dd>{{ store.submitted.givenName }}</dd>
-            <dt>Last Name</dt>
-            <dd>{{ store.submitted.lastName }}</dd>
-            <dt>Preferred</dt>
-            <dd>{{ store.submitted.preferred }}</dd>
-            <dt>Operator</dt>
-            <dd>{{ store.submitted.title }}</dd>
-            <dt>User ID</dt>
-            <dd>{{ store.submitted.userId }}</dd>
-            @if (store.submittedPhotoDataUrl) {
-              <dt>Profile photo</dt>
-              <dd class="profile-readonly__photo-cell">
-                <img [src]="store.submittedPhotoDataUrl" alt="Submitted profile photo" class="profile-readonly__thumb" />
-              </dd>
+            </mat-error>
             }
-            <dt>Personal Email</dt>
-            <dd>{{ store.submitted.personalEmail }}</dd>
-            <dt>Cell &amp; Text</dt>
-            <dd>{{ store.submitted.cell }}</dd>
-            <dt>Contact Email</dt>
-            <dd>{{ store.submitted.contactEmail }}</dd>
-            <dt>Company Email</dt>
-            <dd>{{ store.submitted.companyEmail }}</dd>
-            <dt>LinkedIn</dt>
-            <dd>{{ store.submitted.linkedin }}</dd>
-            <dt>Teams ID</dt>
-            <dd>{{ store.submitted.teamsId }}</dd>
-            <dt>A Little About Me</dt>
-            <dd>{{ store.submitted.about || '—' }}</dd>
-            <dt>Trading Entity</dt>
-            <dd>{{ store.submitted.tradingEntity || '—' }}</dd>
-            <dt>Registration Number</dt>
-            <dd>{{ store.submitted.registration || '—' }}</dd>
-            <dt>Digital Presence #1–#4</dt>
-            <dd>
-              {{ store.submitted.digitalPresence1 || '—' }} · {{ store.submitted.digitalPresence2 || '—' }} ·
-              {{ store.submitted.digitalPresence3 || '—' }} · {{ store.submitted.digitalPresence4 || '—' }}
-            </dd>
-            @if (store.submittedPhotoName || store.submittedCvName) {
-              <dt>Attachments (last submit)</dt>
-              <dd>
-                @if (store.submittedPhotoName) {
-                  <span>Photo: {{ store.submittedPhotoName }}</span>
-                }
-                @if (store.submittedPhotoName && store.submittedCvName) {
-                  <span> · </span>
-                }
-                @if (store.submittedCvName) {
-                  <span>CV: {{ store.submittedCvName }}</span>
-                }
-              </dd>
-            }
-          </dl>
-
-          <div class="form-actions profile-form__actions">
-            <a mat-flat-button class="btn-primary" routerLink="/profile/all">Edit My Profile</a>
-          </div>
-        </mat-card-content>
-      </mat-card>
-    }
-
-    @case ('verify') {
-      <mat-card class="form-card app-outlined-form verify-console" appearance="outlined">
-        <mat-card-header class="custom-card-header">
-          <mat-card-title>Verify &amp; Approve Operators</mat-card-title>
-          <mat-card-subtitle class="demo-hint">
-            Read-only view of the last submitted profile. HR verifies the operator here (demo). Operator and User ID
-            cannot be changed. Photo comes from Edit My Profile after Submit.
-          </mat-card-subtitle>
-        </mat-card-header>
-
-        <mat-card-content class="profile-form">
-          <mat-form-field appearance="outline" class="verify-select-field">
-            <mat-label>Operators by Name</mat-label>
-            <mat-select [(ngModel)]="verifySelectedOperatorId" name="verifyOperatorPick">
-              <mat-option value="current">{{ operatorSelectLabel }}</mat-option>
-            </mat-select>
           </mat-form-field>
 
-          <div class="section-title">General operator information</div>
-
-          <div class="verify-readonly-grid">
-            <div class="verify-readonly-row verify-readonly-row--2">
-              <div class="verify-readonly-cell">
-                <span class="verify-readonly-label">First Name</span>
-                <span class="verify-readonly-value">{{ store.submitted.givenName }}</span>
-              </div>
-              <div class="verify-readonly-cell">
-                <span class="verify-readonly-label">Last Name</span>
-                <span class="verify-readonly-value">{{ store.submitted.lastName }}</span>
-              </div>
-            </div>
-            <div class="verify-readonly-row verify-readonly-row--2">
-              <div class="verify-readonly-cell">
-                <span class="verify-readonly-label">Preferred</span>
-                <span class="verify-readonly-value">{{ store.submitted.preferred }}</span>
-              </div>
-              <div class="verify-readonly-cell verify-readonly-cell--locked">
-                <span class="verify-readonly-label">Operator</span>
-                <span class="verify-readonly-value verify-readonly-value--locked">{{ store.submitted.title }}</span>
-              </div>
-            </div>
-            <div class="verify-readonly-row verify-readonly-row--2">
-              <div class="verify-readonly-cell verify-readonly-cell--locked">
-                <span class="verify-readonly-label">User ID</span>
-                <span class="verify-readonly-value verify-readonly-value--locked">{{ store.submitted.userId }}</span>
-              </div>
-              <div class="verify-readonly-cell">
-                <span class="verify-readonly-label">Personal Email</span>
-                <span class="verify-readonly-value">{{ store.submitted.personalEmail }}</span>
-              </div>
-            </div>
-            <div class="verify-readonly-row verify-readonly-row--2">
-              <div class="verify-readonly-cell">
-                <span class="verify-readonly-label">Cell &amp; Text</span>
-                <span class="verify-readonly-value">{{ store.submitted.cell }}</span>
-              </div>
-              <div class="verify-readonly-cell">
-                <span class="verify-readonly-label">Contact Email</span>
-                <span class="verify-readonly-value">{{ store.submitted.contactEmail }}</span>
-              </div>
-            </div>
-            <div class="verify-readonly-row verify-readonly-row--2">
-              <div class="verify-readonly-cell">
-                <span class="verify-readonly-label">Company Email</span>
-                <span class="verify-readonly-value">{{ store.submitted.companyEmail }}</span>
-              </div>
-              <div class="verify-readonly-cell">
-                <span class="verify-readonly-label">LinkedIn</span>
-                <span class="verify-readonly-value">{{ store.submitted.linkedin }}</span>
-              </div>
-            </div>
-            <div class="verify-readonly-row verify-readonly-row--2">
-              <div class="verify-readonly-cell">
-                <span class="verify-readonly-label">Teams ID</span>
-                <span class="verify-readonly-value">{{ store.submitted.teamsId }}</span>
-              </div>
-            </div>
-            <div class="verify-readonly-row">
-              <div class="verify-readonly-cell verify-readonly-cell--full">
-                <span class="verify-readonly-label">A Little About Me ..</span>
-                <span class="verify-readonly-value verify-readonly-value--multiline">{{ store.submitted.about || '—' }}</span>
-              </div>
-            </div>
-          </div>
-
-          <hr class="form-divider" />
-
-          <div class="section-title section-title--spaced">3. Personal info</div>
-
-          <div class="verify-media-row">
-            <div class="verify-media-card">
-              <span class="verify-readonly-label">Profile photo</span>
-              @if (store.previewPhotoDataUrl) {
-                <div class="verify-photo-frame">
-                  <img [src]="store.previewPhotoDataUrl" alt="Profile photo" class="verify-photo-img" />
-                </div>
+          <mat-form-field appearance="outline">
+            <mat-label>Last Name</mat-label>
+            <input matInput type="text" name="lastName" required maxlength="80" [pattern]="personNamePattern"
+              autocomplete="family-name" [(ngModel)]="profile.lastName" #lastNameMdl="ngModel" />
+            @if (showFieldError(lastNameMdl)) {
+            <mat-error>
+              @if (lastNameMdl.hasError('required')) {
+              Enter a last name.
               } @else {
-                <div class="verify-photo-placeholder">No photo yet — add one from Edit My Profile</div>
+              Use letters only (accented letters allowed), spaces, hyphen, apostrophe, or period. Max 80 characters.
               }
-            </div>
-            <div class="verify-media-card">
-              <span class="verify-readonly-label">Résumé / CV</span>
-              <span class="verify-readonly-value verify-readonly-value--block">{{
-                store.previewCvName || '—'
+            </mat-error>
+            }
+          </mat-form-field>
+        </div>
+
+        <div class="form-grid form-grid--row-preferred">
+          <mat-form-field appearance="outline">
+            <mat-label>Preferred</mat-label>
+            <input matInput type="text" name="preferred" [maxlength]="preferredMaxLen"
+              [(ngModel)]="profile.preferred" />
+          </mat-form-field>
+
+          <div class="form-grid form-grid--cols-title-user">
+            <mat-form-field appearance="outline">
+              <mat-label>Operator</mat-label>
+              <input matInput type="text" name="title" [(ngModel)]="profile.title" [disabled]="true"
+                title="Assigned by the system — not editable" />
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+              <mat-label>User ID</mat-label>
+              <input matInput type="text" name="userId" inputmode="numeric" [(ngModel)]="profile.userId"
+                [disabled]="true" title="Assigned by the system — not editable" />
+            </mat-form-field>
+          </div>
+        </div>
+
+        <div class="form-grid form-grid--cols-2">
+          <mat-form-field appearance="outline">
+            <mat-label>Personal Email</mat-label>
+            <input matInput type="email" name="personalEmail" email required maxlength="254" autocomplete="email"
+              placeholder="name@example.com" [(ngModel)]="profile.personalEmail" #personalEmailMdl="ngModel" />
+            @if (showFieldError(personalEmailMdl)) {
+            <mat-error>
+              @if (personalEmailMdl.hasError('required')) {
+              Personal email is required.
+              } @else {
+              Please enter a valid email address — for example {{ 'name' + '@' + 'example.com' }}.
+              }
+            </mat-error>
+            }
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Cell &amp; Text</mat-label>
+            <input matInput type="tel" name="cell" maxlength="28" [pattern]="phoneFlexiblePattern" autocomplete="tel"
+              inputmode="tel" [(ngModel)]="profile.cell" #cellMdl="ngModel" />
+            @if (showFieldError(cellMdl)) {
+            <mat-error>Use digits with optional country code (+) and separators (spaces, dashes, parentheses). Leave
+              blank if none.</mat-error>
+            }
+          </mat-form-field>
+        </div>
+        <hr class="form-divider" />
+
+        <div class="section-title section-title--spaced">2. Contact info</div>
+
+        <div class="form-grid form-grid--cols-2">
+          <mat-form-field appearance="outline">
+            <mat-label>Contact Email</mat-label>
+            <input matInput type="email" name="contactEmail" email maxlength="254" placeholder="work@example.com"
+              [(ngModel)]="profile.contactEmail" #contactEmailMdl="ngModel" />
+            @if (showFieldError(contactEmailMdl)) {
+            <mat-error>Enter a valid email address or leave this blank.</mat-error>
+            }
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Company Email</mat-label>
+            <input matInput type="email" name="companyEmail" email maxlength="254" placeholder="company@example.com"
+              [(ngModel)]="profile.companyEmail" #companyEmailMdl="ngModel" />
+            @if (showFieldError(companyEmailMdl)) {
+            <mat-error>Enter a valid email address or leave this blank.</mat-error>
+            }
+          </mat-form-field>
+        </div>
+
+        <div class="form-grid form-grid--cols-2">
+          <mat-form-field appearance="outline">
+            <mat-label>LinkedIn</mat-label>
+            <input matInput type="text" name="linkedin" maxlength="200" [pattern]="linkedInOptionalPattern"
+              placeholder="linkedin.com/in/yourprofile" [(ngModel)]="profile.linkedin" #linkedinMdl="ngModel" />
+            @if (showFieldError(linkedinMdl)) {
+            <mat-error>Use a LinkedIn URL (with or without https://) or leave blank.</mat-error>
+            }
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Teams ID</mat-label>
+            <input matInput type="text" name="teamsId" maxlength="128" [pattern]="teamsHandlePattern"
+              placeholder="Your Teams handle" [(ngModel)]="profile.teamsId" #teamsIdMdl="ngModel" />
+            @if (showFieldError(teamsIdMdl)) {
+            <mat-error>Use letters, numbers, dot, hyphen, underscore, &#64;, or leave blank.</mat-error>
+            }
+          </mat-form-field>
+        </div>
+
+        <div class="bio-action-row">
+          <button mat-flat-button type="button" class="btn-primary bio-action-btn" (click)="openAboutMeModal()">
+            <mat-icon>edit_note</mat-icon>
+            {{ profile.about ? 'A Little About Me' : 'A Little About ' }}
+          </button>
+          <div class="bio-action-text" *ngIf="profile.about">
+            {{ profile.about }}
+          </div>
+        </div>
+        <hr class="form-divider" />
+
+        <div class="section-title section-title--spaced">3. Personal info</div>
+
+        <div class="form-grid form-grid--cols-2 profile-form__uploads">
+          <app-file-drop-upload #photoUpload mode="image" label="Profile photo"
+            hint="JPEG, PNG, or WebP — drag and drop or browse" accept="image/*" dropTitle="Drop your photo here"
+            dropSub="or use the button below to choose a file from your device"
+            (fileChange)="onProfilePhotoChanged($event)" />
+
+          <app-file-drop-upload #cvUpload mode="document" label="Résumé / CV"
+            hint="PDF or Word — drag and drop or browse"
+            accept=".pdf,.doc,.docx,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+            dropTitle="Drop your CV here" dropSub="or use the button below to choose a PDF or Word file"
+            (fileChange)="onCvFileChanged($event)" />
+        </div>
+
+        <div class="form-grid form-grid--cols-2">
+          <mat-form-field appearance="outline">
+            <mat-label>Trading Entity</mat-label>
+            <input matInput type="text" name="tradingEntity" [maxlength]="tradingMaxLen"
+              placeholder="e.g. entity or business name" [(ngModel)]="profile.tradingEntity" />
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Registration Number</mat-label>
+            <input matInput type="text" name="registration" [pattern]="registrationOptionalPattern" maxlength="80"
+              placeholder="Registration or license #" [(ngModel)]="profile.registration" #registrationMdl="ngModel" />
+            @if (showFieldError(registrationMdl)) {
+            <mat-error>Use 2–80 letters, digits, spaces, #, slashes, dots, hyphen, or leave blank.</mat-error>
+            }
+          </mat-form-field>
+        </div>
+
+        <div class="form-grid form-grid--cols-2">
+          <mat-form-field appearance="outline">
+            <mat-label>Digital Presence #1</mat-label>
+            <input matInput type="text" inputmode="url" autocomplete="url" name="dp1" maxlength="300"
+              [pattern]="optionalPresenceUrlPattern" placeholder="Website, social, or portfolio URL"
+              [(ngModel)]="profile.digitalPresence1" #dp1Mdl="ngModel" />
+            @if (showFieldError(dp1Mdl)) {
+            <mat-error>Enter a URL (optional https://), e.g. example.com/about, or leave blank.</mat-error>
+            }
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Digital Presence #2</mat-label>
+            <input matInput type="text" inputmode="url" autocomplete="off" name="dp2" maxlength="300"
+              [pattern]="optionalPresenceUrlPattern" placeholder="Optional link or handle"
+              [(ngModel)]="profile.digitalPresence2" #dp2Mdl="ngModel" />
+            @if (showFieldError(dp2Mdl)) {
+            <mat-error>Enter a URL (optional https://) or leave blank.</mat-error>
+            }
+          </mat-form-field>
+        </div>
+
+        <div class="form-grid form-grid--cols-2">
+          <mat-form-field appearance="outline">
+            <mat-label>Digital Presence #3</mat-label>
+            <input matInput type="text" inputmode="url" autocomplete="off" name="dp3" maxlength="300"
+              [pattern]="optionalPresenceUrlPattern" placeholder="Optional link or handle"
+              [(ngModel)]="profile.digitalPresence3" #dp3Mdl="ngModel" />
+            @if (showFieldError(dp3Mdl)) {
+            <mat-error>Enter a URL (optional https://) or leave blank.</mat-error>
+            }
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Digital Presence #4</mat-label>
+            <input matInput type="text" inputmode="url" autocomplete="off" name="dp4" maxlength="300"
+              [pattern]="optionalPresenceUrlPattern" placeholder="Optional link or handle"
+              [(ngModel)]="profile.digitalPresence4" #dp4Mdl="ngModel" />
+            @if (showFieldError(dp4Mdl)) {
+            <mat-error>Enter a URL (optional https://) or leave blank.</mat-error>
+            }
+          </mat-form-field>
+        </div>
+
+        <div class="form-actions profile-form__actions profile-form__actions--edit">
+          <button mat-flat-button type="button" class="btn-secondary" (click)="onCancel()">Reset</button>
+          <button mat-flat-button type="submit" class="btn-primary profile-edit__btn-submit">Submit</button>
+        </div>
+      </form>
+    </mat-card-content>
+  </mat-card>
+  }
+
+  @case ('profiles') {
+  <mat-card class="form-card app-outlined-form profile-readonly-card" appearance="outlined">
+    <mat-card-header class="custom-card-header">
+      <mat-card-title>View all Profiles</mat-card-title>
+      <mat-card-subtitle class="demo-hint">
+        Shows the last submitted profile (demo, in memory). Use
+        <a routerLink="/profile/edit">Edit My Profile</a>
+        to change it, then Submit.
+      </mat-card-subtitle>
+    </mat-card-header>
+
+    <mat-card-content class="profile-form">
+      <div class="section-title">Submitted operator</div>
+
+      <dl class="profile-readonly">
+        <dt>First Name</dt>
+        <dd>{{ store.submitted.givenName }}</dd>
+        <dt>Last Name</dt>
+        <dd>{{ store.submitted.lastName }}</dd>
+        <dt>Preferred</dt>
+        <dd>{{ store.submitted.preferred }}</dd>
+        <dt>Operator</dt>
+        <dd>{{ store.submitted.title }}</dd>
+        <dt>User ID</dt>
+        <dd>{{ store.submitted.userId }}</dd>
+        @if (store.submittedPhotoDataUrl) {
+        <dt>Profile photo</dt>
+        <dd class="profile-readonly__photo-cell">
+          <img [src]="store.submittedPhotoDataUrl" alt="Submitted profile photo" class="profile-readonly__thumb" />
+        </dd>
+        }
+        <dt>Personal Email</dt>
+        <dd>{{ store.submitted.personalEmail }}</dd>
+        <dt>Cell &amp; Text</dt>
+        <dd>{{ store.submitted.cell }}</dd>
+        <dt>Contact Email</dt>
+        <dd>{{ store.submitted.contactEmail }}</dd>
+        <dt>Company Email</dt>
+        <dd>{{ store.submitted.companyEmail }}</dd>
+        <dt>LinkedIn</dt>
+        <dd>{{ store.submitted.linkedin }}</dd>
+        <dt>Teams ID</dt>
+        <dd>{{ store.submitted.teamsId }}</dd>
+        <dt>A Little About Me</dt>
+        <dd>{{ store.submitted.about || '—' }}</dd>
+        <dt>Trading Entity</dt>
+        <dd>{{ store.submitted.tradingEntity || '—' }}</dd>
+        <dt>Registration Number</dt>
+        <dd>{{ store.submitted.registration || '—' }}</dd>
+        <dt>Digital Presence #1–#4</dt>
+        <dd>
+          {{ store.submitted.digitalPresence1 || '—' }} · {{ store.submitted.digitalPresence2 || '—' }} ·
+          {{ store.submitted.digitalPresence3 || '—' }} · {{ store.submitted.digitalPresence4 || '—' }}
+        </dd>
+        @if (store.submittedPhotoName || store.submittedCvName) {
+        <dt>Attachments (last submit)</dt>
+        <dd>
+          @if (store.submittedPhotoName) {
+          <span>Photo: {{ store.submittedPhotoName }}</span>
+          }
+          @if (store.submittedPhotoName && store.submittedCvName) {
+          <span> · </span>
+          }
+          @if (store.submittedCvName) {
+          <span>CV: {{ store.submittedCvName }}</span>
+          }
+        </dd>
+        }
+      </dl>
+
+      <div class="form-actions profile-form__actions">
+        <a mat-flat-button class="btn-primary" routerLink="/profile/edit">Edit My Profile</a>
+      </div>
+    </mat-card-content>
+  </mat-card>
+  }
+
+  @case ('verify') {
+  <mat-card class="form-card app-outlined-form verify-console" appearance="outlined">
+    <mat-card-header class="custom-card-header">
+      <mat-card-title>Verify &amp; Approve Operators</mat-card-title>
+      <mat-card-subtitle class="demo-hint">
+        Read-only view of the last submitted profile. HR verifies the operator here (demo). Operator and User ID
+        cannot be changed. Photo comes from Edit My Profile after Submit.
+      </mat-card-subtitle>
+    </mat-card-header>
+
+    <mat-card-content class="profile-form">
+      <mat-form-field appearance="outline" class="verify-select-field">
+        <mat-label>Operators by Name</mat-label>
+        <mat-select [(ngModel)]="verifySelectedOperatorId" name="verifyOperatorPick">
+          <mat-option value="current">{{ operatorSelectLabel }}</mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <div class="section-title">General operator information</div>
+
+      <div class="verify-readonly-grid">
+        <div class="verify-readonly-row verify-readonly-row--2">
+          <div class="verify-readonly-cell">
+            <span class="verify-readonly-label">First Name</span>
+            <span class="verify-readonly-value">{{ store.submitted.givenName }}</span>
+          </div>
+          <div class="verify-readonly-cell">
+            <span class="verify-readonly-label">Last Name</span>
+            <span class="verify-readonly-value">{{ store.submitted.lastName }}</span>
+          </div>
+        </div>
+        <div class="verify-readonly-row verify-readonly-row--2">
+          <div class="verify-readonly-cell">
+            <span class="verify-readonly-label">Preferred</span>
+            <span class="verify-readonly-value">{{ store.submitted.preferred }}</span>
+          </div>
+          <div class="verify-readonly-cell verify-readonly-cell--locked">
+            <span class="verify-readonly-label">Operator</span>
+            <span class="verify-readonly-value verify-readonly-value--locked">{{ store.submitted.title }}</span>
+          </div>
+        </div>
+        <div class="verify-readonly-row verify-readonly-row--2">
+          <div class="verify-readonly-cell verify-readonly-cell--locked">
+            <span class="verify-readonly-label">User ID</span>
+            <span class="verify-readonly-value verify-readonly-value--locked">{{ store.submitted.userId }}</span>
+          </div>
+          <div class="verify-readonly-cell">
+            <span class="verify-readonly-label">Personal Email</span>
+            <span class="verify-readonly-value">{{ store.submitted.personalEmail }}</span>
+          </div>
+        </div>
+        <div class="verify-readonly-row verify-readonly-row--2">
+          <div class="verify-readonly-cell">
+            <span class="verify-readonly-label">Cell &amp; Text</span>
+            <span class="verify-readonly-value">{{ store.submitted.cell }}</span>
+          </div>
+          <div class="verify-readonly-cell">
+            <span class="verify-readonly-label">Contact Email</span>
+            <span class="verify-readonly-value">{{ store.submitted.contactEmail }}</span>
+          </div>
+        </div>
+        <div class="verify-readonly-row verify-readonly-row--2">
+          <div class="verify-readonly-cell">
+            <span class="verify-readonly-label">Company Email</span>
+            <span class="verify-readonly-value">{{ store.submitted.companyEmail }}</span>
+          </div>
+          <div class="verify-readonly-cell">
+            <span class="verify-readonly-label">LinkedIn</span>
+            <span class="verify-readonly-value">{{ store.submitted.linkedin }}</span>
+          </div>
+        </div>
+        <div class="verify-readonly-row verify-readonly-row--2">
+          <div class="verify-readonly-cell">
+            <span class="verify-readonly-label">Teams ID</span>
+            <span class="verify-readonly-value">{{ store.submitted.teamsId }}</span>
+          </div>
+        </div>
+        <div class="verify-readonly-row">
+          <div class="verify-readonly-cell verify-readonly-cell--full">
+            <span class="verify-readonly-label">A Little About Me ..</span>
+            <span class="verify-readonly-value verify-readonly-value--multiline">{{ store.submitted.about || '—'
               }}</span>
-            </div>
           </div>
+        </div>
+      </div>
 
-          <div class="verify-readonly-grid verify-readonly-grid--tight">
-            <div class="verify-readonly-row verify-readonly-row--2">
-              <div class="verify-readonly-cell">
-                <span class="verify-readonly-label">Trading Entity</span>
-                <span class="verify-readonly-value">{{ store.submitted.tradingEntity || '—' }}</span>
-              </div>
-              <div class="verify-readonly-cell">
-                <span class="verify-readonly-label">Registration Number</span>
-                <span class="verify-readonly-value">{{ store.submitted.registration || '—' }}</span>
-              </div>
-            </div>
-            <div class="verify-readonly-row verify-readonly-row--2">
-              <div class="verify-readonly-cell">
-                <span class="verify-readonly-label">Digital Presence #1</span>
-                <span class="verify-readonly-value">{{ store.submitted.digitalPresence1 || '—' }}</span>
-              </div>
-              <div class="verify-readonly-cell">
-                <span class="verify-readonly-label">Digital Presence #2</span>
-                <span class="verify-readonly-value">{{ store.submitted.digitalPresence2 || '—' }}</span>
-              </div>
-            </div>
-            <div class="verify-readonly-row verify-readonly-row--2">
-              <div class="verify-readonly-cell">
-                <span class="verify-readonly-label">Digital Presence #3</span>
-                <span class="verify-readonly-value">{{ store.submitted.digitalPresence3 || '—' }}</span>
-              </div>
-              <div class="verify-readonly-cell">
-                <span class="verify-readonly-label">Digital Presence #4</span>
-                <span class="verify-readonly-value">{{ store.submitted.digitalPresence4 || '—' }}</span>
-              </div>
-            </div>
+      <hr class="form-divider" />
+
+      <div class="section-title section-title--spaced">3. Personal info</div>
+
+      <div class="verify-media-row">
+        <div class="verify-media-card">
+          <span class="verify-readonly-label">Profile photo</span>
+          @if (store.previewPhotoDataUrl) {
+          <div class="verify-photo-frame">
+            <img [src]="store.previewPhotoDataUrl" alt="Profile photo" class="verify-photo-img" />
           </div>
+          } @else {
+          <div class="verify-photo-placeholder">No photo yet — add one from Edit My Profile</div>
+          }
+        </div>
+        <div class="verify-media-card">
+          <span class="verify-readonly-label">Résumé / CV</span>
+          <span class="verify-readonly-value verify-readonly-value--block">{{
+            store.previewCvName || '—'
+            }}</span>
+        </div>
+      </div>
 
-          <div class="form-actions profile-form__actions profile-form__actions--verify">
-            <button mat-flat-button type="button" class="btn-cancel" (click)="onVerifySave()">Save</button>
-            <button mat-flat-button type="button" class="btn-primary" (click)="onVerifySubmit()">Submit</button>
-            <button mat-flat-button type="button" class="btn-verify" (click)="onVerifyApprove()">Verify</button>
+      <div class="verify-readonly-grid verify-readonly-grid--tight">
+        <div class="verify-readonly-row verify-readonly-row--2">
+          <div class="verify-readonly-cell">
+            <span class="verify-readonly-label">Trading Entity</span>
+            <span class="verify-readonly-value">{{ store.submitted.tradingEntity || '—' }}</span>
           </div>
+          <div class="verify-readonly-cell">
+            <span class="verify-readonly-label">Registration Number</span>
+            <span class="verify-readonly-value">{{ store.submitted.registration || '—' }}</span>
+          </div>
+        </div>
+        <div class="verify-readonly-row verify-readonly-row--2">
+          <div class="verify-readonly-cell">
+            <span class="verify-readonly-label">Digital Presence #1</span>
+            <span class="verify-readonly-value">{{ store.submitted.digitalPresence1 || '—' }}</span>
+          </div>
+          <div class="verify-readonly-cell">
+            <span class="verify-readonly-label">Digital Presence #2</span>
+            <span class="verify-readonly-value">{{ store.submitted.digitalPresence2 || '—' }}</span>
+          </div>
+        </div>
+        <div class="verify-readonly-row verify-readonly-row--2">
+          <div class="verify-readonly-cell">
+            <span class="verify-readonly-label">Digital Presence #3</span>
+            <span class="verify-readonly-value">{{ store.submitted.digitalPresence3 || '—' }}</span>
+          </div>
+          <div class="verify-readonly-cell">
+            <span class="verify-readonly-label">Digital Presence #4</span>
+            <span class="verify-readonly-value">{{ store.submitted.digitalPresence4 || '—' }}</span>
+          </div>
+        </div>
+      </div>
 
-          <p class="verify-footer-links">
-            <a routerLink="/profile/all">Edit My Profile</a>
-            ·
-            <a routerLink="/profile/profiles">View all Profiles</a>
-          </p>
-        </mat-card-content>
-      </mat-card>
-    }
+      <div class="form-actions profile-form__actions profile-form__actions--verify">
+        <button mat-flat-button type="button" class="btn-cancel" (click)="onVerifySave()">Save</button>
+        <button mat-flat-button type="button" class="btn-primary" (click)="onVerifySubmit()">Submit</button>
+        <button mat-flat-button type="button" class="btn-verify" (click)="onVerifyApprove()">Verify</button>
+      </div>
+
+      <p class="verify-footer-links">
+        <a routerLink="/profile/edit">Edit My Profile</a>
+        ·
+        <a routerLink="/profile/profiles">View all Profiles</a>
+      </p>
+    </mat-card-content>
+  </mat-card>
+  }
   }
 </div>

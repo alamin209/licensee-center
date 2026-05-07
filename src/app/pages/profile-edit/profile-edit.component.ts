@@ -16,6 +16,9 @@ import {
   OperatorProfileStore
 } from '../../services/operator-profile-store.service';
 import { isImageFile } from '../../utils/file-helpers';
+import { MatDialog } from '@angular/material/dialog';
+import { MatIconModule } from '@angular/material/icon';
+import { ReusableModalComponent, ModalData } from '../../components/reusable-modal/reusable-modal.component';
 
 export type ProfileViewMode = 'edit' | 'profiles' | 'verify';
 
@@ -43,6 +46,7 @@ class ProfileFormErrorStateMatcher implements ErrorStateMatcher {
     MatSelectModule,
     MatButtonModule,
     MatSnackBarModule,
+    MatIconModule,
     FileDropUploadComponent
   ],
   templateUrl: './profile-edit.component.html',
@@ -53,6 +57,7 @@ export class ProfileEditComponent {
   private readonly router = inject(Router);
   private readonly destroyRef = inject(DestroyRef);
   readonly store = inject(OperatorProfileStore);
+  private readonly dialog = inject(MatDialog);
 
   /**
    * Person names: letter + letters/spaces/punctuation (Unicode letters). Optional fields use string `^$|…` below.
@@ -231,5 +236,31 @@ export class ProfileEditComponent {
         (p[k] as string) = v.trim();
       }
     }
+  }
+
+  openAboutMeModal(): void {
+    const dialogRef = this.dialog.open(ReusableModalComponent, {
+      width: '600px',
+      data: {
+        title: 'A Little About Me ..',
+        description: 'Add a short bio or notes (optional).',
+        fields: [
+          { name: 'about', label: 'A Little About Me ..', type: 'textarea', required: false, value: this.profile.about }
+        ]
+      } as ModalData
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result && result.about !== undefined) {
+        this.profile.about = result.about;
+        
+        // Mark the form as dirty so validation triggers correctly
+        const ng = this.profileNgForm();
+        if (ng && ng.form.controls['about']) {
+          ng.form.controls['about'].markAsDirty();
+          ng.form.controls['about'].updateValueAndValidity();
+        }
+      }
+    });
   }
 }

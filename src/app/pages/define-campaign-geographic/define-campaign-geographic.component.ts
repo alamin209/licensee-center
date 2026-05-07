@@ -78,8 +78,8 @@ export class DefineCampaignGeographicComponent implements OnInit {
   dataCollator = 'frank-brown';
   associateRep = '';
   selectLicense = 'self-licensed';
-  productPriceVary = '100-plus';
-  agentSuccessFee = '25';
+  productPriceVary: string | number = '100-plus';
+  agentSuccessFee: string | number = '25';
   descriptor = '';
   campaignId = '';
   tagline = '';

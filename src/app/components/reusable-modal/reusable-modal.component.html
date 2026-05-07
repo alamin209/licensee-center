@@ -1,0 +1,22 @@
+<h2 mat-dialog-title>{{ data.title }}</h2>
+<mat-dialog-content>
+  <p *ngIf="data.description" class="modal-description">{{ data.description }}</p>
+  
+  <form [formGroup]="form" class="modal-form">
+    <mat-form-field *ngFor="let field of data.fields" appearance="fill" class="full-width">
+      <mat-label>{{ field.label }}</mat-label>
+      
+      <input *ngIf="field.type !== 'textarea'" matInput [type]="field.type" [formControlName]="field.name" [required]="field.required || false">
+      
+      <textarea *ngIf="field.type === 'textarea'" matInput [formControlName]="field.name" [required]="field.required || false" rows="5"></textarea>
+      
+      <mat-error *ngIf="form.get(field.name)?.hasError('required')">
+        {{ field.label }} is required
+      </mat-error>
+    </mat-form-field>
+  </form>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button mat-flat-button type="button" class="btn-secondary" (click)="onCancel()">Cancel</button>
+  <button mat-flat-button class="btn-primary" [disabled]="form.invalid" (click)="onSubmit()">Submit</button>
+</mat-dialog-actions>

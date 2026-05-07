@@ -28,7 +28,8 @@
           <mat-label>Location</mat-label>
           <input matInput [value]="campaignLocation" readonly (click)="openCountryLocaleDialog()" />
           <div matSuffix>
-            <button mat-flat-button class="btn-primary btn-sm" type="button" (click)="openCountryLocaleDialog()">Edit</button>
+            <button mat-flat-button class="btn-primary btn-sm" type="button"
+              (click)="openCountryLocaleDialog()">Edit</button>
           </div>
         </mat-form-field>
 
@@ -99,25 +100,15 @@
         </mat-form-field>
 
         <div class="upload-field">
-          <app-file-drop-upload 
-            label="Upload Image" 
-            accept="image/*"
-            dropTitle="Drag and drop an image here" 
-            mode="image"
-            [initialFileName]="imageFileName"
-            [initialPreviewUrl]="imageFileUrl"
+          <app-file-drop-upload label="Upload Image" accept="image/*" dropTitle="Drag and drop an image here"
+            mode="image" [initialFileName]="imageFileName" [initialPreviewUrl]="imageFileUrl"
             (fileChange)="onImageChange($event)">
           </app-file-drop-upload>
         </div>
 
         <div class="upload-field">
-          <app-file-drop-upload 
-            label="Upload PDF" 
-            accept=".pdf,application/pdf"
-            dropTitle="Drag and drop a PDF here" 
-            mode="document"
-            [initialFileName]="pdfFileName"
-            [initialPreviewUrl]="pdfFileUrl"
+          <app-file-drop-upload label="Upload PDF" accept=".pdf,application/pdf" dropTitle="Drag and drop a PDF here"
+            mode="document" [initialFileName]="pdfFileName" [initialPreviewUrl]="pdfFileUrl"
             (fileChange)="onPdfChange($event)">
           </app-file-drop-upload>
         </div>
@@ -128,13 +119,8 @@
         </mat-form-field>
 
         <div class="upload-field">
-          <app-file-drop-upload 
-            label="Upload Video" 
-            accept="video/*"
-            dropTitle="Drag and drop a video here" 
-            mode="video"
-            [initialFileName]="videoFileName"
-            [initialPreviewUrl]="videoFileUrl"
+          <app-file-drop-upload label="Upload Video" accept="video/*" dropTitle="Drag and drop a video here"
+            mode="video" [initialFileName]="videoFileName" [initialPreviewUrl]="videoFileUrl"
             (fileChange)="onVideoChange($event)">
           </app-file-drop-upload>
         </div>
@@ -164,69 +150,63 @@
           </mat-select>
         </mat-form-field>
 
-        <mat-form-field appearance="outline" floatLabel="always">
-          <mat-label>Agent Success Fee%</mat-label>
-          <mat-select [(ngModel)]="agentSuccessFee" name="agentSuccessFee">
-            <mat-option value="3">3%</mat-option>
-            <mat-option value="5">5%</mat-option>
-            <mat-option value="10">10%</mat-option>
-            <mat-option value="15">15%</mat-option>
-            <mat-option value="20">20%</mat-option>
-            <mat-option value="25">25%</mat-option>
-          </mat-select>
+        <mat-form-field appearance="outline">
+          <mat-label>Agent Success Fee %</mat-label>
+          <input matInput type="number" name="agentSuccessFee" [(ngModel)]="agentSuccessFee" />
         </mat-form-field>
 
         <mat-form-field appearance="outline">
           <mat-label>Date Initiated</mat-label>
-          <input matInput [matDatepicker]="datePicker" placeholder="DD / MM / YYYY" name="dateInitiated" [(ngModel)]="dateInitiated" />
+          <input matInput [matDatepicker]="datePicker" placeholder="DD / MM / YYYY" name="dateInitiated"
+            [(ngModel)]="dateInitiated" />
           <mat-datepicker-toggle matIconSuffix [for]="datePicker"></mat-datepicker-toggle>
           <mat-datepicker #datePicker></mat-datepicker>
         </mat-form-field>
       </div>
-      </mat-card-content>
+    </mat-card-content>
 
-      @if (lastCreatedCampaign?.imageFileUrl || lastCreatedCampaign?.pdfFileUrl || lastCreatedCampaign?.videoFileUrl) {
-        <mat-card-content class="preview-media-section">
-          <h3 class="media-title">Media Review</h3>
-          <div class="media-grid">
-            @if (lastCreatedCampaign?.imageFileUrl) {
-              <div class="media-card">
-                <label>Campaign Image</label>
-                <div class="media-wrapper image-wrapper">
-                  <img [src]="lastCreatedCampaign?.imageFileUrl" alt="Campaign Image" />
-                </div>
-              </div>
-            }
-
-            @if (lastCreatedCampaign?.videoFileUrl) {
-              <div class="media-card">
-                <label>Campaign Video</label>
-                <div class="media-wrapper video-wrapper">
-                  <video controls>
-                    <source [src]="lastCreatedCampaign?.videoFileUrl" type="video/mp4" />
-                    Your browser does not support the video tag.
-                  </video>
-                </div>
-              </div>
-            }
-
-            @if (lastCreatedCampaign?.pdfFileUrl) {
-              <div class="media-card full-width">
-                <label>Campaign PDF Document</label>
-                <div class="media-wrapper pdf-wrapper">
-                  <iframe [src]="lastCreatedCampaign?.pdfFileUrl | safeUrl" width="100%" height="500px"></iframe>
-                </div>
-              </div>
-            }
+    @if (lastCreatedCampaign?.imageFileUrl || lastCreatedCampaign?.pdfFileUrl || lastCreatedCampaign?.videoFileUrl) {
+    <mat-card-content class="preview-media-section">
+      <h3 class="media-title">Media Review</h3>
+      <div class="media-grid">
+        @if (lastCreatedCampaign?.imageFileUrl) {
+        <div class="media-card">
+          <label>Campaign Image</label>
+          <div class="media-wrapper image-wrapper">
+            <img [src]="lastCreatedCampaign?.imageFileUrl" alt="Campaign Image" />
           </div>
-        </mat-card-content>
-      }
+        </div>
+        }
 
-      <div class="campaign-card-actions">
-        <button mat-stroked-button type="button" (click)="onBack()">
-          <mat-icon>arrow_back</mat-icon> Back
-        </button>
-        <button mat-flat-button class="btn-primary" type="button" (click)="onSave()">Save & Finish</button>
+        @if (lastCreatedCampaign?.videoFileUrl) {
+        <div class="media-card">
+          <label>Campaign Video</label>
+          <div class="media-wrapper video-wrapper">
+            <video controls>
+              <source [src]="lastCreatedCampaign?.videoFileUrl" type="video/mp4" />
+              Your browser does not support the video tag.
+            </video>
+          </div>
+        </div>
+        }
+
+        @if (lastCreatedCampaign?.pdfFileUrl) {
+        <div class="media-card full-width">
+          <label>Campaign PDF Document</label>
+          <div class="media-wrapper pdf-wrapper">
+            <iframe [src]="lastCreatedCampaign?.pdfFileUrl | safeUrl" width="100%" height="500px"></iframe>
+          </div>
+        </div>
+        }
       </div>
-    </mat-card>
+    </mat-card-content>
+    }
+
+    <div class="campaign-card-actions">
+      <button mat-stroked-button type="button" (click)="onBack()">
+        <mat-icon>arrow_back</mat-icon> Back
+      </button>
+      <button mat-flat-button class="btn-primary" type="button" (click)="onSave()">Save & Finish</button>
+    </div>
+  </mat-card>
 </div>

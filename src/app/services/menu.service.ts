@@ -138,7 +138,7 @@ export class MenuService {
         title: 'Operator console',
         expanded: true,
         children: [
-          { title: 'Edit My Profile', icon: 'sidebar-profile', route: '/profile/all', isSvg: true },
+          { title: 'Edit My Profile', icon: 'sidebar-profile', route: '/profile/edit', isSvg: true },
           { title: 'View all Profiles', icon: 'sidebar-profiles-all', route: '/operator-console/view-all-profiles', isSvg: true },
           { title: 'Verify Operator', icon: 'sidebar-verify', route: '/operator-console/verify-operator', isSvg: true },
         ]

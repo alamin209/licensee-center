@@ -215,3 +215,135 @@
   }
 }
 
+.generate-id-btn {
+  color: #1c6ce4;
+
+  &:disabled {
+    color: rgba(0, 0, 0, 0.26);
+  }
+
+  mat-icon {
+    font-size: 20px;
+    width: 20px;
+    height: 20px;
+  }
+}
+
+.stepper-v2 {
+  position: relative;
+  margin-bottom: 22px; // Match Material form field bottom spacing
+
+  .v2-label {
+    position: absolute;
+    top: -8px;
+    left: 10px;
+    background: #fff;
+    padding: 0 4px;
+    font-size: 12px;
+    font-weight: 400;
+    line-height: 16px;
+    letter-spacing: 0.4px;
+    color: rgba(0, 0, 0, 0.6);
+    z-index: 1;
+    transition: color 0.2s;
+  }
+
+  .v2-container {
+    display: flex;
+    align-items: center;
+    height: 40px;
+    border: 1px solid rgba(0, 0, 0, 0.12);
+    border-radius: 4px;
+    overflow: hidden;
+    transition: all 0.2s;
+    background: #fff;
+
+    &--textarea {
+      height: auto;
+      min-height: 80px;
+      align-items: flex-start;
+    }
+
+    &:hover {
+      border-color: #b0b0b0;
+    }
+
+    &:focus-within {
+      border-color: #1c6ce4;
+      border-width: 2px;
+      
+      & ~ .v2-label {
+        color: #1c6ce4;
+      }
+    }
+  }
+
+  .v2-btn {
+    width: 40px;
+    height: 100%;
+    border: none;
+    background: rgba(28, 108, 228, 0.07);
+    color: #1c6ce4;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color 0.15s;
+    padding: 0;
+    z-index: 10;
+
+    mat-icon {
+      font-size: 18px; // Slightly smaller icon
+      width: 18px;
+      height: 18px;
+      line-height: 18px;
+    }
+
+    &:hover {
+      background-color: rgba(28, 108, 228, 0.2);
+    }
+
+    &:active {
+      background-color: rgba(28, 108, 228, 0.14);
+    }
+  }
+
+  .v2-input {
+    flex: 1;
+    min-width: 0;
+    border: none;
+    outline: none;
+    background: transparent;
+    text-align: left;
+    padding: 0 12px;
+    font-family: Roboto, 'Helvetica Neue', sans-serif;
+    font-size: 14px;
+    font-weight: 400;
+    color: #000000de;
+    line-height: 24px;
+
+    &--centered {
+      text-align: center;
+      padding: 0;
+    }
+
+    // Hide browser spinners
+    &::-webkit-outer-spin-button,
+    &::-webkit-inner-spin-button {
+      -webkit-appearance: none;
+      appearance: none;
+      margin: 0;
+    }
+
+    -moz-appearance: textfield;
+    appearance: textfield;
+  }
+
+  .v2-suffix {
+    padding-right: 12px;
+    font-family: Roboto, 'Helvetica Neue', sans-serif;
+    font-size: 14px;
+    color: #7b7b7b;
+    flex-shrink: 0;
+  }
+}

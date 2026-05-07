@@ -21,7 +21,7 @@ export interface Campaign {
   videoFile: string | null;
   videoFileUrl?: string | null;
   numProperties: number | null;
-  productPriceVary: string;
+  productPriceVary: string | number;
   agentSuccessFee: string;
   dateInitiated: Date | null;
   notesInternal?: string;

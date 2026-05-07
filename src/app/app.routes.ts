@@ -29,10 +29,10 @@ const loadCampaignPreview = () =>
   import('./pages/campaign-preview/campaign-preview.component').then((m) => m.CampaignPreviewComponent);
 
 export const routes: Routes = [
-  { path: '', redirectTo: 'profile/all', pathMatch: 'full' },
+  { path: '', redirectTo: 'profile/edit', pathMatch: 'full' },
 
   // Edit My Profile — `ProfileEditComponent` (same component, view mode driven by URL path).
-  { path: 'operator-console/edit-my-profile', redirectTo: 'profile/all', pathMatch: 'full' },
+  { path: 'operator-console/edit-my-profile', redirectTo: 'profile/edit', pathMatch: 'full' },
   { path: 'profile/edit', loadComponent: loadProfileEdit },
   { path: 'profile/view', loadComponent: loadProfileEdit },
   { path: 'profile/profiles', loadComponent: loadProfileEdit },

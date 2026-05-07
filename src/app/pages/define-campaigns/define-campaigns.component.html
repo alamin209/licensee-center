@@ -39,62 +39,35 @@
           <mat-form-field appearance="outline" class="campaign-name-field">
             <mat-label>Name of Campaign</mat-label>
             <input matInput name="campaignName" [(ngModel)]="campaignName" required minlength="3" maxlength="120"
-              [pattern]="campaignNamePattern" #campaignNameMdl="ngModel" />
-            @if (showFieldError(campaignNameMdl)) {
-            <mat-error>
-              @if (campaignNameMdl.hasError('required')) {
-              Campaign name is required.
-              } @else if (campaignNameMdl.hasError('minlength')) {
-              Campaign name must be at least 3 characters.
-              } @else if (campaignNameMdl.hasError('maxlength')) {
-              Campaign name must be 120 characters or fewer.
-              } @else {
-              Use letters, numbers, spaces, and basic punctuation only.
-              }
-            </mat-error>
-            }
+              #campaignNameMdl="ngModel" />
           </mat-form-field>
 
           @if (campaignType === 'geographic') {
           <div class="geographic-display-box">
             <span class="locale-text" [title]="campaignLocation">{{ campaignLocation || 'Select Location' }}</span>
-            <button mat-flat-button type="button" class="btn-primary edit-btn"
-              (click)="openCountryLocaleDialog()">Edit Location</button>
+            <button mat-flat-button type="button" class="btn-primary edit-btn" (click)="openCountryLocaleDialog()">Edit
+              Location</button>
           </div>
           }
 
           <mat-form-field appearance="outline">
-
             <mat-label>Optional Descriptor</mat-label>
-
             <input matInput name="descriptor" [(ngModel)]="descriptor" />
-
           </mat-form-field>
 
           <mat-form-field appearance="outline">
-
             <mat-label>Campaign ID</mat-label>
-
             <input matInput name="campaignId" [(ngModel)]="campaignId" required minlength="3" maxlength="50"
-              [pattern]="campaignIdPattern" #campaignIdMdl="ngModel" />
-            @if (showFieldError(campaignIdMdl)) {
-            <mat-error>
-              @if (campaignIdMdl.hasError('required')) {
-              Campaign ID is required.
-              } @else {
-              Use 3-50 characters: letters, numbers, underscore, or hyphen.
-              }
-            </mat-error>
-            }
-
+              #campaignIdMdl="ngModel" />
+            <button mat-icon-button matSuffix type="button" (click)="generateNewCampaignId()" title="Generate New ID"
+              class="generate-id-btn">
+              <mat-icon>refresh</mat-icon>
+            </button>
           </mat-form-field>
 
           <mat-form-field appearance="outline">
-
             <mat-label>Optional Tagline</mat-label>
-
             <input matInput name="tagline" [(ngModel)]="tagline" />
-
           </mat-form-field>
 
           <mat-form-field appearance="outline" floatLabel="always">
@@ -185,48 +158,29 @@
           </mat-form-field>
 
           <div class="upload-field">
-            <app-file-drop-upload #imageUpload
-            label="Upload Image" 
-            accept="image/*"
-            dropTitle="Drag and drop an image here" 
-            mode="image"
-            [initialFileName]="imageFile?.name || ''"
-            [initialPreviewUrl]="imageFileUrl"
-            (fileChange)="onImageChange($event)">
-          </app-file-drop-upload>
+            <app-file-drop-upload #imageUpload label="Upload Image" accept="image/*"
+              dropTitle="Drag and drop an image here" mode="image" [initialFileName]="imageFile?.name || ''"
+              [initialPreviewUrl]="imageFileUrl" (fileChange)="onImageChange($event)">
+            </app-file-drop-upload>
           </div>
 
           <div class="upload-field">
-            <app-file-drop-upload #pdfUpload
-            label="Upload PDF" 
-            accept=".pdf,application/pdf"
-            dropTitle="Drag and drop a PDF here" 
-            mode="document"
-            [initialFileName]="pdfFile?.name || ''"
-            [initialPreviewUrl]="pdfFileUrl"
-            (fileChange)="onPdfChange($event)">
-          </app-file-drop-upload>
+            <app-file-drop-upload #pdfUpload label="Upload PDF" accept=".pdf,application/pdf"
+              dropTitle="Drag and drop a PDF here" mode="document" [initialFileName]="pdfFile?.name || ''"
+              [initialPreviewUrl]="pdfFileUrl" (fileChange)="onPdfChange($event)">
+            </app-file-drop-upload>
           </div>
 
           <mat-form-field appearance="outline" class="upload-url-field">
             <mat-label>Upload Url</mat-label>
-            <input matInput name="uploadUrl" [(ngModel)]="uploadUrl" type="url" placeholder="https://…"
-              [pattern]="optionalHttpsUrlPattern" #uploadUrlMdl="ngModel" />
-            @if (showFieldError(uploadUrlMdl)) {
-            <mat-error>Enter a valid URL starting with http:// or https://, or leave blank.</mat-error>
-            }
+            <input matInput name="uploadUrl" [(ngModel)]="uploadUrl" type="url" placeholder="https://…" />
           </mat-form-field>
 
           <div class="upload-field">
-            <app-file-drop-upload #videoUpload
-            label="Upload Video" 
-            accept="video/*"
-            dropTitle="Drag and drop a video here" 
-            mode="video"
-            [initialFileName]="videoFile?.name || ''"
-            [initialPreviewUrl]="videoFileUrl"
-            (fileChange)="onVideoChange($event)">
-          </app-file-drop-upload>
+            <app-file-drop-upload #videoUpload label="Upload Video" accept="video/*"
+              dropTitle="Drag and drop a video here" mode="video" [initialFileName]="videoFile?.name || ''"
+              [initialPreviewUrl]="videoFileUrl" (fileChange)="onVideoChange($event)">
+            </app-file-drop-upload>
           </div>
 
           <mat-form-field appearance="outline" class="form-field--textarea">
@@ -246,65 +200,39 @@
           </mat-form-field>
 
           <mat-form-field appearance="outline">
-
             <mat-label>Number of Properties</mat-label>
-
-            <input matInput type="number" min="0" name="numProperties" [(ngModel)]="numProperties"
-              #numPropertiesMdl="ngModel" />
-
+            <input matInput type="number" min="0" name="numProperties" [(ngModel)]="numProperties" />
           </mat-form-field>
 
-          <mat-form-field appearance="outline" floatLabel="always">
+          <div class="stepper-v2">
+            <label class="v2-label">Product Price Vary %</label>
+            <div class="v2-container">
+              <button (click)="decrementPriceVary()" class="v2-btn" type="button">
+                <mat-icon>remove</mat-icon>
+              </button>
 
-            <mat-label>Product Price Vary %</mat-label>
+              <input type="number" [(ngModel)]="productPriceVary" class="v2-input v2-input--centered" min="-100" max="100"
+                name="productPriceVary">
 
-            <mat-select [(ngModel)]="productPriceVary" name="productPriceVary" #productPriceVaryMdl="ngModel">
+              <span class="v2-suffix">%</span>
 
-              <mat-option value="3">3%</mat-option>
+              <button (click)="incrementPriceVary()" class="v2-btn" type="button">
+                <mat-icon>add</mat-icon>
+              </button>
+            </div>
+          </div>
 
-              <mat-option value="5">5%</mat-option>
-
-              <mat-option value="7.5">7.5%</mat-option>
-
-              <mat-option value="100-plus">3, 5, 7.5, 10, 15, 20, 25, 30, 50, 60, 80, 90, 100% + 3</mat-option>
-
-            </mat-select>
-
-          </mat-form-field>
-
-          <mat-form-field appearance="outline" floatLabel="always">
-
-            <mat-label>Agent Success Fee%</mat-label>
-
-            <mat-select [(ngModel)]="agentSuccessFee" name="agentSuccessFee" #agentSuccessFeeMdl="ngModel">
-
-              <mat-option value="3">3%</mat-option>
-
-              <mat-option value="5">5%</mat-option>
-
-              <mat-option value="10">10%</mat-option>
-
-              <mat-option value="15">15%</mat-option>
-
-              <mat-option value="20">20%</mat-option>
-
-              <mat-option value="25">25%</mat-option>
-
-            </mat-select>
-
+          <mat-form-field appearance="outline">
+            <mat-label>Agent Success Fee %</mat-label>
+            <input matInput type="number" name="agentSuccessFee" [(ngModel)]="agentSuccessFee" />
           </mat-form-field>
 
           <mat-form-field appearance="outline">
-
             <mat-label>Date Initiated</mat-label>
-
             <input matInput [matDatepicker]="datePicker" placeholder="DD / MM / YYYY" name="dateInitiated"
-              [(ngModel)]="dateInitiated" #dateInitiatedMdl="ngModel" />
-
+              [(ngModel)]="dateInitiated" />
             <mat-datepicker-toggle matIconSuffix [for]="datePicker"></mat-datepicker-toggle>
-
             <mat-datepicker #datePicker></mat-datepicker>
-
           </mat-form-field>
 
         </div>
@@ -312,38 +240,39 @@
       </mat-card-content>
 
       <div class="campaign-card-actions">
-        <button mat-stroked-button type="button" class="btn-reset" (click)="campaignForm.resetForm(); onReset()">Reset</button>
+        <button mat-stroked-button type="button" class="btn-reset"
+          (click)="campaignForm.resetForm(); onReset()">Reset</button>
         <button mat-flat-button class="btn-primary" type="submit">Save</button>
       </div>
     </form>
   </mat-card>
 
   @if ((campaigns$ | async); as campaigns) {
-    @if (campaigns.length > 0) {
-      <mat-card class="form-card submitted-campaigns-card" appearance="outlined">
-        <mat-card-header class="custom-card-header">
-          <mat-card-title>Submitted Campaigns (In State)</mat-card-title>
-        </mat-card-header>
-        <mat-card-content>
-          <div class="campaign-list">
-            @for (c of campaigns; track c.campaignId) {
-              <div class="campaign-item">
-                <div class="campaign-item__info">
-                  <strong>{{ c.campaignName }}</strong>
-                  <span class="campaign-item__id">ID: {{ c.campaignId }}</span>
-                </div>
-                <div class="campaign-item__meta">
-                  <span>Type: {{ c.campaignType }}</span>
-                  @if (c.location) {
-                    <span class="campaign-item__location">Location: {{ c.location }}</span>
-                  }
-                </div>
-              </div>
+  @if (campaigns.length > 0) {
+  <mat-card class="form-card submitted-campaigns-card" appearance="outlined">
+    <mat-card-header class="custom-card-header">
+      <mat-card-title>Submitted Campaigns (In State)</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <div class="campaign-list">
+        @for (c of campaigns; track c.campaignId) {
+        <div class="campaign-item">
+          <div class="campaign-item__info">
+            <strong>{{ c.campaignName }}</strong>
+            <span class="campaign-item__id">ID: {{ c.campaignId }}</span>
+          </div>
+          <div class="campaign-item__meta">
+            <span>Type: {{ c.campaignType }}</span>
+            @if (c.location) {
+            <span class="campaign-item__location">Location: {{ c.location }}</span>
             }
           </div>
-        </mat-card-content>
-      </mat-card>
-    }
+        </div>
+        }
+      </div>
+    </mat-card-content>
+  </mat-card>
+  }
   }
 
 </div>
