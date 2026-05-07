@@ -1,4 +1,9 @@
-<h2 mat-dialog-title class="country-locale-dialog__title">Choose country &amp; locale</h2>
+<div class="dialog-header">
+  <h2 mat-dialog-title>Choose country &amp; locale</h2>
+  <button mat-icon-button (click)="cancel()" class="close-btn">
+    <mat-icon>close</mat-icon>
+  </button>
+</div>
 
 <mat-dialog-content class="country-locale-dialog__body app-outlined-form">
   <mat-form-field appearance="outline" floatLabel="always">

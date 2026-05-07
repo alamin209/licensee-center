@@ -1,4 +1,9 @@
-<h2 mat-dialog-title>{{ data.title }}</h2>
+<div class="dialog-header">
+  <h2 mat-dialog-title>{{ data.title }}</h2>
+  <button mat-icon-button (click)="onCancel()" class="close-btn">
+    <mat-icon>close</mat-icon>
+  </button>
+</div>
 <mat-dialog-content>
   <p *ngIf="data.description" class="modal-description">{{ data.description }}</p>
   

@@ -9,6 +9,7 @@ import {
 import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
+import { MatIconModule } from '@angular/material/icon';
 
 export interface CountryLocaleDialogData {
   country: string;
@@ -65,6 +66,7 @@ const defaultLocaleData: CountryLocaleDialogData = {
     MatButtonModule,
     MatFormFieldModule,
     MatSelectModule,
+    MatIconModule,
     FormsModule,
     CommonModule
   ],
